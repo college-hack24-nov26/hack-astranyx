@@ -35,6 +35,8 @@ import com.sktech.wastetrack.ui.screens.transfer.QRGenerateScreen
 import com.sktech.wastetrack.ui.screens.transfer.WeighbridgeSlipScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
+import com.sktech.wastetrack.ui.screens.analytics.MandiPriceTrendScreen
+import com.sktech.wastetrack.ui.screens.analytics.FarmProfitLossScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
@@ -119,6 +121,12 @@ fun NavGraph(
                 },
                 onNavigateToCustomAgroPlan = { farmId ->
                     navController.navigate(Screen.CustomAgroPlan.createRoute(farmId))
+                },
+                onNavigateToMandiTrends = {
+                    navController.navigate(Screen.MandiPriceTrends.route)
+                },
+                onNavigateToFarmPnL = {
+                    navController.navigate(Screen.FarmProfitLoss.route)
                 }
             )
         }
@@ -465,6 +473,26 @@ fun NavGraph(
                 },
                 onNavigateToListingCreation = {
                     navController.navigate(Screen.CreateListing.route)
+                }
+            )
+        }
+        composable(Screen.MandiPriceTrends.route) {
+            MandiPriceTrendScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToPnL = {
+                    navController.navigate(Screen.FarmProfitLoss.route)
+                }
+            )
+        }
+        composable(Screen.FarmProfitLoss.route) {
+            FarmProfitLossScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToMandiTrends = {
+                    navController.navigate(Screen.MandiPriceTrends.route)
                 }
             )
         }
