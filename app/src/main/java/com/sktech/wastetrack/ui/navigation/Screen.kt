@@ -58,4 +58,7 @@ sealed class Screen(val route: String) {
     data object OrderDetail : Screen("order_detail/{orderId}") {
         fun createRoute(orderId: String) = "order_detail/$orderId"
     }
+    data object AddCropCycle : Screen("add_crop_cycle?farmId={farmId}") {
+        fun createRoute(farmId: String = "") = "add_crop_cycle?farmId=$farmId"
+    }
 }

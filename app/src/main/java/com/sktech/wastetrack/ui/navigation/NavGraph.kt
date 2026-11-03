@@ -15,6 +15,8 @@ import com.sktech.wastetrack.ui.screens.bid.BidMarketScreen
 import com.sktech.wastetrack.ui.screens.crop.CropClassifyScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleDetailScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleListScreen
+import com.sktech.wastetrack.ui.screens.crop.AddCropCycleScreen
+
 import com.sktech.wastetrack.ui.screens.dashboard.DriverDashboardScreen
 import com.sktech.wastetrack.ui.screens.transporter.TransporterCommandHubScreen
 import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
@@ -141,6 +143,9 @@ fun NavGraph(
                 },
                 onNavigateToScanner = {
                     navController.navigate(Screen.CropClassify.route)
+                },
+                onNavigateToAddCrop = {
+                    navController.navigate(Screen.AddCropCycle.createRoute())
                 }
             )
         }
@@ -538,6 +543,23 @@ fun NavGraph(
                 },
                 onNavigateToQRGenerate = { transferId ->
                     navController.navigate(Screen.QRGenerate.createRoute(transferId))
+                }
+            )
+        }
+
+        composable(
+            route = Screen.AddCropCycle.route,
+            arguments = listOf(navArgument("farmId") {
+                type = NavType.StringType
+                defaultValue = ""
+            })
+        ) {
+            AddCropCycleScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onSaveSuccess = {
+                    navController.popBackStack()
                 }
             )
         }
