@@ -2,7 +2,7 @@
 
 [![Hackathon](https://img.shields.io/badge/HACKATHON-PESCOE%20Hackathon%202K26-6366F1?style=for-the-badge&logo=codeforces&logoColor=white)](https://www.coephaltan.edu.in/hackathon2k26.html)
 [![Track](https://img.shields.io/badge/Track-Smart%20Agriculture%20%26%20Circular%20Economy-10B981?style=for-the-badge&logo=leaf&logoColor=white)](https://www.coephaltan.edu.in/hackathon2k26.html)
-[![Host Institute](https://img.shields.io/badge/Host-PESCOE%20Phaltan%20(DBATU)-DC2626?style=for-the-badge)](https://www.coephaltan.edu.in)
+[![Host Institute](https://img.shields.io/badge/Host-PESCOE%20Phaltan-DC2626?style=for-the-badge)](https://www.coephaltan.edu.in)
 [![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B%20(API%2026--34)-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
 [![Language](https://img.shields.io/badge/Language-Kotlin%202.0-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org/)
 [![UI](https://img.shields.io/badge/UI-Jetpack%20Compose%20%26%20M3-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
@@ -25,9 +25,10 @@
 8. [Edge AI Computer Vision & Kisan Conversational Copilot](#-edge-ai-computer-vision--kisan-conversational-copilot)
 9. [Farmland Parcel Registry & 7/12 Land Records](#-farmland-parcel-registry--712-land-records)
 10. [System Architecture & Clean Data Pipeline](#-system-architecture--clean-data-pipeline)
-11. [Technology Stack & Core Libraries](#-technology-stack--core-libraries)
-12. [Verification & Build Instructions](#-verification--build-instructions)
-13. [Hackathon Submission & Acknowledgements](#-hackathon-submission--acknowledgements)
+11. [API & JSON Data Contract Specifications (REST & SPI Schemas)](#-api--json-data-contract-specifications-rest--spi-schemas)
+12. [Technology Stack & Core Libraries](#-technology-stack--core-libraries)
+13. [Verification & Build Instructions](#-verification--build-instructions)
+14. [Hackathon Submission & Acknowledgements](#-hackathon-submission--acknowledgements)
 
 ---
 
@@ -248,6 +249,161 @@ When biomass consignments reach the factory gate, the buyer conducts sample prox
 
 ---
 
+## 🔌 API & JSON Data Contract Specifications (REST & SPI Schemas)
+
+AgriStock enforces strict, strongly-typed JSON data contracts for all inter-service communication, hardware handshakes, and statutory reporting:
+
+### 1. Consignment Dispatch Handshake (`POST /api/v1/consignments/dispatch`)
+
+```json
+{
+  "dispatchId": "DSP-MH-2026-9142",
+  "orderId": "ORD-2026-8812",
+  "farmerId": "USR-FARMER-NSK-042",
+  "farmerGstin": "27AABCU9603R1ZM",
+  "transporterId": "TRP-MH-2026-5510",
+  "vehicleRegistrationNumber": "MH-15-EG-4921",
+  "driverLicense": "MH-15-2018-009142",
+  "commodity": {
+    "hsnCode": "1404",
+    "cropName": "Cotton Stalk Biomass",
+    "form": "BALED_RECTANGULAR",
+    "declaredWeightMt": 45.0,
+    "sourceFarmParcelId": "FARM-SN-114-GAT-82"
+  },
+  "pickupLocation": {
+    "district": "Nashik",
+    "taluka": "Sinnar",
+    "village": "Musalgaon",
+    "latitude": 19.8452,
+    "longitude": 73.9921
+  },
+  "destinationPlant": {
+    "buyerId": "BYR-IND-IGP-018",
+    "plantName": "Mahindra Bio-Energy Refineries",
+    "deliveryPincode": "422403"
+  },
+  "handshakeVerificationToken": "SHA256:d8a9f4c2e1b0d7e6f9a8b1c2d3e4f5a6b7c8d9e0f",
+  "dispatchTimestampMillis": 1762208400000,
+  "status": "IN_TRANSIT"
+}
+```
+
+### 2. Dual Weighbridge Gross-Tare Slip (`POST /api/v1/weighbridge/slip`)
+
+```json
+{
+  "slipNumber": "WB-NSK-2026-0819",
+  "orderId": "ORD-2026-8812",
+  "vehicleNumber": "MH-15-EG-4921",
+  "weighbridgeOperatorId": "WB-OP-7712",
+  "grossWeightKg": 52400.0,
+  "tareWeightKg": 14200.0,
+  "measuredNetWeightKg": 38200.0,
+  "moisturePenaltyDeductionKg": 1910.0,
+  "finalCertifiedNetWeightKg": 36290.0,
+  "tolerances": {
+    "declaredWeightKg": 45000.0,
+    "variancePercentage": -15.1,
+    "status": "AUDITED_AND_CLEARED"
+  },
+  "grossWeighTimestampMillis": 1762214400000,
+  "tareWeighTimestampMillis": 1762220400000,
+  "digitalSignature": "RSA-SHA256:4a8b1c2d3e4f5a6b7c8d9e0f1a2b3c4d"
+}
+```
+
+### 3. Gate Lab Proximate Analysis & Quality Certificate (IS 18134) (`POST /api/v1/quality/proximate-analysis`)
+
+```json
+{
+  "certificateNumber": "QLAB-NSK-2026-0819",
+  "orderId": "ORD-2026-8812",
+  "lotNumber": "LOT-COTTON-092",
+  "technician": "Kasturi Shinde (QA & Boiler Chemist)",
+  "standardCompliance": "IS 18134-1 / ASTM D5865-19",
+  "proximateAnalysis": {
+    "grossCalorificValueKcalKg": 3980.0,
+    "moisturePercentage": 14.6,
+    "ashPercentage": 4.1,
+    "volatileMatterPercentage": 69.2,
+    "fixedCarbonPercentage": 15.9
+  },
+  "commercialAssessment": {
+    "grade": "GRADE_C_PENALTY",
+    "moistureThresholdPercentage": 12.0,
+    "excessMoisturePercentage": 2.6,
+    "penaltyDeductionPercentage": 5.0,
+    "grossEscrowAmountInr": 126000.0,
+    "penaltyDeductionAmountInr": 6300.0,
+    "netEscrowClearanceInr": 119700.0
+  },
+  "escrowClearanceStatus": "AUTHORIZED_FOR_RELEASE",
+  "sha256AuditHash": "SHA256:8f9a4c2e1b0d7e6f9a8b1c2d3e4f5a6b7c8d9e0f"
+}
+```
+
+### 4. MPCB Form 10 Statutory Consignment Manifest (`GET /api/v1/compliance/mpcb-form10/{id}`)
+
+```json
+{
+  "manifestId": "MPCB-F10-NSK-2026-9142",
+  "regulation": "Maharashtra Pollution Control Board (Hazardous & Other Wastes Management Rules)",
+  "sender": {
+    "name": "Sinnar Agro FPO Cooperative Ltd",
+    "address": "Gat No 82, Musalgaon Industrial Road, Sinnar, Nashik",
+    "mpcbConsentNumber": "MPCB/RO-NSK/CONSENT/2025/1109"
+  },
+  "receiver": {
+    "name": "Igatpuri Bio-Energy Power Project",
+    "address": "Plot C-14, MIDC Igatpuri, Nashik",
+    "mpcbConsentNumber": "MPCB/RO-NSK/CONSENT/2024/0984"
+  },
+  "wasteDetails": {
+    "category": "CROP_RESIDUE_BIOMASS",
+    "physicalState": "SOLID_BALED",
+    "totalQuantityMt": 36.29,
+    "co2eAvoidedMt": 51.53
+  },
+  "transporterHandshakeToken": "SHA256:7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e",
+  "status": "DELIVERED_AND_FILED"
+}
+```
+
+### 5. Standardized Precipitation Index (SPI) & Agroplan Weather Telemetry (`GET /api/v1/weather/agroplan`)
+
+```json
+{
+  "location": {
+    "district": "Satara",
+    "taluka": "Phaltan",
+    "coordinates": { "lat": 17.9833, "lon": 74.4333 }
+  },
+  "weatherObservation": {
+    "temperatureCelsius": 31.4,
+    "humidityPercentage": 38.0,
+    "windSpeedKmH": 11.2,
+    "precipitationProbability": 0.05
+  },
+  "soilProductivityMetrics": {
+    "soilClassification": "Deep Black Cotton Clay (Vertisol)",
+    "soilMoistureIndex": 0.42,
+    "standardizedPrecipitationIndex": {
+      "spi1Month": -0.68,
+      "spiClassification": "MILD_DRY_PHASE",
+      "recommendedFieldDryingHours": 48
+    }
+  },
+  "agroplanAdvisory": {
+    "cropResidueAdvice": "Optimal conditions for outdoor sun-drying. Sugarcane tops and bagasse will reach target 11% moisture within 48 hours.",
+    "irrigationRecommendation": "Reduce surface drip by 15% to maintain soil aeration.",
+    "pinkBollwormAlert": "Low risk. Complete post-harvest shredding within 10 days."
+  }
+}
+```
+
+---
+
 ## 🛠️ Technology Stack & Core Libraries
 
 | Component | Technology | Version | Purpose |
@@ -294,8 +450,6 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 * **Hackathon:** [**PESCOE · Hackathon 2K26**](https://www.coephaltan.edu.in/hackathon2k26.html)
 * **Organized By:** **Phaltan Education Society's College of Engineering, Phaltan (PESCOE)**
-* **Affiliation:** Dr. Babasaheb Ambedkar Technological University (DBATU), Lonere
-* **Strategic Associations:** Cummins India Foundation & Govind Milk and Milk Products
 * **Team Name:** **Team AstraNyx**
 * **Institution:** K. K. Wagh Institute of Engineering Education & Research, Nashik (Savitribai Phule Pune University)
 * **Target Agricultural Corridors:** Satara-Phaltan Sugar Belt, Nashik-Sinnar Cotton & Onion Cluster, Niphad Bio-Energy Basin
