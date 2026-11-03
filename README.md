@@ -406,17 +406,31 @@ AgriStock enforces strict, strongly-typed JSON data contracts for all inter-serv
 
 ## 🛠️ Technology Stack & Core Libraries
 
-| Component | Technology | Version | Purpose |
+| Layer / Domain | Library / Framework | Version | Engineering Purpose & Utilization |
 |:---|:---|:---|:---|
-| **Language** | Kotlin | `2.0.0` | Modern, type-safe Android development |
-| **UI Framework** | Jetpack Compose (BOM) | `2024.02.00` | Declarative UI with Material Design 3 |
-| **Architecture** | Clean + MVI/MVVM | — | Unidirectional data flow with StateFlow |
-| **Dependency Injection** | Dagger Hilt | `2.51` | Compile-time dependency injection |
-| **Local Database** | Room Database | `2.6.1` | Offline-first relational cache |
-| **Edge AI & Vision** | TensorFlow Lite & ML Kit | `2.16.1` / `17.0.9` | On-device crop recognition & QR decoding |
-| **Camera Pipeline** | AndroidX CameraX | `1.3.1` | Hardware-accelerated camera preview |
-| **Biometric Security** | AndroidX Biometric | `1.1.0` | Fingerprint and Face Unlock keystore |
-| **PDF Generation** | Android Native `PdfDocument` | Built-in | Vector A4 GST invoices & MPCB Form 10 |
+| **Language & Tooling** | Kotlin | `2.0.0` | Modern, type-safe development with Kotlin 2.0 Compose compiler |
+| **Build System** | Android Gradle Plugin (AGP) | `8.6.0` | Build orchestration with KSP (`2.0.0-1.0.24`) |
+| **Target SDKs** | Compile & Target SDK 35 | `API 35` (Android 15) | Min SDK 24 (Android 7.0+) for 95%+ rural device coverage |
+| **UI System** | Jetpack Compose (BOM) | `2024.06.00` | Declarative UI with Material Design 3 (`1.2.1`) dynamic color |
+| **Icons & Fonts** | Material Icons Extended & Google Fonts | `1.7.8` | High-contrast agritech icons & Poppins typography |
+| **Navigation** | Navigation Compose | `2.9.0` | Type-safe single-activity route orchestrator |
+| **Architecture & DI** | Dagger Hilt & Hilt Navigation | `2.51.1` / `1.2.0` | Compile-time dependency injection across all ViewModels |
+| **Local Relational DB** | Android Room Database (KSP) | `2.7.1` | Offline-first reactive local cache with TypeConverters & DAOs |
+| **Key-Value Store** | AndroidX DataStore Preferences | `1.1.7` | Modern asynchronous session & role credentials store |
+| **Edge AI & Computer Vision**| TensorFlow Lite & Support | `2.16.1` / `0.4.4` | Sub-200ms on-device crop residue & moisture classification |
+| **Optical & OCR ML** | Google ML Kit | `17.3.0` / `16.0.1` | Fast optical QR scanning (`17.3.0`) & text OCR (`16.0.1`) |
+| **QR Code Engine** | ZXing Core | `3.5.3` | Dynamic SHA-256 cryptographic gatepass QR generation |
+| **Camera Pipeline** | AndroidX CameraX | `1.5.0` | Hardware-accelerated camera preview, image capture & analysis |
+| **Networking & HTTP** | Retrofit 2 & OkHttp 3 | `2.11.0` / `4.12.0` | REST API communication with logging interceptors & Gson |
+| **Background Work** | AndroidX WorkManager | `2.10.1` | Resilient, battery-friendly offline-to-cloud sync workers |
+| **Concurrency** | Kotlin Coroutines & Flow | `1.10.2` | Structured concurrency, `StateFlow`, and reactive pipelines |
+| **Hardware Biometrics**| AndroidX Biometric | `1.1.0` | Fingerprint & Face Unlock hardware security for Escrow release |
+| **Geospatial & GPS** | Play Services Maps & Maps Compose | `19.0.0` / `6.1.2` | Real-time corridor telemetry map render & route simulation |
+| **Location Services** | Play Services Location | `21.3.0` | High-accuracy GPS tracking for driver dispatch handshakes |
+| **Payments & Escrow** | Razorpay Checkout SDK & UPI | `1.6.40` | Escrow transaction simulation and native UPI payment deep linking |
+| **Image Loading** | Coil Compose | `2.6.0` | Asynchronous, memory-cached image rendering for residue lots |
+| **Cloud Synchronization**| Firebase BOM (Firestore/Auth/Storage)| `33.12.0` | Real-time cloud sync, distributed storage, and telemetry |
+| **Document Engine** | Android Native `PdfDocument` | Built-in | Vector A4 MPCB Form 10 manifests & GST tax invoice export |
 
 ---
 
