@@ -1,0 +1,155 @@
+package com.sktech.wastetrack.ui.navigation
+
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.sktech.wastetrack.ui.screens.auth.LoginScreen
+import com.sktech.wastetrack.ui.screens.auth.SignUpScreen
+import com.sktech.wastetrack.ui.screens.crop.CropClassifyScreen
+import com.sktech.wastetrack.ui.screens.crop.CropCycleDetailScreen
+import com.sktech.wastetrack.ui.screens.crop.CropCycleListScreen
+import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
+import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
+import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
+import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
+import com.sktech.wastetrack.ui.screens.dashboard.DriverDashboardScreen
+import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
+
+@Composable
+fun NavGraph(
+    navController: NavHostController,
+    innerPadding: PaddingValues,
+    startDestination: String = Screen.Login.route
+) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = Modifier.padding(innerPadding)
+    ) {
+        composable(Screen.Login.route) {
+            LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate(Screen.Dashboard.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                onNavigateToSignUp = {
+                    navController.navigate(Screen.SignUp.route)
+                }
+            )
+        }
+        composable(Screen.SignUp.route) {
+            SignUpScreen(
+                onProfileCompleted = {
+                    navController.navigate(Screen.Dashboard.route) {
+                        popUpTo(Screen.SignUp.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(Screen.Onboarding.route) {
+            OnboardingScreen(
+                onFinish = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Onboarding.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(Screen.Dashboard.route) {
+            FarmerDashboardScreen(
+                onNavigateToCrops = {
+                    navController.navigate(Screen.Crops.route)
+                },
+                onNavigateToMarket = {
+                    navController.navigate(Screen.Market.route)
+                },
+                onNavigateToWeather = {},
+                onNavigateToTransfers = {
+                    navController.navigate(Screen.Transfers.route)
+                }
+            )
+        }
+        composable(Screen.Crops.route) {
+            CropCycleListScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToCropDetail = { cycleId ->
+                    navController.navigate(Screen.CropDetail.createRoute(cycleId))
+                },
+                onNavigateToScanner = {
+                    navController.navigate(Screen.CropClassify.route)
+                }
+            )
+        }
+        composable(
+            route = Screen.CropDetail.route,
+            arguments = listOf(navArgument("cycleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val cycleId = backStackEntry.arguments?.getString("cycleId") ?: ""
+            CropCycleDetailScreen(
+                cycleId = cycleId,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToScanner = {
+                    navController.navigate(Screen.CropClassify.route)
+                },
+                onNavigateToMarket = {
+                    navController.navigate(Screen.Market.route)
+                }
+            )
+        }
+        composable(Screen.CropClassify.route) {
+            CropClassifyScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToMarket = {
+                    navController.navigate(Screen.CreateListing.route)
+                }
+            )
+        }
+        composable(Screen.CreateListing.route) {
+            CreateListingScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToMarket = {
+                    navController.navigate(Screen.Market.route)
+                }
+            )
+        }
+        composable(Screen.Market.route) {
+            MarketBrowseScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Transfers.route) {
+            TransferScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.DriverDashboard.route) {
+            DriverDashboardScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToTransfers = {
+                    navController.navigate(Screen.Transfers.route)
+                }
+            )
+        }
+    }
+}
