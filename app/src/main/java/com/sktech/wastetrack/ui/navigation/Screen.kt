@@ -17,6 +17,7 @@ sealed class Screen(val route: String) {
     data object Orders : Screen("orders")
     data object Transfers : Screen("transfers")
     data object DriverDashboard : Screen("driver_dashboard")
+    data object FleetTracker : Screen("fleet_tracker")
     data object ShipmentTracking : Screen("shipment_tracking/{transferId}") {
         fun createRoute(transferId: String) = "shipment_tracking/$transferId"
     }

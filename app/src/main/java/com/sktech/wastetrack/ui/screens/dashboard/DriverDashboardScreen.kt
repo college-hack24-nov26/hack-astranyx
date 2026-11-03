@@ -52,6 +52,7 @@ fun DriverDashboardScreen(
     onNavigateBack: () -> Unit = {},
     onNavigateToTransfers: () -> Unit = {},
     onNavigateToTracking: (String) -> Unit = {},
+    onNavigateToFleet: () -> Unit = {},
     viewModel: DriverDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -71,6 +72,9 @@ fun DriverDashboardScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = onNavigateToFleet) {
+                        Icon(imageVector = Icons.Filled.LocalShipping, contentDescription = "Fleet Operations", tint = HarvestGreen)
+                    }
                     IconButton(onClick = onNavigateToTransfers) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ListAlt, contentDescription = "All Transfers", tint = HarvestGreen)
                     }

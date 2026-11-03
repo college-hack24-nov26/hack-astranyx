@@ -25,6 +25,7 @@ import com.sktech.wastetrack.ui.screens.dashboard.RecyclerDashboardScreen
 import com.sktech.wastetrack.ui.screens.settings.SettingsScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
+import com.sktech.wastetrack.ui.screens.transfer.FleetTrackerScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 
@@ -193,6 +194,19 @@ fun NavGraph(
                 },
                 onNavigateToTransfers = {
                     navController.navigate(Screen.Transfers.route)
+                },
+                onNavigateToTracking = { transferId ->
+                    navController.navigate(Screen.ShipmentTracking.createRoute(transferId))
+                },
+                onNavigateToFleet = {
+                    navController.navigate(Screen.FleetTracker.route)
+                }
+            )
+        }
+        composable(Screen.FleetTracker.route) {
+            FleetTrackerScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
                 },
                 onNavigateToTracking = { transferId ->
                     navController.navigate(Screen.ShipmentTracking.createRoute(transferId))
