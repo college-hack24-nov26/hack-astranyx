@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Scale
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Factory
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -97,6 +98,7 @@ fun DriverDashboardScreen(
     onNavigateToQRScan: () -> Unit = {},
     onNavigateToWeighbridge: () -> Unit = {},
     onNavigateToQRGenerate: (String) -> Unit = {},
+    onNavigateToTransporterHub: () -> Unit = {},
     viewModel: DriverDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()

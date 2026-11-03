@@ -423,7 +423,7 @@ fun FarmerDashboardScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
-                            Icon(Icons.AutoMirrored.Filled.ShowChart, contentDescription = null, tint = GoldenWheatLight, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Filled.ShowChart, contentDescription = null, tint = GoldenWheatLight, modifier = Modifier.size(16.dp))
                             Text("Mandi Rates", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.White)
                         }
                         Spacer(modifier = Modifier.height(4.dp))

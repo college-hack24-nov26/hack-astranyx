@@ -84,7 +84,7 @@ fun FarmProfitLossScreen(
                 actions = {
                     IconButton(onClick = onNavigateToMandiTrends) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ShowChart,
+                            imageVector = Icons.Filled.ShowChart,
                             contentDescription = "Mandi Trends",
                             tint = HarvestGreen
                         )

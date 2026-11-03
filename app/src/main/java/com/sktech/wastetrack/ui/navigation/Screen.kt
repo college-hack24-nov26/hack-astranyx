@@ -44,4 +44,7 @@ sealed class Screen(val route: String) {
     }
     data object MandiPriceTrends : Screen("mandi_price_trends")
     data object FarmProfitLoss : Screen("farm_profit_loss")
+    data object InvoiceGenerator : Screen("invoice_generator")
+    data object InvoiceHistory : Screen("invoice_history")
+    data object TransporterHub : Screen("transporter_hub")
 }

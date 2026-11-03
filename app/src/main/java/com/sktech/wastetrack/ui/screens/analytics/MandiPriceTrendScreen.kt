@@ -126,7 +126,7 @@ fun MandiPriceTrendScreen(
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ShowChart,
+                                        imageVector = Icons.Filled.ShowChart,
                                         contentDescription = null,
                                         tint = GoldenWheatLight,
                                         modifier = Modifier.size(24.dp)
