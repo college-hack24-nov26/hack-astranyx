@@ -28,6 +28,7 @@ import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
 import com.sktech.wastetrack.ui.screens.transfer.FleetTrackerScreen
 import com.sktech.wastetrack.ui.screens.transfer.QRScanScreen
+import com.sktech.wastetrack.ui.screens.transfer.WeighbridgeSlipScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
@@ -239,11 +240,21 @@ fun NavGraph(
                 },
                 onNavigateToQRScan = {
                     navController.navigate(Screen.QRScan.route)
+                },
+                onNavigateToWeighbridge = {
+                    navController.navigate(Screen.WeighbridgeSlips.route)
                 }
             )
         }
         composable(Screen.QRScan.route) {
             QRScanScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.WeighbridgeSlips.route) {
+            WeighbridgeSlipScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }
