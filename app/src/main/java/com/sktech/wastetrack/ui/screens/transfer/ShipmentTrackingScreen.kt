@@ -1,5 +1,7 @@
 package com.sktech.wastetrack.ui.screens.transfer
 
+import com.sktech.wastetrack.ui.components.IndustrialFleetMap
+
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -319,107 +321,26 @@ private fun TelemetryMapCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(210.dp)
-                    .background(if (state.isSatelliteView) Color(0xFF1E2620) else Color(0xFF2C3E50))
+                    .height(250.dp)
             ) {
-                Canvas(modifier = Modifier.fillMaxSize()) {
-                    val w = size.width
-                    val h = size.height
-
-                    val startPoint = Offset(w * 0.15f, h * 0.75f)
-                    val midPoint = Offset(w * 0.50f, h * 0.45f)
-                    val endPoint = Offset(w * 0.85f, h * 0.25f)
-
-                    drawLine(
-                        color = Color.White.copy(alpha = 0.25f),
-                        start = startPoint,
-                        end = endPoint,
-                        strokeWidth = 6f,
-                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(14f, 10f), 0f)
-                    )
-
-                    drawLine(
-                        color = Color(0xFF2ECC71),
-                        start = startPoint,
-                        end = midPoint,
-                        strokeWidth = 8f
-                    )
-
-                    drawCircle(color = Color(0xFF27AE60), radius = 12f, center = startPoint)
-                    drawCircle(color = Color.White, radius = 6f, center = startPoint)
-
-                    drawCircle(color = Color(0xFF2ECC71).copy(alpha = 0.35f), radius = 24f, center = midPoint)
-                    drawCircle(color = Color(0xFF2ECC71), radius = 14f, center = midPoint)
-                    drawCircle(color = Color.White, radius = 7f, center = midPoint)
-
-                    drawCircle(color = Color(0xFFE74C3C), radius = 12f, center = endPoint)
-                    drawCircle(color = Color.White, radius = 6f, center = endPoint)
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Surface(
-                        color = Color.Black.copy(alpha = 0.65f),
-                        shape = RoundedCornerShape(20.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .background(Color(0xFF2ECC71), CircleShape)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = "GPS FIXED ? ${state.speedKmph} KM/H",
-                                color = Color.White,
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-
-                    Surface(
-                        color = Color.Black.copy(alpha = 0.65f),
-                        shape = RoundedCornerShape(20.dp)
-                    ) {
-                        Text(
-                            text = "ETA: ${state.etaMinutes} MINS",
-                            color = Color(0xFFF1C40F),
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
-                        )
-                    }
-                }
-
-                Surface(
-                    color = Color.Black.copy(alpha = 0.75f),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(12.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(imageVector = Icons.Filled.NearMe, contentDescription = null, tint = Color(0xFF2ECC71), modifier = Modifier.size(14.dp))
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "${state.distanceRemainingKm} km to destination plant",
-                            color = Color.White,
-                            fontSize = 11.sp
-                        )
-                    }
-                }
+                IndustrialFleetMap(
+                    vehicleNumber = state.vehicleNumber,
+                    driverName = state.driverName,
+                    driverPhone = state.driverPhone,
+                    originName = state.sourceLocation,
+                    destinationName = state.destinationPlant,
+                    originLat = 19.8500,
+                    originLon = 73.9900,
+                    destLat = 19.6936,
+                    destLon = 73.5558,
+                    speedKmh = state.speedKmph,
+                    progressFraction = state.progressFraction,
+                    etaText = "${state.etaMinutes} mins",
+                    modifier = Modifier.fillMaxSize(),
+                    isInteractive = true,
+                    showDriverCard = false,
+                    onCallDriver = onCallDriver
+                )
             }
 
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -430,7 +351,7 @@ private fun TelemetryMapCard(
                 ) {
                     Column {
                         Text("Current Transit Corridors", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
-                        Text("${state.sourceLocation}  ?  ${state.destinationPlant}", style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
+                        Text("${state.sourceLocation} to ${state.destinationPlant}", style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
                     }
                 }
 

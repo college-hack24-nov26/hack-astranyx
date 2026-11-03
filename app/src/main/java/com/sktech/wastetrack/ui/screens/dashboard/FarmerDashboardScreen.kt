@@ -37,6 +37,7 @@ fun FarmerDashboardScreen(
     onNavigateToFarms: () -> Unit = {},
     onNavigateToAgent: () -> Unit = {},
     onNavigateToESGDashboard: () -> Unit = {},
+    onNavigateToCustomAgroPlan: (String) -> Unit = {},
     viewModel: FarmerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -221,6 +222,85 @@ fun FarmerDashboardScreen(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = null,
                         tint = HarvestGreenDark,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+        }
+
+        item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onNavigateToCustomAgroPlan("default_farm") },
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = DarkHarvestGreenContainer
+                ),
+                border = BorderStroke(1.dp, GoldenWheatLight.copy(alpha = 0.35f))
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Surface(
+                            shape = CircleShape,
+                            color = GoldenWheatLight.copy(alpha = 0.2f),
+                            modifier = Modifier.size(42.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Filled.Eco,
+                                    contentDescription = "AgroPlan",
+                                    tint = GoldenWheatLight,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+                        Column {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Text(
+                                    text = "Personalized Custom AgroPlan",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp,
+                                    color = GoldenWheatLight
+                                )
+                                Surface(
+                                    shape = RoundedCornerShape(4.dp),
+                                    color = HarvestGreen
+                                ) {
+                                    Text(
+                                        text = "NPK RADAR",
+                                        color = Color.White,
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp)
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "Precision fertilizer dosages, rain radar & residue valorization",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = DarkTextSecondary
+                            )
+                        }
+                    }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = "Go to AgroPlan",
+                        tint = GoldenWheatLight,
                         modifier = Modifier.size(20.dp)
                     )
                 }
