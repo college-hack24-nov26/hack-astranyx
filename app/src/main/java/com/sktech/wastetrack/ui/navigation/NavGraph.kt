@@ -27,6 +27,7 @@ import com.sktech.wastetrack.ui.screens.invoice.InvoiceScreen
 import com.sktech.wastetrack.ui.screens.invoice.InvoiceGeneratorScreen
 import com.sktech.wastetrack.ui.screens.invoice.InvoiceHistoryScreen
 import com.sktech.wastetrack.ui.screens.settings.SettingsScreen
+import com.sktech.wastetrack.ui.screens.notifications.NotificationsScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
 import com.sktech.wastetrack.ui.screens.transfer.FleetTrackerScreen
@@ -35,8 +36,6 @@ import com.sktech.wastetrack.ui.screens.transfer.QRGenerateScreen
 import com.sktech.wastetrack.ui.screens.transfer.WeighbridgeSlipScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
-import com.sktech.wastetrack.ui.screens.analytics.MandiPriceTrendScreen
-import com.sktech.wastetrack.ui.screens.analytics.FarmProfitLossScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
@@ -122,11 +121,8 @@ fun NavGraph(
                 onNavigateToCustomAgroPlan = { farmId ->
                     navController.navigate(Screen.CustomAgroPlan.createRoute(farmId))
                 },
-                onNavigateToMandiTrends = {
-                    navController.navigate(Screen.MandiPriceTrends.route)
-                },
-                onNavigateToFarmPnL = {
-                    navController.navigate(Screen.FarmProfitLoss.route)
+                onNavigateToNotifications = {
+                    navController.navigate(Screen.Notifications.route)
                 }
             )
         }
@@ -476,26 +472,6 @@ fun NavGraph(
                 }
             )
         }
-        composable(Screen.MandiPriceTrends.route) {
-            MandiPriceTrendScreen(
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onNavigateToPnL = {
-                    navController.navigate(Screen.FarmProfitLoss.route)
-                }
-            )
-        }
-        composable(Screen.FarmProfitLoss.route) {
-            FarmProfitLossScreen(
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onNavigateToMandiTrends = {
-                    navController.navigate(Screen.MandiPriceTrends.route)
-                }
-            )
-        }
         composable(Screen.TransporterHub.route) {
             TransporterCommandHubScreen(
                 onNavigateBack = {
@@ -506,6 +482,16 @@ fun NavGraph(
                 },
                 onNavigateToWeighbridge = {
                     navController.navigate(Screen.WeighbridgeSlips.route)
+                }
+            )
+        }
+        composable(Screen.Notifications.route) {
+            NotificationsScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToMarket = {
+                    navController.navigate(Screen.Market.route)
                 }
             )
         }
