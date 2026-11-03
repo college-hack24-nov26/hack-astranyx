@@ -26,6 +26,7 @@ import com.sktech.wastetrack.ui.screens.settings.SettingsScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
+import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 
 @Composable
 fun NavGraph(
@@ -81,6 +82,9 @@ fun NavGraph(
                 },
                 onNavigateToTransfers = {
                     navController.navigate(Screen.Transfers.route)
+                },
+                onNavigateToAnalytics = {
+                    navController.navigate(Screen.Analytics.route)
                 }
             )
         }
@@ -207,6 +211,20 @@ fun NavGraph(
         }
         composable(Screen.Weather.route) {
             WeatherDashboardScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Analytics.route) {
+            AnalyticsScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Compliance.route) {
+            AnalyticsScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }
