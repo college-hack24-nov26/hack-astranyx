@@ -15,6 +15,8 @@ import com.sktech.wastetrack.ui.screens.bid.BidMarketScreen
 import com.sktech.wastetrack.ui.screens.crop.CropClassifyScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleDetailScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleListScreen
+import com.sktech.wastetrack.ui.screens.crop.AddCropCycleScreen
+
 import com.sktech.wastetrack.ui.screens.dashboard.DriverDashboardScreen
 import com.sktech.wastetrack.ui.screens.transporter.TransporterCommandHubScreen
 import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
@@ -136,6 +138,9 @@ fun NavGraph(
                 },
                 onNavigateToScanner = {
                     navController.navigate(Screen.CropClassify.route)
+                },
+                onNavigateToAddCrop = {
+                    navController.navigate(Screen.AddCropCycle.createRoute())
                 }
             )
         }

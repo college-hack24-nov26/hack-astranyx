@@ -37,6 +37,7 @@ fun CropCycleListScreen(
     onNavigateBack: () -> Unit = {},
     onNavigateToCropDetail: (String) -> Unit = {},
     onNavigateToScanner: () -> Unit = {},
+    onNavigateToAddCrop: () -> Unit = {},
     viewModel: CropCycleViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -69,6 +70,9 @@ fun CropCycleListScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = onNavigateToAddCrop) {
+                        Icon(imageVector = Icons.Filled.Add, contentDescription = "Plant Crop", tint = HarvestGreen)
+                    }
                     IconButton(onClick = onNavigateToScanner) {
                         Icon(imageVector = Icons.Filled.DocumentScanner, contentDescription = "Scanner", tint = HarvestGreen)
                     }
