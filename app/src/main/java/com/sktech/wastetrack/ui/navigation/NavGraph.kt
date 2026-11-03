@@ -29,6 +29,7 @@ import com.sktech.wastetrack.ui.screens.transfer.FleetTrackerScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
+import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
 
 @Composable
 fun NavGraph(
@@ -87,6 +88,9 @@ fun NavGraph(
                 },
                 onNavigateToAnalytics = {
                     navController.navigate(Screen.Analytics.route)
+                },
+                onNavigateToFarms = {
+                    navController.navigate(Screen.Farms.route)
                 }
             )
         }
@@ -240,6 +244,13 @@ fun NavGraph(
         }
         composable(Screen.Compliance.route) {
             ComplianceScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Farms.route) {
+            FarmListScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }
