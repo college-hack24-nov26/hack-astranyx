@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,6 +32,7 @@ fun RecyclerDashboardScreen(
     onNavigateToBids: () -> Unit = {},
     onNavigateToTransfers: () -> Unit = {},
     onNavigateToOrders: () -> Unit = {},
+    onNavigateToInvoices: () -> Unit = {},
     viewModel: RecyclerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -91,16 +93,31 @@ fun RecyclerDashboardScreen(
 
                     Spacer(modifier = Modifier.height(14.dp))
 
-                    OutlinedButton(
-                        onClick = onNavigateToOrders,
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = HarvestGreenSoft),
-                        border = BorderStroke(1.dp, HarvestGreenSoft.copy(alpha = 0.5f)),
-                        shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier.fillMaxWidth()
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.Lock, contentDescription = null, modifier = Modifier.size(16.dp))
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text("View Procurement Orders & Escrow Vault", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                        OutlinedButton(
+                            onClick = onNavigateToOrders,
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = HarvestGreenSoft),
+                            border = BorderStroke(1.dp, HarvestGreenSoft.copy(alpha = 0.5f)),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(imageVector = Icons.Filled.Lock, contentDescription = null, modifier = Modifier.size(15.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Escrow Vault", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                        Button(
+                            onClick = onNavigateToInvoices,
+                            colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(imageVector = Icons.Filled.Receipt, contentDescription = null, modifier = Modifier.size(15.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("GST Invoices", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
                     }
                 }
             }
