@@ -42,4 +42,6 @@ sealed class Screen(val route: String) {
     data object CustomAgroPlan : Screen("custom_agro_plan?farmId={farmId}&crop={crop}") {
         fun createRoute(farmId: String = "default_farm", crop: String = "Wheat") = "custom_agro_plan?farmId=$farmId&crop=$crop"
     }
+    data object MandiPriceTrends : Screen("mandi_price_trends")
+    data object FarmProfitLoss : Screen("farm_profit_loss")
 }

@@ -38,6 +38,8 @@ fun FarmerDashboardScreen(
     onNavigateToAgent: () -> Unit = {},
     onNavigateToESGDashboard: () -> Unit = {},
     onNavigateToCustomAgroPlan: (String) -> Unit = {},
+    onNavigateToMandiTrends: () -> Unit = {},
+    onNavigateToFarmPnL: () -> Unit = {},
     viewModel: FarmerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -400,6 +402,55 @@ fun FarmerDashboardScreen(
                     onClick = onNavigateToTransfers,
                     modifier = Modifier.weight(1f)
                 )
+            }
+        }
+
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { onNavigateToMandiTrends() },
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(containerColor = DarkHarvestGreenContainer),
+                    border = BorderStroke(1.dp, HarvestGreenSoft.copy(alpha = 0.35f))
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Icon(Icons.AutoMirrored.Filled.ShowChart, contentDescription = null, tint = GoldenWheatLight, modifier = Modifier.size(16.dp))
+                            Text("Mandi Rates", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.White)
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text("Live APMC Ticker", style = MaterialTheme.typography.labelSmall, color = DarkTextSecondary)
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { onNavigateToFarmPnL() },
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(containerColor = DarkHarvestGreenContainer),
+                    border = BorderStroke(1.dp, HarvestGreenSoft.copy(alpha = 0.35f))
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Icon(Icons.Filled.AccountBalanceWallet, contentDescription = null, tint = HarvestGreenLight, modifier = Modifier.size(16.dp))
+                            Text("Farm P&L", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.White)
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text("Stubble Profit Boost", style = MaterialTheme.typography.labelSmall, color = DarkTextSecondary)
+                    }
+                }
             }
         }
 
