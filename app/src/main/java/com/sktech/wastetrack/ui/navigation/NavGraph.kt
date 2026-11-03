@@ -22,6 +22,8 @@ import com.sktech.wastetrack.ui.screens.transporter.TransporterCommandHubScreen
 import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
+import com.sktech.wastetrack.ui.screens.marketplace.ListingDetailScreen
+import com.sktech.wastetrack.ui.screens.order.OrderDetailScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
 import com.sktech.wastetrack.ui.screens.order.OrderListScreen
 import com.sktech.wastetrack.ui.screens.dashboard.RecyclerDashboardScreen
@@ -41,6 +43,9 @@ import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
+import com.sktech.wastetrack.ui.screens.farm.FarmDetailScreen
+import com.sktech.wastetrack.ui.screens.farm.AddEditFarmScreen
+
 import com.sktech.wastetrack.ui.screens.agent.AgentScreen
 import com.sktech.wastetrack.ui.screens.quality.BiomassQualityScreen
 import com.sktech.wastetrack.ui.screens.admin.AdminDashboardScreen
@@ -196,6 +201,9 @@ fun NavGraph(
                 },
                 onNavigateToTracking = { transferId ->
                     navController.navigate(Screen.ShipmentTracking.createRoute(transferId))
+                },
+                onNavigateToDetail = { orderId ->
+                    navController.navigate(Screen.OrderDetail.createRoute(orderId))
                 }
             )
         }
@@ -242,6 +250,9 @@ fun NavGraph(
             MarketBrowseScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToDetail = { listingId ->
+                    navController.navigate(Screen.ListingDetail.createRoute(listingId))
                 }
             )
         }
@@ -367,6 +378,12 @@ fun NavGraph(
             FarmListScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToDetail = { farmId ->
+                    navController.navigate(Screen.FarmDetail.createRoute(farmId))
+                },
+                onNavigateToAddFarm = {
+                    navController.navigate(Screen.AddEditFarm.createRoute("new"))
                 }
             )
         }
@@ -497,6 +514,52 @@ fun NavGraph(
                 },
                 onNavigateToMarket = {
                     navController.navigate(Screen.Market.route)
+                }
+            )
+        }
+        composable(
+            route = Screen.ListingDetail.route,
+            arguments = listOf(navArgument("listingId") { type = NavType.StringType })
+        ) {
+            ListingDetailScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToOrder = { orderId ->
+                    navController.navigate(Screen.OrderDetail.createRoute(orderId))
+                }
+            )
+        }
+        composable(
+            route = Screen.OrderDetail.route,
+            arguments = listOf(navArgument("orderId") { type = NavType.StringType })
+        ) {
+            OrderDetailScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToTracking = { transferId ->
+                    navController.navigate(Screen.ShipmentTracking.createRoute(transferId))
+                },
+                onNavigateToQRGenerate = { transferId ->
+                    navController.navigate(Screen.QRGenerate.createRoute(transferId))
+                }
+            )
+        }
+
+        composable(
+            route = Screen.AddCropCycle.route,
+            arguments = listOf(navArgument("farmId") {
+                type = NavType.StringType
+                defaultValue = ""
+            })
+        ) {
+            AddCropCycleScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onSaveSuccess = {
+                    navController.popBackStack()
                 }
             )
         }
