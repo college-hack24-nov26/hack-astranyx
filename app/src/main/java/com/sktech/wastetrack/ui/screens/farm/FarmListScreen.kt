@@ -35,6 +35,8 @@ import com.sktech.wastetrack.ui.theme.*
 @Composable
 fun FarmListScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToDetail: (String) -> Unit = {},
+    onNavigateToAddFarm: () -> Unit = {},
     viewModel: FarmViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -234,7 +236,8 @@ fun FarmListScreen(
             items(filteredFarms, key = { it.id }) { farm ->
                 FarmCard(
                     farm = farm,
-                    onDelete = { viewModel.deleteFarm(farm.id) }
+                    onDelete = { viewModel.deleteFarm(farm.id) },
+                    onDetailClick = { onNavigateToDetail(farm.id) }
                 )
             }
 
@@ -257,10 +260,11 @@ fun FarmListScreen(
 @Composable
 private fun FarmCard(
     farm: Farm,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    onDetailClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onDetailClick() },
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.25f))

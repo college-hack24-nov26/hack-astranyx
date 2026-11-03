@@ -39,6 +39,9 @@ import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
+import com.sktech.wastetrack.ui.screens.farm.FarmDetailScreen
+import com.sktech.wastetrack.ui.screens.farm.AddEditFarmScreen
+
 import com.sktech.wastetrack.ui.screens.agent.AgentScreen
 import com.sktech.wastetrack.ui.screens.quality.BiomassQualityScreen
 import com.sktech.wastetrack.ui.screens.admin.AdminDashboardScreen
@@ -362,6 +365,12 @@ fun NavGraph(
             FarmListScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToDetail = { farmId ->
+                    navController.navigate(Screen.FarmDetail.createRoute(farmId))
+                },
+                onNavigateToAddFarm = {
+                    navController.navigate(Screen.AddEditFarm.createRoute("new"))
                 }
             )
         }
