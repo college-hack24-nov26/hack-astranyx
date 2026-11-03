@@ -15,6 +15,9 @@ sealed class Screen(val route: String) {
     data object Bids : Screen("bids")
     data object Transfers : Screen("transfers")
     data object DriverDashboard : Screen("driver_dashboard")
+    data object ShipmentTracking : Screen("shipment_tracking/{transferId}") {
+        fun createRoute(transferId: String) = "shipment_tracking/$transferId"
+    }
     data object Weather : Screen("weather")
     data object Settings : Screen("settings")
 }

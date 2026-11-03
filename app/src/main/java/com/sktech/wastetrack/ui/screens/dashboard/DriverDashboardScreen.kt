@@ -51,6 +51,7 @@ private fun generateDriverQRBitmap(content: String, size: Int = 512): Bitmap {
 fun DriverDashboardScreen(
     onNavigateBack: () -> Unit = {},
     onNavigateToTransfers: () -> Unit = {},
+    onNavigateToTracking: (String) -> Unit = {},
     viewModel: DriverDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -166,7 +167,8 @@ fun DriverDashboardScreen(
                     trip = trip,
                     onShowQR = { viewModel.showGatepassQR(trip) },
                     onAdvanceStatus = { viewModel.advanceTripStatus(trip.id) },
-                    onReportIncident = { viewModel.openIncidentDialog(trip) }
+                    onReportIncident = { viewModel.openIncidentDialog(trip) },
+                    onTrackRoute = { onNavigateToTracking(trip.id) }
                 )
             }
 
@@ -304,7 +306,8 @@ private fun DriverTripCard(
     trip: DriverTrip,
     onShowQR: () -> Unit,
     onAdvanceStatus: () -> Unit,
-    onReportIncident: () -> Unit
+    onReportIncident: () -> Unit,
+    onTrackRoute: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -340,7 +343,9 @@ private fun DriverTripCard(
             Surface(
                 shape = RoundedCornerShape(8.dp),
                 color = MaterialTheme.colorScheme.background,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onTrackRoute() }
             ) {
                 Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
