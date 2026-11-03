@@ -44,4 +44,5 @@ sealed class Screen(val route: String) {
     }
     data object InvoiceGenerator : Screen("invoice_generator")
     data object InvoiceHistory : Screen("invoice_history")
+    data object TransporterHub : Screen("transporter_hub")
 }

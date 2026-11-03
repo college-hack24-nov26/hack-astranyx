@@ -16,6 +16,7 @@ import com.sktech.wastetrack.ui.screens.crop.CropClassifyScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleDetailScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleListScreen
 import com.sktech.wastetrack.ui.screens.dashboard.DriverDashboardScreen
+import com.sktech.wastetrack.ui.screens.transporter.TransporterCommandHubScreen
 import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
@@ -211,9 +212,6 @@ fun NavGraph(
                 },
                 onNavigateToESGDashboard = {
                     navController.navigate(Screen.ESGDashboard.route)
-                },
-                onNavigateToAdmin = {
-                    navController.navigate(Screen.AdminDashboard.route)
                 }
             )
         }
@@ -270,6 +268,9 @@ fun NavGraph(
                 },
                 onNavigateToQRGenerate = { transferId ->
                     navController.navigate(Screen.QRGenerate.createRoute(transferId))
+                },
+                onNavigateToTransporterHub = {
+                    navController.navigate(Screen.TransporterHub.route)
                 }
             )
         }
@@ -464,6 +465,19 @@ fun NavGraph(
                 },
                 onNavigateToListingCreation = {
                     navController.navigate(Screen.CreateListing.route)
+                }
+            )
+        }
+        composable(Screen.TransporterHub.route) {
+            TransporterCommandHubScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToFleetMap = {
+                    navController.navigate(Screen.FleetTracker.route)
+                },
+                onNavigateToWeighbridge = {
+                    navController.navigate(Screen.WeighbridgeSlips.route)
                 }
             )
         }
