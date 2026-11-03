@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 data class SignUpState(
     val name: String = "",
-    val role: UserRole = UserRole.SUPERVISOR,
+    val role: UserRole = UserRole.FARMER,
     val organizationName: String = "",
     val factoryId: String = "",
     val industrialArea: String = "",
@@ -29,6 +29,8 @@ data class SignUpState(
     val vehicleType: String = com.sktech.wastetrack.domain.model.VehicleType.BIG_TRUCK.displayName,
     val isFetchingLocation: Boolean = false,
     val locationMessage: String? = null,
+    val lastVoiceField: String? = null,
+    val lastVoiceText: String? = null,
     val isSaving: Boolean = false,
     val isSuccess: Boolean = false,
     val error: String? = null
@@ -57,7 +59,7 @@ class SignUpViewModel @Inject constructor(
                         organizationName = user.organizationName,
                         factoryId = user.factoryId.ifBlank {
                             when (user.role) {
-                                UserRole.RECYCLER, UserRole.BUYER -> "REC-${UUID.randomUUID().toString().take(6).uppercase()}"
+                                UserRole.BUYER -> "REC-${UUID.randomUUID().toString().take(6).uppercase()}"
                                 UserRole.DRIVER -> "LOG-${UUID.randomUUID().toString().take(6).uppercase()}"
                                 else -> "FAC-${UUID.randomUUID().toString().take(6).uppercase()}"
                             }
@@ -76,7 +78,7 @@ class SignUpViewModel @Inject constructor(
                     it.copy(
                         role = selectedRole,
                         factoryId = when (selectedRole) {
-                            UserRole.RECYCLER, UserRole.BUYER -> "REC-${UUID.randomUUID().toString().take(6).uppercase()}"
+                            UserRole.BUYER -> "REC-${UUID.randomUUID().toString().take(6).uppercase()}"
                             UserRole.DRIVER -> "LOG-${UUID.randomUUID().toString().take(6).uppercase()}"
                             else -> "FAC-${UUID.randomUUID().toString().take(6).uppercase()}"
                         }
@@ -95,7 +97,7 @@ class SignUpViewModel @Inject constructor(
             it.copy(
                 role = role,
                 factoryId = when (role) {
-                    UserRole.RECYCLER, UserRole.BUYER -> "REC-${UUID.randomUUID().toString().take(6).uppercase()}"
+                    UserRole.BUYER -> "REC-${UUID.randomUUID().toString().take(6).uppercase()}"
                     UserRole.DRIVER -> "LOG-${UUID.randomUUID().toString().take(6).uppercase()}"
                     else -> "FAC-${UUID.randomUUID().toString().take(6).uppercase()}"
                 }
@@ -154,6 +156,77 @@ class SignUpViewModel @Inject constructor(
         _state.update { it.copy(vehicleType = type, error = null) }
     }
 
+    fun setLastVoiceField(field: String?, text: String? = null) {
+        _state.update { it.copy(lastVoiceField = field, lastVoiceText = text) }
+    }
+
+    fun parseAndApplyVoiceLog(spokenText: String): Int {
+        val text = spokenText.trim()
+        if (text.isBlank()) return 0
+        var fieldsSet = 0
+
+        val segments = text.split(Regex("[,;]|\\band\\b|\\bऔर\\b|\\bआणि\\b|\\bकिंवा\\b", RegexOption.IGNORE_CASE))
+
+        for (segment in segments) {
+            val s = segment.trim()
+            if (s.isBlank()) continue
+            val lower = s.lowercase()
+
+            when {
+                lower.contains("name") || lower.contains("naam") || lower.contains("नाव") -> {
+                    val cleaned = s.replace(Regex("(?i)^(my\\s+)?(name\\s+is|name|naam\\s+hai|naam|नाव\\s+आहे|नाव)[:\\s-]+"), "").trim()
+                    if (cleaned.isNotBlank()) {
+                        onNameChanged(cleaned.capitalizeWords())
+                        fieldsSet++
+                    }
+                }
+                lower.contains("farm") || lower.contains("company") || lower.contains("business") || lower.contains("holding") || lower.contains("khet") || lower.contains("agency") || lower.contains("fleet") || lower.contains("उद्योग") || lower.contains("शेत") -> {
+                    val cleaned = s.replace(Regex("(?i)^(farm|company|business|holding|khet|agency|fleet|holding\\s+name|company\\s+name)[:\\s-]+"), "").trim()
+                    if (cleaned.isNotBlank()) {
+                        onOrganizationNameChanged(cleaned.capitalizeWords())
+                        fieldsSet++
+                    }
+                }
+                lower.contains("city") || lower.contains("mandi") || lower.contains("shahar") || lower.contains("apmc") || lower.contains("शहर") || lower.contains("मंडी") -> {
+                    val cleaned = s.replace(Regex("(?i)^(city\\s+is|city|mandi|shahar|apmc|town)[:\\s-]+"), "").trim()
+                    if (cleaned.isNotBlank()) {
+                        onCityChanged(cleaned.capitalizeWords())
+                        fieldsSet++
+                    }
+                }
+                lower.contains("landmark") || lower.contains("area") || lower.contains("address") || lower.contains("midc") || lower.contains("locality") || lower.contains("gat") || lower.contains("पत्ता") -> {
+                    val cleaned = s.replace(Regex("(?i)^(landmark\\s+is|landmark|area|address|locality|midc)[:\\s-]+"), "").trim()
+                    if (cleaned.isNotBlank()) {
+                        onIndustrialAreaChanged(cleaned.capitalizeWords())
+                        fieldsSet++
+                    }
+                }
+                lower.contains("truck") || lower.contains("vehicle") || lower.contains("gadi") || lower.contains("गाडी") -> {
+                    val cleaned = s.replace(Regex("(?i)^(vehicle\\s+number|vehicle|truck|truck\\s+no|gadi\\s+number|gadi)[:\\s-]+"), "").trim()
+                    if (cleaned.isNotBlank()) {
+                        onVehicleNumberChanged(cleaned.uppercase().replace(" ", ""))
+                        fieldsSet++
+                    }
+                }
+                lower.contains("registration") || lower.contains("gst") || lower.contains("license") || lower.contains("cpcb") || lower.contains("mpcb") || lower.contains("7/12") || lower.contains("khasra") -> {
+                    val cleaned = s.replace(Regex("(?i)^(registration\\s+number|reg\\s+no|gst\\s+number|gst|license|cpcb|mpcb|7/12|khasra)[:\\s-]+"), "").trim()
+                    if (cleaned.isNotBlank()) {
+                        onRegistrationNumberChanged(cleaned.uppercase())
+                        fieldsSet++
+                    }
+                }
+            }
+        }
+
+        if (fieldsSet > 0) {
+            setLastVoiceField("Smart Voice Fill", "Auto-filled $fieldsSet fields")
+        }
+        return fieldsSet
+    }
+
+    private fun String.capitalizeWords(): String =
+        split(" ").joinToString(" ") { it.replaceFirstChar { c -> if (c.isLowerCase()) c.titlecase() else c.toString() } }
+
     fun completeProfile() {
         val s = _state.value
         if (s.name.trim().isBlank()) {
@@ -165,7 +238,7 @@ class SignUpViewModel @Inject constructor(
                 it.copy(
                     error = when (s.role) {
                         UserRole.DRIVER -> "Please enter your transport agency or carrier name"
-                        UserRole.RECYCLER, UserRole.BUYER -> "Please enter your business or company name"
+                        UserRole.BUYER -> "Please enter your business or company name"
                         else -> "Please enter your farm or holding name"
                     }
                 )
@@ -213,7 +286,7 @@ class SignUpViewModel @Inject constructor(
                 organizationName = s.organizationName.trim(),
                 factoryId = s.factoryId.trim().ifBlank {
                     when (s.role) {
-                        UserRole.RECYCLER, UserRole.BUYER -> "REC-${UUID.randomUUID().toString().take(6).uppercase()}"
+                        UserRole.BUYER -> "REC-${UUID.randomUUID().toString().take(6).uppercase()}"
                         UserRole.DRIVER -> "LOG-${UUID.randomUUID().toString().take(6).uppercase()}"
                         else -> "FAC-${UUID.randomUUID().toString().take(6).uppercase()}"
                     }
