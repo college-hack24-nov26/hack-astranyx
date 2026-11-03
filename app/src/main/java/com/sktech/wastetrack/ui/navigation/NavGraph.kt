@@ -15,10 +15,11 @@ import com.sktech.wastetrack.ui.screens.crop.CropClassifyScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleDetailScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleListScreen
 import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
+import com.sktech.wastetrack.ui.screens.dashboard.DriverDashboardScreen
 import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
+import com.sktech.wastetrack.ui.screens.bid.BidMarketScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
-import com.sktech.wastetrack.ui.screens.dashboard.DriverDashboardScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 
 @Composable
@@ -124,6 +125,13 @@ fun NavGraph(
                 },
                 onNavigateToMarket = {
                     navController.navigate(Screen.Market.route)
+                }
+            )
+        }
+        composable(Screen.Bids.route) {
+            BidMarketScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
