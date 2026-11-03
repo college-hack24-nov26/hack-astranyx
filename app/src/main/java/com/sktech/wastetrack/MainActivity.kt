@@ -26,17 +26,29 @@ class MainActivity : ComponentActivity() {
                 val currentRoute = navBackStackEntry?.destination?.route ?: Screen.Dashboard.route
                 val showBottomBar = currentRoute in listOf(
                     Screen.Dashboard.route,
+                    Screen.RecyclerDashboard.route,
+                    Screen.DriverDashboard.route,
                     Screen.Crops.route,
                     Screen.Market.route,
+                    Screen.Orders.route,
                     Screen.Weather.route,
+                    Screen.Analytics.route,
+                    Screen.Compliance.route,
                     Screen.Settings.route
                 )
+
+                val activeRole = if (currentRoute in listOf(Screen.Orders.route, Screen.Compliance.route, Screen.RecyclerDashboard.route)) {
+                    com.sktech.wastetrack.domain.model.UserRole.BUYER
+                } else {
+                    com.sktech.wastetrack.domain.model.UserRole.FARMER
+                }
 
                 Scaffold(
                     bottomBar = {
                         if (showBottomBar) {
                             BottomNavBar(
                                 currentRoute = currentRoute,
+                                role = activeRole,
                                 onNavigate = { route ->
                                     navController.navigate(route) {
                                         popUpTo(Screen.Dashboard.route) { saveState = true }

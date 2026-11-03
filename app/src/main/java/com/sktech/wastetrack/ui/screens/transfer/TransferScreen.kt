@@ -137,7 +137,7 @@ fun TransferScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                items(filteredTransfers) { item ->
+                items(filteredTransfers, key = { it.id }) { item ->
                     TransferCard(
                         item = item,
                         onShowQR = { viewModel.showGatepassQR(item) },
