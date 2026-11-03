@@ -18,6 +18,7 @@ import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
+import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 
 @Composable
 fun NavGraph(
@@ -68,7 +69,10 @@ fun NavGraph(
                 onNavigateToMarket = {
                     navController.navigate(Screen.Market.route)
                 },
-                onNavigateToWeather = {}
+                onNavigateToWeather = {},
+                onNavigateToTransfers = {
+                    navController.navigate(Screen.Transfers.route)
+                }
             )
         }
         composable(Screen.Crops.route) {
@@ -124,6 +128,13 @@ fun NavGraph(
         }
         composable(Screen.Market.route) {
             MarketBrowseScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Transfers.route) {
+            TransferScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }

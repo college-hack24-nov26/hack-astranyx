@@ -32,6 +32,7 @@ fun FarmerDashboardScreen(
     onNavigateToCrops: () -> Unit = {},
     onNavigateToMarket: () -> Unit = {},
     onNavigateToWeather: () -> Unit = {},
+    onNavigateToTransfers: () -> Unit = {},
     viewModel: FarmerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -228,6 +229,12 @@ fun FarmerDashboardScreen(
                     label = "Sell Residue",
                     icon = Icons.Filled.Storefront,
                     onClick = onNavigateToMarket,
+                    modifier = Modifier.weight(1f)
+                )
+                ActionChip(
+                    label = "Dispatches",
+                    icon = Icons.Filled.LocalShipping,
+                    onClick = onNavigateToTransfers,
                     modifier = Modifier.weight(1f)
                 )
             }

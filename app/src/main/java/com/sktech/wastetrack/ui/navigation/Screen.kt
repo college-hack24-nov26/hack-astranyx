@@ -12,6 +12,7 @@ sealed class Screen(val route: String) {
     }
     data object CreateListing : Screen("create_listing")
     data object Market : Screen("market")
+    data object Transfers : Screen("transfers")
     data object Weather : Screen("weather")
     data object Settings : Screen("settings")
 }
