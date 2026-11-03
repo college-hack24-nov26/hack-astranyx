@@ -37,6 +37,10 @@ import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
 import com.sktech.wastetrack.ui.screens.agent.AgentScreen
 import com.sktech.wastetrack.ui.screens.quality.BiomassQualityScreen
+import com.sktech.wastetrack.ui.screens.admin.AdminDashboardScreen
+import com.sktech.wastetrack.ui.screens.admin.UserVerificationScreen
+import com.sktech.wastetrack.ui.screens.admin.DisputeManagementScreen
+import com.sktech.wastetrack.ui.screens.admin.AuditLogScreen
 
 @Composable
 fun NavGraph(
@@ -201,6 +205,9 @@ fun NavGraph(
                 },
                 onNavigateToESGDashboard = {
                     navController.navigate(Screen.ESGDashboard.route)
+                },
+                onNavigateToAdmin = {
+                    navController.navigate(Screen.AdminDashboard.route)
                 }
             )
         }
@@ -363,6 +370,58 @@ fun NavGraph(
                     navController.navigate(Screen.Login.route) {
                         popUpTo(0) { inclusive = true }
                     }
+                },
+                onNavigateToAdmin = {
+                    navController.navigate(Screen.AdminDashboard.route)
+                }
+            )
+        }
+        composable(Screen.AdminDashboard.route) {
+            AdminDashboardScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToUserVerification = {
+                    navController.navigate(Screen.UserVerification.route)
+                },
+                onNavigateToDisputes = {
+                    navController.navigate(Screen.DisputeManagement.route)
+                },
+                onNavigateToAuditLogs = {
+                    navController.navigate(Screen.AuditLogs.route)
+                },
+                onNavigateToFleet = {
+                    navController.navigate(Screen.FleetTracker.route)
+                },
+                onNavigateToESG = {
+                    navController.navigate(Screen.Compliance.route)
+                },
+                onNavigateToQuality = {
+                    navController.navigate(Screen.Quality.route)
+                },
+                onNavigateToSettings = {
+                    navController.navigate(Screen.Settings.route)
+                }
+            )
+        }
+        composable(Screen.UserVerification.route) {
+            UserVerificationScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.DisputeManagement.route) {
+            DisputeManagementScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.AuditLogs.route) {
+            AuditLogScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
