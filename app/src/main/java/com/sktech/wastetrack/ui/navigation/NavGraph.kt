@@ -66,9 +66,13 @@ fun NavGraph(
             )
         }
         composable(Screen.Onboarding.route) {
+            val context = androidx.compose.ui.platform.LocalContext.current
             OnboardingScreen(
                 onFinish = {
-                    navController.navigate(Screen.Login.route) {
+                    val authPrefs = context.getSharedPreferences("wastetrack_prefs", android.content.Context.MODE_PRIVATE)
+                    val isLoggedIn = authPrefs.getBoolean(com.sktech.wastetrack.util.Constants.KEY_IS_LOGGED_IN, false)
+                    val nextRoute = if (isLoggedIn) Screen.Dashboard.route else Screen.Login.route
+                    navController.navigate(nextRoute) {
                         popUpTo(Screen.Onboarding.route) { inclusive = true }
                     }
                 }
