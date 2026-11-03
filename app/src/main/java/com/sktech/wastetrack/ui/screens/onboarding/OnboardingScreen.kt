@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -85,8 +84,7 @@ private data class OnboardingPageData(
     val imageAsset: String,
     val primaryColor: Color,
     val accentColor: Color,
-    val previewTag: String,
-    val badges: List<String>
+    val previewTag: String
 )
 
 @Composable
@@ -99,47 +97,43 @@ fun OnboardingScreen(
     val currentLang by LocaleHelper.currentLanguage.collectAsStateWithLifecycle()
     var showLanguageMenu by remember { mutableStateOf(false) }
 
-    val pages = remember {
+    val pages = remember(currentLang) {
         listOf(
             OnboardingPageData(
-                title = "Farm & Crop Intelligence",
-                categoryBadge = "PRECISION AGRICULTURE",
-                description = "Map and monitor your farm plots digitally. Track crop lifecycles from sowing to harvest with soil-tailored weather advisories and personalized agroplans.",
+                title = context.getString(R.string.onb1_title),
+                categoryBadge = context.getString(R.string.onb1_badge),
+                description = context.getString(R.string.onb1_desc),
                 imageAsset = "onboarding_farmer_sugarcane.jpg",
                 primaryColor = AgriPrimaryGreen,
                 accentColor = AgriMossGreen,
-                previewTag = "Maharashtra Sugarcane Cultivation",
-                badges = listOf("Plot Mapping", "Soil Health", "Weather Radar")
+                previewTag = "Maharashtra Sugarcane Cultivation"
             ),
             OnboardingPageData(
-                title = "AI Crop Residue Valuation",
-                categoryBadge = "EDGE AI COMPUTER VISION",
-                description = "Transform agricultural waste into profitable inventory. Snap crop residue with your camera to evaluate moisture, quality grade, and discover fair market valuation instantly.",
+                title = context.getString(R.string.onb2_title),
+                categoryBadge = context.getString(R.string.onb2_badge),
+                description = context.getString(R.string.onb2_desc),
                 imageAsset = "onboarding_residue_harvest.jpg",
                 primaryColor = AgriEarthyGold,
                 accentColor = Color(0xFFD48B28),
-                previewTag = "Sugarcane Stubble & Dry Leaves",
-                badges = listOf("Photo Scan", "Quality Grading", "Instant Price")
+                previewTag = "Sugarcane Stubble & Dry Leaves"
             ),
             OnboardingPageData(
-                title = "Fair Bidding Marketplace",
-                categoryBadge = "ZERO MIDDLEMEN TRADING",
-                description = "Directly connect with verified bio-fuel plants, food processors, and compost recyclers. Transparent competitive bidding backed by 100% escrow payment protection.",
+                title = context.getString(R.string.onb3_title),
+                categoryBadge = context.getString(R.string.onb3_badge),
+                description = context.getString(R.string.onb3_desc),
                 imageAsset = "onboarding_farmer_smartphone.jpg",
                 primaryColor = AgriDeepForest,
                 accentColor = AgriPrimaryGreen,
-                previewTag = "AgriStock Smart Bidding",
-                badges = listOf("Live Bidding", "Escrow Wallet", "Fast Payout")
+                previewTag = "AgriStock Smart Bidding"
             ),
             OnboardingPageData(
-                title = "Smart Logistics & Gatepass QR",
-                categoryBadge = "DISPATCH & AUDIT VERIFICATION",
-                description = "Automate vehicle dispatch and tracking with certified logistics drivers. Generate tamper-proof cryptographic QR gatepasses for instantaneous weighbridge clearance.",
+                title = context.getString(R.string.onb4_title),
+                categoryBadge = context.getString(R.string.onb4_badge),
+                description = context.getString(R.string.onb4_desc),
                 imageAsset = "onboarding_biomass_factory.jpg",
                 primaryColor = SkyBlueDark,
                 accentColor = SkyBlue,
-                previewTag = "Biomass Refinery & Processing",
-                badges = listOf("Driver Dispatch", "QR Gatepass", "GPS Routing")
+                previewTag = "Biomass Refinery & Processing"
             )
         )
     }
@@ -242,41 +236,7 @@ fun OnboardingScreen(
                         lineHeight = 24.sp
                     )
 
-                    Spacer(modifier = Modifier.height(18.dp))
 
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        page.badges.forEach { badge ->
-                            Surface(
-                                shape = RoundedCornerShape(8.dp),
-                                color = Color.Black.copy(alpha = 0.45f),
-                                border = BorderStroke(
-                                    1.dp,
-                                    Color.White.copy(alpha = 0.25f)
-                                )
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(6.dp)
-                                            .background(page.primaryColor, CircleShape)
-                                    )
-                                    Text(
-                                        text = badge,
-                                        style = MaterialTheme.typography.labelSmall,
-                                        fontWeight = FontWeight.SemiBold,
-                                        color = Color.White
-                                    )
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }

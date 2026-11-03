@@ -2412,4 +2412,16 @@
     <string name="crop_voice_quick_fill_desc">फसल का नाम और रकबा बोलें (उदा. \"कपास 4 एकड़\" या \"गेहूं\")</string>
     <string name="crop_voice_filled_toast">आवाज़ से पहचाना गया: %1$s</string>
     <string name="show_qr">क्यूआर दिखाएं</string>
+    <string name="onb1_badge">सटीक कृषि</string>
+    <string name="onb1_title">खेत और फसल प्रबंधन</string>
+    <string name="onb1_desc">खेत की निगरानी करें, फसल चक्र ट्रैक करें और मिट्टी के अनुसार मौसम सलाह पाएं।</string>
+    <string name="onb2_badge">एज एआई दृष्टि</string>
+    <string name="onb2_title">एआई फसल अवशेष मूल्यांकन</string>
+    <string name="onb2_desc">फसल अवशेष की तस्वीर लें और तुरंत गुणवत्ता ग्रेडिंग व उचित बाज़ार मूल्य पाएं।</string>
+    <string name="onb3_badge">बिना बिचौलिए व्यापार</string>
+    <string name="onb3_title">उचित बोली बाज़ार</string>
+    <string name="onb3_desc">सीधे खरीदारों से जुड़ें। एस्क्रो सुरक्षा के साथ प्रतिस्पर्धी बोली लगाएं।</string>
+    <string name="onb4_badge">डिस्पैच और ऑडिट सत्यापन</string>
+    <string name="onb4_title">स्मार्ट लॉजिस्टिक्स और गेटपास QR</string>
+    <string name="onb4_desc">प्रमाणित ड्राइवर भेजें और तुरंत वेब्रिज क्लियरेंस के लिए QR गेटपास बनाएं।</string>
 </resources>

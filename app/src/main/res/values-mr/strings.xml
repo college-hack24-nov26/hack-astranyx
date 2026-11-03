@@ -2412,4 +2412,16 @@
     <string name="crop_voice_quick_fill_desc">पीकाचे नाव व क्षेत्र बोला (उदा. \"कापूस ४ एकर\" किंवा \"गहू\")</string>
     <string name="crop_voice_filled_toast">आवाजाने नोंदवले: %1$s</string>
     <string name="show_qr">क्यूआर दाखवा</string>
+    <string name="onb1_badge">अचूक शेती</string>
+    <string name="onb1_title">शेत आणि पीक व्यवस्थापन</string>
+    <string name="onb1_desc">शेताचे निरीक्षण करा, पीक जीवनचक्र ट्रॅक करा आणि मातीनुसार हवामान सल्ला मिळवा.</string>
+    <string name="onb2_badge">एज एआय दृष्टी</string>
+    <string name="onb2_title">एआय पीक अवशेष मूल्यांकन</string>
+    <string name="onb2_desc">पीक अवशेषाचा फोटो काढा आणि त्वरित गुणवत्ता ग्रेडिंग व योग्य बाजारभाव मिळवा.</string>
+    <string name="onb3_badge">दलालमुक्त व्यापार</string>
+    <string name="onb3_title">उचित बोली बाजारपेठ</string>
+    <string name="onb3_desc">थेट खरेदीदारांशी जोडा. एस्क्रो सुरक्षेसह स्पर्धात्मक बोली लावा.</string>
+    <string name="onb4_badge">डिस्पॅच आणि ऑडिट सत्यापन</string>
+    <string name="onb4_title">स्मार्ट लॉजिस्टिक्स आणि गेटपास QR</string>
+    <string name="onb4_desc">प्रमाणित चालक पाठवा आणि वेब्रिज क्लिअरन्ससाठी QR गेटपास तयार करा.</string>
 </resources>
