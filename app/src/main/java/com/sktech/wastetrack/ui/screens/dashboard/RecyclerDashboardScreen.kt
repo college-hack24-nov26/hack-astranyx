@@ -30,6 +30,7 @@ fun RecyclerDashboardScreen(
     onNavigateToMarket: () -> Unit = {},
     onNavigateToBids: () -> Unit = {},
     onNavigateToTransfers: () -> Unit = {},
+    onNavigateToOrders: () -> Unit = {},
     viewModel: RecyclerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -86,6 +87,20 @@ fun RecyclerDashboardScreen(
                                 )
                             }
                         }
+                    }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    OutlinedButton(
+                        onClick = onNavigateToOrders,
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = HarvestGreenSoft),
+                        border = BorderStroke(1.dp, HarvestGreenSoft.copy(alpha = 0.5f)),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(imageVector = Icons.Filled.Lock, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text("View Procurement Orders & Escrow Vault", fontSize = 13.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }

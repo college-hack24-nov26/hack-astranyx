@@ -5,6 +5,7 @@ sealed class Screen(val route: String) {
     data object SignUp : Screen("signup")
     data object Onboarding : Screen("onboarding")
     data object Dashboard : Screen("dashboard")
+    data object RecyclerDashboard : Screen("recycler_dashboard")
     data object CropClassify : Screen("crop_classify")
     data object Crops : Screen("crops")
     data object CropDetail : Screen("crop_detail/{cycleId}") {
@@ -13,6 +14,7 @@ sealed class Screen(val route: String) {
     data object CreateListing : Screen("create_listing")
     data object Market : Screen("market")
     data object Bids : Screen("bids")
+    data object Orders : Screen("orders")
     data object Transfers : Screen("transfers")
     data object DriverDashboard : Screen("driver_dashboard")
     data object ShipmentTracking : Screen("shipment_tracking/{transferId}") {
