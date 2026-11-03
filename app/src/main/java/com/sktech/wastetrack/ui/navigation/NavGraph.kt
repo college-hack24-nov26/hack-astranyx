@@ -28,6 +28,7 @@ import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
 import com.sktech.wastetrack.ui.screens.transfer.FleetTrackerScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
+import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 
 @Composable
 fun NavGraph(
@@ -238,7 +239,7 @@ fun NavGraph(
             )
         }
         composable(Screen.Compliance.route) {
-            AnalyticsScreen(
+            ComplianceScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }
