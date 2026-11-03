@@ -137,7 +137,7 @@ fun CropCycleListScreen(
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 80.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(filteredCrops) { crop ->
+                items(filteredCrops, key = { it.id }) { crop ->
                     CropCycleCard(
                         crop = crop,
                         onClick = { onNavigateToCropDetail(crop.id) }

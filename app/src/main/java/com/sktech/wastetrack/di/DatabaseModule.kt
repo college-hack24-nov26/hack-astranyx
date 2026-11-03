@@ -21,7 +21,7 @@ object DatabaseModule {
             context,
             WasteTrackDatabase::class.java,
             "wastetrack_db"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration(true).build()
     }
 
     @Provides

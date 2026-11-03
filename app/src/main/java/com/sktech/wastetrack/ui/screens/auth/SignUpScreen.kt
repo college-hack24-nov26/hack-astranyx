@@ -589,7 +589,7 @@ fun SignUpScreen(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Icon(Icons.Filled.Error, contentDescription = null, tint = AlertRed, modifier = Modifier.size(18.dp))
-                                Text(state.error!!, color = AlertRed, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
+                                Text(state.error.orEmpty(), color = AlertRed, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
                             }
                         }
                     }
