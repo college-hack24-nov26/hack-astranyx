@@ -25,18 +25,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WastetrackTheme {
-                val context = LocalContext.current
-                val startDestination = remember {
-                    val prefs = context.getSharedPreferences("agristock_prefs", Context.MODE_PRIVATE)
-                    val onboardingCompleted = prefs.getBoolean("onboarding_completed", false)
-                    if (!onboardingCompleted) {
-                        Screen.Onboarding.route
-                    } else {
-                        val authPrefs = context.getSharedPreferences("wastetrack_prefs", Context.MODE_PRIVATE)
-                        val isLoggedIn = authPrefs.getBoolean(Constants.KEY_IS_LOGGED_IN, false)
-                        if (isLoggedIn) Screen.Dashboard.route else Screen.Login.route
-                    }
-                }
+                val startDestination = Screen.Onboarding.route
 
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
