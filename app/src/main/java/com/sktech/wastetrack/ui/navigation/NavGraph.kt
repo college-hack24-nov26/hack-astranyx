@@ -33,6 +33,7 @@ import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
 import com.sktech.wastetrack.ui.screens.agent.AgentScreen
+import com.sktech.wastetrack.ui.screens.quality.BiomassQualityScreen
 
 @Composable
 fun NavGraph(
@@ -188,11 +189,21 @@ fun NavGraph(
                 },
                 onNavigateToInvoices = {
                     navController.navigate(Screen.Invoices.route)
+                },
+                onNavigateToQuality = {
+                    navController.navigate(Screen.Quality.route)
                 }
             )
         }
         composable(Screen.Invoices.route) {
             InvoiceScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Quality.route) {
+            BiomassQualityScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }
