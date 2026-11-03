@@ -298,7 +298,7 @@ fun FarmerDashboardScreen(
             }
         }
 
-        items(state.recentResidues) { item ->
+        items(state.recentResidues, key = { it.id }) { item ->
             ResidueBatchCard(item)
         }
     }

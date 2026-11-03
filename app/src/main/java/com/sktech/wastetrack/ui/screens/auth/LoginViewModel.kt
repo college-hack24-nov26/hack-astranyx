@@ -33,7 +33,7 @@ data class LoginState(
     val isOtpSent: Boolean = false,
     val isSuccess: Boolean = false,
     val needsProfileSetup: Boolean = false,
-    val selectedRole: UserRole = UserRole.SUPERVISOR,
+    val selectedRole: UserRole = UserRole.FARMER,
     val detectedUser: User? = null,
     val isExistingUser: Boolean = false,
     val isRoleLocked: Boolean = false,
