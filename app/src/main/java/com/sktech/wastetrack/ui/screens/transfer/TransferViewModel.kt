@@ -97,7 +97,11 @@ data class TransferUiState(
             digitalHashSignature = "0x1E8F6A902D4C3B77"
         )
     ),
-    val selectedTransferForQR: TransferItem? = null
+    val selectedTransferForQR: TransferItem? = null,
+    val activeQRTransferId: String = "tr_001",
+    val activeQRPayload: String = "",
+    val activeQRSignature: String = "",
+    val qrGeneratedAtMillis: Long = System.currentTimeMillis()
 )
 
 @HiltViewModel
@@ -105,6 +109,10 @@ class TransferViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(TransferUiState())
     val uiState: StateFlow<TransferUiState> = _uiState.asStateFlow()
+
+    init {
+        prepareQRForTransfer("tr_001")
+    }
 
     fun setFilter(filter: String) {
         _uiState.update { it.copy(selectedFilter = filter) }
@@ -116,6 +124,32 @@ class TransferViewModel @Inject constructor() : ViewModel() {
 
     fun dismissQR() {
         _uiState.update { it.copy(selectedTransferForQR = null) }
+    }
+
+    fun getTransferById(id: String): TransferItem? {
+        return _uiState.value.transfers.find { it.id == id } ?: _uiState.value.transfers.firstOrNull()
+    }
+
+    fun prepareQRForTransfer(id: String) {
+        val item = getTransferById(id) ?: return
+        val now = System.currentTimeMillis()
+        val token = MessageDigest.getInstance("SHA-256")
+            .digest("${item.id}_${item.vehicleNumber}_$now".toByteArray())
+            .take(8)
+            .joinToString("") { "%02x".format(it) }
+            .uppercase()
+        val cleanVehicle = item.vehicleNumber.replace("-", "").uppercase()
+        val cleanCrop = item.cropName.uppercase()
+        val cleanOrigin = item.sourceLocation.split(",")[0].trim().uppercase()
+        val payload = "GP:${item.gatePassNumber}|TRUCK:$cleanVehicle|CROP:$cleanCrop|QTY:${item.quantityMt.toInt()}MT|ORIGIN:$cleanOrigin"
+        _uiState.update {
+            it.copy(
+                activeQRTransferId = item.id,
+                activeQRPayload = payload,
+                activeQRSignature = "0x$token",
+                qrGeneratedAtMillis = now
+            )
+        }
     }
 
     fun confirmWeighbridgeReceipt(transferId: String) {

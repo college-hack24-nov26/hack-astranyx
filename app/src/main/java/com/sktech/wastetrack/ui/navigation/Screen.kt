@@ -20,6 +20,9 @@ sealed class Screen(val route: String) {
     data object Quality : Screen("quality")
     data object Transfers : Screen("transfers")
     data object QRScan : Screen("qr_scan")
+    data object QRGenerate : Screen("qr_generate/{transferId}") {
+        fun createRoute(transferId: String = "tr_001") = "qr_generate/$transferId"
+    }
     data object WeighbridgeSlips : Screen("weighbridge_slips")
     data object DriverDashboard : Screen("driver_dashboard")
     data object FleetTracker : Screen("fleet_tracker")

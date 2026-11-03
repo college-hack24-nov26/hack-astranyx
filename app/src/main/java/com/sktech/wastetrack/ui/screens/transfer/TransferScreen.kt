@@ -50,6 +50,7 @@ private fun generateQRBitmap(content: String, size: Int = 512): Bitmap {
 @Composable
 fun TransferScreen(
     onNavigateBack: () -> Unit = {},
+    onNavigateToQRGenerate: (String) -> Unit = {},
     viewModel: TransferViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -105,16 +106,18 @@ fun TransferScreen(
                         .padding(14.dp),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    TransferMetricCol("In Transit", "$activeTransitCount Trucks")
+                    TransferMetricCol("Dispatched", "${totalDispatchedMt.toInt()} MT")
                     VerticalDivider(modifier = Modifier.height(36.dp), color = HarvestGreen.copy(alpha = 0.2f))
-                    TransferMetricCol("Dispatched", String.format("%.0f MT", totalDispatchedMt))
+                    TransferMetricCol("In Transit", "$activeTransitCount Loads")
                     VerticalDivider(modifier = Modifier.height(36.dp), color = HarvestGreen.copy(alpha = 0.2f))
-                    TransferMetricCol("Verified", "$verifiedCount Receipts")
+                    TransferMetricCol("Verified", "$verifiedCount Cleared")
                 }
             }
 
             LazyRow(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 6.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(filterTabs) { tab ->
@@ -140,7 +143,7 @@ fun TransferScreen(
                 items(filteredTransfers, key = { it.id }) { item ->
                     TransferCard(
                         item = item,
-                        onShowQR = { viewModel.showGatepassQR(item) },
+                        onShowQR = { onNavigateToQRGenerate(item.id) },
                         onConfirmReceipt = { viewModel.confirmWeighbridgeReceipt(item.id) }
                     )
                 }
@@ -207,11 +210,23 @@ fun TransferScreen(
                 }
             },
             confirmButton = {
-                Button(
-                    onClick = { viewModel.dismissQR() },
-                    colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen)
-                ) {
-                    Text("Close")
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(
+                        onClick = {
+                            val id = transfer.id
+                            viewModel.dismissQR()
+                            onNavigateToQRGenerate(id)
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = HarvestGreenDark)
+                    ) {
+                        Text("Dynamic Pass View")
+                    }
+                    Button(
+                        onClick = { viewModel.dismissQR() },
+                        colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen)
+                    ) {
+                        Text("Close")
+                    }
                 }
             }
         )
@@ -248,27 +263,16 @@ private fun TransferCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Surface(
-                        shape = CircleShape,
-                        color = HarvestGreenContainer,
-                        modifier = Modifier.size(36.dp)
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Icon(imageVector = Icons.Filled.LocalShipping, contentDescription = null, tint = HarvestGreen, modifier = Modifier.size(18.dp))
-                        }
-                    }
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Column {
-                        Text(text = item.gatePassNumber, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                        Text(text = timeFormat.format(Date(item.dispatchTimestampMillis)), style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
-                    }
+                    Icon(imageVector = Icons.Filled.LocalShipping, contentDescription = null, tint = HarvestGreen, modifier = Modifier.size(20.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = item.gatePassNumber, fontWeight = FontWeight.Bold, fontSize = 15.sp, color = HarvestGreen)
                 }
-
                 Surface(
                     shape = RoundedCornerShape(6.dp),
                     color = when (item.status) {
-                        TransferStatus.VERIFIED -> HarvestGreenContainer
                         TransferStatus.IN_TRANSIT -> GoldenWheatContainer
+                        TransferStatus.VERIFIED -> HarvestGreenContainer
+                        TransferStatus.DELIVERED -> HarvestGreenContainer
                         else -> MaterialTheme.colorScheme.surfaceVariant
                     }
                 ) {
@@ -278,17 +282,25 @@ private fun TransferCard(
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = when (item.status) {
-                            TransferStatus.VERIFIED -> HarvestGreenDark
                             TransferStatus.IN_TRANSIT -> GoldenWheatDark
-                            else -> MaterialTheme.colorScheme.onSurfaceVariant
+                            TransferStatus.VERIFIED -> HarvestGreenDark
+                            TransferStatus.DELIVERED -> HarvestGreenDark
+                            else -> DarkTextSecondary
                         }
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = item.residueTitle, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
-            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = item.residueTitle, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = "Dispatched: ${timeFormat.format(Date(item.dispatchTimestampMillis))}",
+                style = MaterialTheme.typography.bodySmall,
+                color = DarkTextSecondary
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
 
             Surface(
                 shape = RoundedCornerShape(8.dp),

@@ -4,7 +4,18 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -13,9 +24,35 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.ListAlt
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.LocalShipping
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.QrCode
+import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.Scale
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Factory
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.VerticalDivider
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,10 +66,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import com.sktech.wastetrack.domain.model.TransferStatus
-import com.sktech.wastetrack.ui.theme.*
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.sktech.wastetrack.ui.theme.DarkTextSecondary
+import com.sktech.wastetrack.ui.theme.GoldenWheatContainer
+import com.sktech.wastetrack.ui.theme.GoldenWheatDark
+import com.sktech.wastetrack.ui.theme.GoldenWheatLight
+import com.sktech.wastetrack.ui.theme.HarvestGreen
+import com.sktech.wastetrack.ui.theme.HarvestGreenContainer
+import com.sktech.wastetrack.ui.theme.HarvestGreenDark
+import com.sktech.wastetrack.ui.theme.HarvestGreenLight
 
 private fun generateDriverQRBitmap(content: String, size: Int = 512): Bitmap {
     val writer = QRCodeWriter()
@@ -55,6 +96,7 @@ fun DriverDashboardScreen(
     onNavigateToFleet: () -> Unit = {},
     onNavigateToQRScan: () -> Unit = {},
     onNavigateToWeighbridge: () -> Unit = {},
+    onNavigateToQRGenerate: (String) -> Unit = {},
     viewModel: DriverDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -74,6 +116,9 @@ fun DriverDashboardScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = { onNavigateToQRGenerate("tr_001") }) {
+                        Icon(imageVector = Icons.Filled.QrCode, contentDescription = "Gatepass Pass QR", tint = HarvestGreen)
+                    }
                     IconButton(onClick = onNavigateToQRScan) {
                         Icon(imageVector = Icons.Filled.QrCodeScanner, contentDescription = "Scan Gatepass", tint = HarvestGreen)
                     }
@@ -168,39 +213,50 @@ fun DriverDashboardScreen(
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
+                    Button(
+                        onClick = { onNavigateToQRGenerate("tr_001") },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = HarvestGreenDark),
+                        shape = RoundedCornerShape(10.dp),
+                        contentPadding = PaddingValues(horizontal = 6.dp, vertical = 10.dp)
+                    ) {
+                        Icon(imageVector = Icons.Filled.QrCode, contentDescription = null, modifier = Modifier.size(15.dp), tint = Color.White)
+                        Spacer(modifier = Modifier.width(3.dp))
+                        Text("Pass QR", fontWeight = FontWeight.Bold, fontSize = 11.sp, color = Color.White)
+                    }
                     Button(
                         onClick = onNavigateToQRScan,
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen),
                         shape = RoundedCornerShape(10.dp),
-                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp)
+                        contentPadding = PaddingValues(horizontal = 6.dp, vertical = 10.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.QrCodeScanner, contentDescription = null, modifier = Modifier.size(16.dp))
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text("Scan QR", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Icon(imageVector = Icons.Filled.QrCodeScanner, contentDescription = null, modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.width(3.dp))
+                        Text("Scan QR", fontWeight = FontWeight.Bold, fontSize = 11.sp)
                     }
                     Button(
                         onClick = onNavigateToWeighbridge,
-                        modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(containerColor = HarvestGreenDark),
+                        modifier = Modifier.weight(1.1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = HarvestGreenLight),
                         shape = RoundedCornerShape(10.dp),
-                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp)
+                        contentPadding = PaddingValues(horizontal = 6.dp, vertical = 10.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.Scale, contentDescription = null, modifier = Modifier.size(16.dp), tint = GoldenWheatLight)
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text("Scale Slips", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Color.White)
+                        Icon(imageVector = Icons.Filled.Scale, contentDescription = null, modifier = Modifier.size(15.dp), tint = Color.White)
+                        Spacer(modifier = Modifier.width(3.dp))
+                        Text("Scale Slips", fontWeight = FontWeight.Bold, fontSize = 11.sp, color = Color.White)
                     }
                     OutlinedButton(
                         onClick = onNavigateToFleet,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(0.9f),
                         shape = RoundedCornerShape(10.dp),
-                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp)
+                        contentPadding = PaddingValues(horizontal = 6.dp, vertical = 10.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.LocalShipping, contentDescription = null, modifier = Modifier.size(16.dp), tint = HarvestGreen)
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text("Fleet", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Icon(imageVector = Icons.Filled.LocalShipping, contentDescription = null, modifier = Modifier.size(15.dp), tint = HarvestGreen)
+                        Spacer(modifier = Modifier.width(3.dp))
+                        Text("Fleet", fontWeight = FontWeight.Bold, fontSize = 11.sp)
                     }
                 }
             }
@@ -217,7 +273,7 @@ fun DriverDashboardScreen(
             items(state.activeTrips, key = { it.id }) { trip ->
                 DriverTripCard(
                     trip = trip,
-                    onShowQR = { viewModel.showGatepassQR(trip) },
+                    onShowQR = { onNavigateToQRGenerate(trip.id) },
                     onAdvanceStatus = { viewModel.advanceTripStatus(trip.id) },
                     onReportIncident = { viewModel.openIncidentDialog(trip) },
                     onTrackRoute = { onNavigateToTracking(trip.id) }
@@ -299,11 +355,23 @@ fun DriverDashboardScreen(
                 }
             },
             confirmButton = {
-                Button(
-                    onClick = { viewModel.dismissQR() },
-                    colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen)
-                ) {
-                    Text("Done")
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(
+                        onClick = {
+                            val tripId = trip.id
+                            viewModel.dismissQR()
+                            onNavigateToQRGenerate(tripId)
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = HarvestGreenDark)
+                    ) {
+                        Text("Dynamic Pass")
+                    }
+                    Button(
+                        onClick = { viewModel.dismissQR() },
+                        colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen)
+                    ) {
+                        Text("Done")
+                    }
                 }
             }
         )
