@@ -36,6 +36,7 @@ fun FarmerDashboardScreen(
     onNavigateToAnalytics: () -> Unit = {},
     onNavigateToFarms: () -> Unit = {},
     onNavigateToAgent: () -> Unit = {},
+    onNavigateToESGDashboard: () -> Unit = {},
     viewModel: FarmerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -326,7 +327,7 @@ fun FarmerDashboardScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onNavigateToAnalytics() },
+                    .clickable { onNavigateToESGDashboard() },
                 shape = RoundedCornerShape(14.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.3f))
@@ -352,8 +353,8 @@ fun FarmerDashboardScreen(
                             }
                         }
                         Column {
-                            Text("Carbon Offset & Revenue Ledger", fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                            Text("142.8 MT CO₂e avoided • Mandi price trends", style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
+                            Text("ESG Carbon Abatement & Stubble Credits", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Text("Scope 1/2/3 avoided CO₂e ledger • MPCB verified", style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
                         }
                     }
                     Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, tint = HarvestGreen, modifier = Modifier.size(18.dp))

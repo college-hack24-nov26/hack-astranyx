@@ -32,6 +32,7 @@ sealed class Screen(val route: String) {
     data object Weather : Screen("weather")
     data object Analytics : Screen("analytics")
     data object Compliance : Screen("compliance")
+    data object ESGDashboard : Screen("esg_dashboard")
     data object Agent : Screen("agent")
     data object Settings : Screen("settings")
 }

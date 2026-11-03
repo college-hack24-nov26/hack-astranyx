@@ -33,6 +33,7 @@ import com.sktech.wastetrack.ui.screens.transfer.WeighbridgeSlipScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
+import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
 import com.sktech.wastetrack.ui.screens.agent.AgentScreen
 import com.sktech.wastetrack.ui.screens.quality.BiomassQualityScreen
@@ -104,6 +105,9 @@ fun NavGraph(
                 },
                 onNavigateToAgent = {
                     navController.navigate(Screen.Agent.route)
+                },
+                onNavigateToESGDashboard = {
+                    navController.navigate(Screen.ESGDashboard.route)
                 }
             )
         }
@@ -194,6 +198,9 @@ fun NavGraph(
                 },
                 onNavigateToQuality = {
                     navController.navigate(Screen.Quality.route)
+                },
+                onNavigateToESGDashboard = {
+                    navController.navigate(Screen.ESGDashboard.route)
                 }
             )
         }
@@ -314,9 +321,22 @@ fun NavGraph(
             )
         }
         composable(Screen.Compliance.route) {
-            ComplianceScreen(
+            ESGDashboardScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToInvoices = {
+                    navController.navigate(Screen.Invoices.route)
+                }
+            )
+        }
+        composable(Screen.ESGDashboard.route) {
+            ESGDashboardScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToInvoices = {
+                    navController.navigate(Screen.Invoices.route)
                 }
             )
         }
