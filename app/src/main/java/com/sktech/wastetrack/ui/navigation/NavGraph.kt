@@ -22,6 +22,7 @@ import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
 import com.sktech.wastetrack.ui.screens.settings.SettingsScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
+import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 
 @Composable
@@ -160,6 +161,19 @@ fun NavGraph(
                 },
                 onNavigateToTransfers = {
                     navController.navigate(Screen.Transfers.route)
+                },
+                onNavigateToTracking = { transferId ->
+                    navController.navigate(Screen.ShipmentTracking.createRoute(transferId))
+                }
+            )
+        }
+        composable(
+            route = Screen.ShipmentTracking.route,
+            arguments = listOf(navArgument("transferId") { type = NavType.StringType })
+        ) {
+            ShipmentTrackingScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
