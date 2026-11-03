@@ -34,6 +34,7 @@ fun RecyclerDashboardScreen(
     onNavigateToOrders: () -> Unit = {},
     onNavigateToInvoices: () -> Unit = {},
     onNavigateToQuality: () -> Unit = {},
+    onNavigateToESGDashboard: () -> Unit = {},
     viewModel: RecyclerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -195,6 +196,83 @@ fun RecyclerDashboardScreen(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = null,
                         tint = HarvestGreenSoft,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+        }
+
+        item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onNavigateToESGDashboard() },
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = DarkHarvestGreenContainer),
+                border = BorderStroke(1.dp, GoldenWheatLight.copy(alpha = 0.35f))
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Surface(
+                            shape = CircleShape,
+                            color = GoldenWheatLight.copy(alpha = 0.18f),
+                            modifier = Modifier.size(42.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Filled.Eco,
+                                    contentDescription = "ESG Carbon Desk",
+                                    tint = GoldenWheatLight,
+                                    modifier = Modifier.size(22.dp)
+                                )
+                            }
+                        }
+                        Column {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Text(
+                                    text = "ESG Carbon Abatement Desk",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp,
+                                    color = GoldenWheatLight
+                                )
+                                Surface(
+                                    shape = RoundedCornerShape(4.dp),
+                                    color = HarvestGreen
+                                ) {
+                                    Text(
+                                        text = "SCOPE 3",
+                                        color = Color.White,
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "IPCC Tier-1 CO2e avoided ledger & MPCB Form-10 filings",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = DarkTextSecondary
+                            )
+                        }
+                    }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = "Go to ESG",
+                        tint = GoldenWheatLight,
                         modifier = Modifier.size(20.dp)
                     )
                 }
