@@ -181,7 +181,7 @@ class AuthRepositoryImpl @Inject constructor(
                 phone = phone,
                 role = selectedRole,
                 organizationName = cachedOrg,
-                factoryId = cachedFactory.ifBlank { if (selectedRole == UserRole.RECYCLER) "REC-UNIT-01" else "FAC-UNIT-01" },
+                factoryId = cachedFactory.ifBlank { if (selectedRole == UserRole.BUYER) "REC-UNIT-01" else "FAC-UNIT-01" },
                 industrialArea = prefs.getString(KEY_CACHED_AREA, "Ambad MIDC Industrial Area, Nashik") ?: "Ambad MIDC Industrial Area, Nashik",
                 registrationNumber = prefs.getString(KEY_CACHED_REG_NO, "27AAACB2233M1Z2") ?: "27AAACB2233M1Z2",
                 isProfileComplete = true,
@@ -299,11 +299,11 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun getSelectedRole(): UserRole {
-        val name = prefs.getString(KEY_SELECTED_ROLE, null) ?: return UserRole.SUPERVISOR
+        val name = prefs.getString(KEY_SELECTED_ROLE, null) ?: return UserRole.FARMER
         return try {
             UserRole.valueOf(name)
         } catch (e: Exception) {
-            UserRole.SUPERVISOR
+            UserRole.FARMER
         }
     }
 
@@ -359,7 +359,7 @@ class AuthRepositoryImpl @Inject constructor(
             phone = doc.getString("phone") ?: phone,
             role = parsedRole,
             organizationName = doc.getString("organizationName") ?: "",
-            factoryId = doc.getString("factoryId") ?: if (parsedRole == UserRole.RECYCLER) "REC-UNIT-01" else "FAC-UNIT-01",
+            factoryId = doc.getString("factoryId") ?: if (parsedRole == UserRole.BUYER) "REC-UNIT-01" else "FAC-UNIT-01",
             industrialArea = doc.getString("industrialArea") ?: "Industrial Area",
             registrationNumber = rawRegNo,
             isProfileComplete = doc.getBoolean("isProfileComplete") ?: true,

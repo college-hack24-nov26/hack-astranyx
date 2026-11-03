@@ -91,7 +91,7 @@ fun SettingsScreen(
                             Text(text = user?.name ?: "AgriStock User", fontWeight = FontWeight.Bold, fontSize = 17.sp)
                             Text(text = user?.phone ?: "+91 98220 00000", style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
                             if (!user?.organizationName.isNullOrBlank()) {
-                                Text(text = user!!.organizationName, style = MaterialTheme.typography.labelSmall, color = HarvestGreen)
+                                Text(text = user?.organizationName.orEmpty(), style = MaterialTheme.typography.labelSmall, color = HarvestGreen)
                             }
                         }
                         Surface(

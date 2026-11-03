@@ -127,7 +127,7 @@ fun BidMarketScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                items(filteredLots) { lot ->
+                items(filteredLots, key = { it.id }) { lot ->
                     AuctionLotCard(
                         lot = lot,
                         myQuote = state.myQuotes[lot.id],

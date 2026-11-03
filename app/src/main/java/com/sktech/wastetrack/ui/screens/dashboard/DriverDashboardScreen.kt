@@ -162,7 +162,7 @@ fun DriverDashboardScreen(
                 )
             }
 
-            items(state.activeTrips) { trip ->
+            items(state.activeTrips, key = { it.id }) { trip ->
                 DriverTripCard(
                     trip = trip,
                     onShowQR = { viewModel.showGatepassQR(trip) },
@@ -182,7 +182,7 @@ fun DriverDashboardScreen(
                 )
             }
 
-            items(state.completedTrips) { trip ->
+            items(state.completedTrips, key = { it.id }) { trip ->
                 CompletedTripCard(trip = trip)
             }
         }

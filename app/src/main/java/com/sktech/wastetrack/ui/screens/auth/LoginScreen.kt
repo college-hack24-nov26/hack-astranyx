@@ -250,7 +250,7 @@ fun LoginScreen(
                                     modifier = Modifier.size(18.dp)
                                 )
                                 Text(
-                                    text = state.error!!.asString(),
+                                    text = state.error?.asString().orEmpty(),
                                     color = AlertRed,
                                     style = MaterialTheme.typography.bodySmall,
                                     fontWeight = FontWeight.SemiBold,
@@ -284,7 +284,7 @@ fun LoginScreen(
                                     ) {
                                         Icon(Icons.Filled.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(12.dp))
                                         Text(
-                                            text = stringResource(R.string.login_auto_locked_format, state.detectedUser!!.role.localizedDisplayName()),
+                                            text = stringResource(R.string.login_auto_locked_format, state.detectedUser?.role?.localizedDisplayName().orEmpty()),
                                             style = MaterialTheme.typography.labelSmall,
                                             fontWeight = FontWeight.Bold,
                                             color = MaterialTheme.colorScheme.primary
@@ -316,7 +316,7 @@ fun LoginScreen(
                                 ) {
                                     rowRoles.forEach { (role, icon) ->
                                         val isSelected = state.selectedRole == role
-                                        val isLockedOut = state.isRoleLocked && state.detectedUser != null && state.detectedUser!!.role != role
+                                        val isLockedOut = state.isRoleLocked && state.detectedUser != null && state.detectedUser?.role != role
                                         Surface(
                                             modifier = Modifier
                                                 .weight(1f)
@@ -419,7 +419,7 @@ fun LoginScreen(
                                     Icon(Icons.Filled.VerifiedUser, contentDescription = null, tint = EmeraldPrimary, modifier = Modifier.size(18.dp))
                                     Column {
                                         Text(
-                                            text = "Registered Account: ${state.detectedUser!!.name}",
+                                            text = "Registered Account: ${state.detectedUser?.name.orEmpty()}",
                                             style = MaterialTheme.typography.labelSmall,
                                             fontWeight = FontWeight.Bold,
                                             color = EmeraldPrimary,
@@ -427,7 +427,7 @@ fun LoginScreen(
                                             overflow = TextOverflow.Ellipsis
                                         )
                                         Text(
-                                            text = stringResource(R.string.login_role_verified_format, state.detectedUser!!.role.localizedDisplayName()),
+                                            text = stringResource(R.string.login_role_verified_format, state.detectedUser?.role?.localizedDisplayName().orEmpty()),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                                             maxLines = 1

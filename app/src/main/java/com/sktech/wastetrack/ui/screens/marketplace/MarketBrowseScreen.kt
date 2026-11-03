@@ -102,7 +102,7 @@ fun MarketBrowseScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                items(filteredLots) { lot ->
+                items(filteredLots, key = { it.id }) { lot ->
                     MarketLotCard(
                         lot = lot,
                         onBidClick = { viewModel.openBidSheet(lot) }
