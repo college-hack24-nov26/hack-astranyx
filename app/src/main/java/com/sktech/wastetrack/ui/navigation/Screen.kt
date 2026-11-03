@@ -39,4 +39,6 @@ sealed class Screen(val route: String) {
     data object UserVerification : Screen("user_verification")
     data object DisputeManagement : Screen("dispute_management")
     data object AuditLogs : Screen("audit_logs")
+    data object InvoiceGenerator : Screen("invoice_generator")
+    data object InvoiceHistory : Screen("invoice_history")
 }
