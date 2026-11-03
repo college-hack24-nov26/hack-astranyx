@@ -20,6 +20,8 @@ import com.sktech.wastetrack.ui.screens.transporter.TransporterCommandHubScreen
 import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
+import com.sktech.wastetrack.ui.screens.marketplace.ListingDetailScreen
+import com.sktech.wastetrack.ui.screens.order.OrderDetailScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
 import com.sktech.wastetrack.ui.screens.order.OrderListScreen
 import com.sktech.wastetrack.ui.screens.dashboard.RecyclerDashboardScreen
@@ -194,6 +196,9 @@ fun NavGraph(
                 },
                 onNavigateToTracking = { transferId ->
                     navController.navigate(Screen.ShipmentTracking.createRoute(transferId))
+                },
+                onNavigateToDetail = { orderId ->
+                    navController.navigate(Screen.OrderDetail.createRoute(orderId))
                 }
             )
         }
@@ -240,6 +245,9 @@ fun NavGraph(
             MarketBrowseScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToDetail = { listingId ->
+                    navController.navigate(Screen.ListingDetail.createRoute(listingId))
                 }
             )
         }
@@ -501,6 +509,35 @@ fun NavGraph(
                 },
                 onNavigateToMarket = {
                     navController.navigate(Screen.Market.route)
+                }
+            )
+        }
+        composable(
+            route = Screen.ListingDetail.route,
+            arguments = listOf(navArgument("listingId") { type = NavType.StringType })
+        ) {
+            ListingDetailScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToOrder = { orderId ->
+                    navController.navigate(Screen.OrderDetail.createRoute(orderId))
+                }
+            )
+        }
+        composable(
+            route = Screen.OrderDetail.route,
+            arguments = listOf(navArgument("orderId") { type = NavType.StringType })
+        ) {
+            OrderDetailScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToTracking = { transferId ->
+                    navController.navigate(Screen.ShipmentTracking.createRoute(transferId))
+                },
+                onNavigateToQRGenerate = { transferId ->
+                    navController.navigate(Screen.QRGenerate.createRoute(transferId))
                 }
             )
         }

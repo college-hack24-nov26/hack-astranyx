@@ -52,4 +52,10 @@ sealed class Screen(val route: String) {
     data object AddEditFarm : Screen("add_edit_farm?farmId={farmId}") {
         fun createRoute(farmId: String = "new") = "add_edit_farm?farmId=$farmId"
     }
+    data object ListingDetail : Screen("listing_detail/{listingId}") {
+        fun createRoute(listingId: String) = "listing_detail/$listingId"
+    }
+    data object OrderDetail : Screen("order_detail/{orderId}") {
+        fun createRoute(orderId: String) = "order_detail/$orderId"
+    }
 }

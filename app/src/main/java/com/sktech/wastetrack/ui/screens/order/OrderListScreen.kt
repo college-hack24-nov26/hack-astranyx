@@ -35,6 +35,7 @@ import java.util.Locale
 fun OrderListScreen(
     onNavigateBack: () -> Unit = {},
     onNavigateToTracking: (String) -> Unit = {},
+    onNavigateToDetail: (String) -> Unit = {},
     viewModel: OrderListViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -269,12 +270,13 @@ private fun EscrowOverviewCard(
 private fun OrderContractCard(
     order: OrderItem,
     onReleaseEscrow: () -> Unit,
-    onTrackShipment: () -> Unit
+    onTrackShipment: () -> Unit,
+    onDetailClick: () -> Unit = {}
 ) {
     val dateFormat = remember { SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault()) }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onDetailClick() },
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
@@ -405,7 +407,7 @@ private fun OrderContractCard(
                     }
                     else -> {
                         OutlinedButton(
-                            onClick = onTrackShipment,
+                            onClick = onDetailClick,
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(8.dp)
                         ) {
