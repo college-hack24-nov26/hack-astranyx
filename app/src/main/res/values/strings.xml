@@ -2412,4 +2412,16 @@
     <string name="crop_voice_quick_fill_desc">Speak crop name and area (e.g., \"Cotton 4 acres\" or \"कापूस ३ एकर\")</string>
     <string name="crop_voice_filled_toast">Voice recognized: %1$s</string>
     <string name="show_qr">Show QR</string>
+    <string name="onb1_badge">PRECISION AGRICULTURE</string>
+    <string name="onb1_title">Farm &amp; Crop Intelligence</string>
+    <string name="onb1_desc">Monitor plots, track crop lifecycles and get weather advisories tailored to your soil.</string>
+    <string name="onb2_badge">EDGE AI COMPUTER VISION</string>
+    <string name="onb2_title">AI Crop Residue Valuation</string>
+    <string name="onb2_desc">Snap crop residue to get instant quality grading and fair market price.</string>
+    <string name="onb3_badge">ZERO MIDDLEMEN TRADING</string>
+    <string name="onb3_title">Fair Bidding Marketplace</string>
+    <string name="onb3_desc">Connect directly with buyers. Compete bids with full escrow payment protection.</string>
+    <string name="onb4_badge">DISPATCH &amp; AUDIT VERIFICATION</string>
+    <string name="onb4_title">Smart Logistics &amp; Gatepass QR</string>
+    <string name="onb4_desc">Dispatch certified drivers and generate QR gatepasses for instant weighbridge clearance.</string>
 </resources>
