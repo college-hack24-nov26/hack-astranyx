@@ -18,6 +18,7 @@ import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
+import com.sktech.wastetrack.ui.screens.dashboard.DriverDashboardScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 
 @Composable
@@ -137,6 +138,16 @@ fun NavGraph(
             TransferScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.DriverDashboard.route) {
+            DriverDashboardScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToTransfers = {
+                    navController.navigate(Screen.Transfers.route)
                 }
             )
         }
