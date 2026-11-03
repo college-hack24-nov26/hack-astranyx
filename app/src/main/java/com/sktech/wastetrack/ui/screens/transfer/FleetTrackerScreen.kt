@@ -1,5 +1,7 @@
 package com.sktech.wastetrack.ui.screens.transfer
 
+import com.sktech.wastetrack.ui.components.IndustrialFleetMap
+
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
@@ -262,43 +264,24 @@ private fun FleetOperationsRadarCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(130.dp)
-                    .background(Color(0xFF1B2A1E))
+                    .height(230.dp)
             ) {
-                Canvas(modifier = Modifier.fillMaxSize()) {
-                    val w = size.width
-                    val h = size.height
-
-                    drawCircle(color = Color(0xFF2ECC71).copy(alpha = 0.12f), radius = h * 0.7f, center = Offset(w * 0.5f, h * 0.5f))
-                    drawCircle(color = Color(0xFF2ECC71).copy(alpha = 0.25f), radius = h * 0.4f, center = Offset(w * 0.5f, h * 0.5f))
-
-                    drawLine(
-                        color = Color.White.copy(alpha = 0.2f),
-                        start = Offset(w * 0.1f, h * 0.8f),
-                        end = Offset(w * 0.9f, h * 0.3f),
-                        strokeWidth = 4f,
-                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 8f), 0f)
-                    )
-
-                    drawCircle(color = Color(0xFF2ECC71), radius = 10f, center = Offset(w * 0.3f, h * 0.65f))
-                    drawCircle(color = Color(0xFFF1C40F), radius = 10f, center = Offset(w * 0.55f, h * 0.5f))
-                    drawCircle(color = Color(0xFF3498DB), radius = 10f, center = Offset(w * 0.75f, h * 0.38f))
-                }
-
-                Surface(
-                    color = Color.Black.copy(alpha = 0.65f),
-                    shape = RoundedCornerShape(20.dp),
-                    modifier = Modifier.padding(12.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(modifier = Modifier.size(8.dp).background(Color(0xFF2ECC71), CircleShape))
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text("REGIONAL RADAR ACTIVE", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                    }
-                }
+                IndustrialFleetMap(
+                    vehicleNumber = "MH-15-EG-4921",
+                    driverName = "Suresh Khairnar",
+                    driverPhone = "+91 98224 81920",
+                    originName = "Sinnar Agro Hub",
+                    destinationName = "Igatpuri MIDC Plant",
+                    originLat = 19.8500,
+                    originLon = 73.9900,
+                    destLat = 19.6936,
+                    destLon = 73.5558,
+                    speedKmh = 52,
+                    progressFraction = 0.58f,
+                    modifier = Modifier.fillMaxSize(),
+                    isInteractive = true,
+                    showDriverCard = false
+                )
             }
 
             Row(

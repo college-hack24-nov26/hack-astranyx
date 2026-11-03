@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -28,6 +29,7 @@ import com.sktech.wastetrack.ui.theme.*
 fun SettingsScreen(
     onNavigateBack: () -> Unit = {},
     onLogoutSuccess: () -> Unit = {},
+    onNavigateToAdmin: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -240,6 +242,54 @@ fun SettingsScreen(
                         Text("Local Persistence", style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
                         Text("Room SQLite Offline First", fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = HarvestGreen)
                     }
+                }
+            }
+
+            Text("Enterprise Administration", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onNavigateToAdmin() },
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Surface(
+                            shape = CircleShape,
+                            color = HarvestGreen.copy(alpha = 0.12f),
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Filled.AdminPanelSettings,
+                                    contentDescription = null,
+                                    tint = HarvestGreen,
+                                    modifier = Modifier.size(22.dp)
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column {
+                            Text("Platform Governance & Dispute Desk", fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+                            Text("Oversight, KYC verification & escrow mediation", style = MaterialTheme.typography.labelSmall, color = DarkTextSecondary)
+                        }
+                    }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        tint = DarkTextSecondary,
+                        modifier = Modifier.size(18.dp)
+                    )
                 }
             }
 
