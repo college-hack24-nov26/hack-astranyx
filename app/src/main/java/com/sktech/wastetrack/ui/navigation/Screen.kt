@@ -17,6 +17,7 @@ sealed class Screen(val route: String) {
     data object Bids : Screen("bids")
     data object Orders : Screen("orders")
     data object Transfers : Screen("transfers")
+    data object QRScan : Screen("qr_scan")
     data object DriverDashboard : Screen("driver_dashboard")
     data object FleetTracker : Screen("fleet_tracker")
     data object ShipmentTracking : Screen("shipment_tracking/{transferId}") {

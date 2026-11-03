@@ -26,6 +26,7 @@ import com.sktech.wastetrack.ui.screens.settings.SettingsScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
 import com.sktech.wastetrack.ui.screens.transfer.FleetTrackerScreen
+import com.sktech.wastetrack.ui.screens.transfer.QRScanScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
@@ -205,6 +206,16 @@ fun NavGraph(
                 },
                 onNavigateToFleet = {
                     navController.navigate(Screen.FleetTracker.route)
+                },
+                onNavigateToQRScan = {
+                    navController.navigate(Screen.QRScan.route)
+                }
+            )
+        }
+        composable(Screen.QRScan.route) {
+            QRScanScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
