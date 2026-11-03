@@ -1,229 +1,308 @@
-# AgriStock (WasteTrack) • Team AstraNyx
+# 🌾 AgriStock (WasteTrack) • Team AstraNyx
 
-[![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)](https://developer.android.com/)
-[![Language](https://img.shields.io/badge/Language-Kotlin%202.0-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/)
-[![UI](https://img.shields.io/badge/UI-Jetpack%20Compose%20M3-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
-[![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20MVI%2FMVVM-009688)](#system-architecture)
-[![DI](https://img.shields.io/badge/Dependency%20Injection-Dagger%20Hilt-F57C00)](https://dagger.dev/hilt/)
-[![Database](https://img.shields.io/badge/Local%20Storage-Room%20DB-2196F3)](https://developer.android.com/training/data-storage/room)
-[![Compliance](https://img.shields.io/badge/Regulatory-MPCB%20Form%2010%20%7C%20MNRE-2E7D32)](#mpcb-form-10-statutory-compliance)
+[![Hackathon](https://img.shields.io/badge/HACKATHON-PESCOE%20Hackathon%202K26-6366F1?style=for-the-badge&logo=codeforces&logoColor=white)](https://www.coephaltan.edu.in/hackathon2k26.html)
+[![Track](https://img.shields.io/badge/Track-Smart%20Agriculture%20%26%20Circular%20Economy-10B981?style=for-the-badge&logo=leaf&logoColor=white)](https://www.coephaltan.edu.in/hackathon2k26.html)
+[![Host Institute](https://img.shields.io/badge/Host-PESCOE%20Phaltan%20(DBATU)-DC2626?style=for-the-badge)](https://www.coephaltan.edu.in)
+[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B%20(API%2026--34)-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
+[![Language](https://img.shields.io/badge/Language-Kotlin%202.0-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org/)
+[![UI](https://img.shields.io/badge/UI-Jetpack%20Compose%20%26%20M3-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
+[![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20MVI%2FMVVM%20%2B%20Offline--First-059669?style=for-the-badge)](#-system-architecture--clean-data-pipeline)
+[![Compliance](https://img.shields.io/badge/Statutory-MPCB%20Form%2010%20%7C%20MNRE-2E7D32?style=for-the-badge)](#-mpcb-form-10-statutory-compliance--gst-manifests)
 
-> **AgriStock** is a multi-sided circular economy and agricultural waste monetization platform built for Maharashtra's agrarian heartland (Nashik, Sinnar, Niphad, Dindori, Igatpuri). It bridges farmers, industrial biomass buyers, logistics operators, and regulatory bodies to eliminate open-field stubble burning, streamline statutory MPCB environmental compliance, and ensure fair, escrow-protected payments.
-
----
-
-## Executive Summary & Problem Landscape
-
-In Maharashtra and Central India alone, over **28 Million Metric Tonnes** of crop residue (cotton stalks, sugarcane bagasse, soybean chaff, and wheat straw) are burned in open fields annually.
-
-```
-       [Open-Field Burning Crisis]
-  ┌─────────────────────────────────────┐
-  │  142 MT CO₂e avoided per 100 MT      │
-  │  PM2.5 / PM10 Severe Air Pollution   │
-  │  ₹15,000 / Acre NGT & MPCB Penalties │
-  │  Loss of Soil Microbial Biodiversity │
-  └──────────────────┬──────────────────┘
-                     │  Aggravated By
-                     ▼
-  ┌─────────────────────────────────────┐
-  │  Supply Chain Fragmentation:        │
-  │  • Lack of price transparency       │
-  │  • High rural transport cost        │
-  │  • Fear of buyer payment defaults   │
-  │  • Complex regulatory paperwork     │
-  └─────────────────────────────────────┘
-```
-
-Meanwhile, thermal power stations, briquette processors, and paper mills face acute biomass supply deficits to satisfy the **Ministry of New and Renewable Energy (MNRE)** mandatory 5% to 7% biomass co-firing mandate.
-
-**AgriStock** resolves this bottleneck through a verified 4-persona digital corridor.
+> 🌾 **AgriStock** is a multi-sided circular agritech operating system and digital biomass marketplace developed for **PESCOE · Hackathon 2K26** (Phaltan Education Society's College of Engineering, Phaltan). It connects rural farmers, industrial bio-refineries, logistics transporters, and regulatory boards across Maharashtra's agrarian belts (Satara, Phaltan, Nashik, Sinnar, Niphad) to eradicate open-field stubble burning, streamline statutory MPCB Form 10 manifests, enforce dual-weighbridge anti-fraud verification, and protect farmer payments via automated Smart Escrow contracts.
 
 ---
 
-## The 4-Persona System Architecture
+## 📑 Table of Contents
+
+1. [Executive Summary & Problem Landscape](#-executive-summary--problem-landscape)
+2. [Circular Agronomy Vision: "Someone's Waste is Someone's Diamond"](#-circular-agronomy-vision-someones-waste-is-someones-diamond)
+3. [The 4-Persona Architecture & System Workflows](#-the-4-persona-architecture--system-workflows)
+4. [Role & Contributor Distribution Matrix (Team AstraNyx)](#-role--contributor-distribution-matrix-team-astranyx)
+5. [3-Way Handshake Anti-Fraud Dispatch & Weighbridge Verification](#-3-way-handshake-anti-fraud-dispatch--weighbridge-verification)
+6. [Gate Lab Biomass Quality & Moisture Deduction Engine (IS 18134)](#-gate-lab-biomass-quality--moisture-deduction-engine-is-18134)
+7. [MPCB Form 10 Statutory Compliance & GST Manifests](#-mpcb-form-10-statutory-compliance--gst-manifests)
+8. [Edge AI Computer Vision & Kisan Conversational Copilot](#-edge-ai-computer-vision--kisan-conversational-copilot)
+9. [Farmland Parcel Registry & 7/12 Land Records](#-farmland-parcel-registry--712-land-records)
+10. [System Architecture & Clean Data Pipeline](#-system-architecture--clean-data-pipeline)
+11. [Technology Stack & Core Libraries](#-technology-stack--core-libraries)
+12. [Verification & Build Instructions](#-verification--build-instructions)
+13. [Hackathon Submission & Acknowledgements](#-hackathon-submission--acknowledgements)
+
+---
+
+## 🌾 Executive Summary & Problem Landscape
+
+In Maharashtra's agricultural corridors—from the sugarcane and dairy belts of **Phaltan & Satara** to the cotton, onion, and grape plains of **Nashik & Ahmednagar**—over **28 Million Metric Tonnes** of crop residue and agro-industrial biomass are generated annually:
+
+```
+┌────────────────────────────────────────┐        ┌────────────────────────────────────────┐
+│      Rural Agriculture Challenges      │        │       Ecological & Economic Loss       │
+├────────────────────────────────────────┤        ├────────────────────────────────────────┤
+│ • Stubble burning & seasonal ruin      │  ───►  │ • 142 MT CO₂e wasted per 100 MT        │
+│ • Local middleman cartel price-locking │        │ • ₹15,000 / Acre NGT & MPCB fines      │
+│ • Transit ballast & weighbridge fraud  │        │ • Acute boiler fuel deficits in plants │
+│ • Regulatory paperwork bottlenecks     │        │ • Buyer payment defaults on farmers    │
+└────────────────────────────────────────┘        └────────────────────────────────────────┘
+```
+
+1. **Open-Air Stubble Burning**: Post-harvest cotton stalks, wheat chaff, and uncrushed bagasse are burned in fields due to prohibitive collection and transport costs, causing severe air pollution and attracting penalties up to ₹15,000 per acre under the *Air (Prevention & Control of Pollution) Act*.
+2. **Industrial Supply Deficit**: Thermal power boilers, paper mills, and briquette manufacturers in MIDC corridors urgently need standardized agricultural biomass to satisfy the **Ministry of New and Renewable Energy (MNRE)** 5% to 7% biomass co-firing mandate.
+3. **Logistics & Quality Disputes**: Dispatched biomass consignments frequently suffer from moisture-laden weight manipulation, unverified weighbridge slips, and high silica contamination.
+4. **Payment Insecurity**: Smallholder farmers fear non-payment or delayed disbursements from corporate buyers.
+
+**AgriStock** resolves these challenges by introducing an end-to-end, verified transactional ecosystem powered by on-device computer vision, automated escrow settlements, dual weighbridge validation, and statutory compliance automation.
+
+---
+
+## ♻️ Circular Agronomy Vision: "Someone's Waste is Someone's Diamond"
+
+Agricultural byproducts possess high commercial value when connected to the appropriate industrial conversion stream:
+
+```mermaid
+graph TD
+    A["Harvested Agricultural Residue & Byproducts"] --> B{"AgriStock Edge AI Classification"}
+    
+    B -->|High-Cellulose Residue| C["Briquette & Bio-Coal Plants (Sinnar / Phaltan MIDC)"]
+    B -->|Sugarcane Bagasse & Tops| D["Co-Gen Boilers & Paper Refineries"]
+    B -->|Crushed Husks & Chaff| E["Thermal Power Biomass Co-Firing Feedstock"]
+    B -->|Organic Crop Scrap| F["Biogas, Methane Digesters & Organic Bio-Compost"]
+    
+    C --> G["Direct Farmer Bank Settlement + MPCB Form 10 Compliance Receipt"]
+    D --> G
+    E --> G
+    F --> G
+```
+
+* **Cotton Stalk Residue (Nashik/Sinnar)**: Gross Calorific Value (GCV) $\ge 3,900\text{ kcal/kg}$, replacing imported Indonesian steam coal.
+* **Sugarcane Bagasse (Phaltan/Satara)**: High-fiber biomass for co-generation boilers and biodegradable packaging.
+* **Soybean Chaff & Wheat Straw**: Raw substrate for compressed biomass briquettes, animal fodder pellets, and bio-fertilizer.
+
+---
+
+## 👥 The 4-Persona Architecture & System Workflows
+
+AgriStock enforces strict separation of concerns across 4 distinct operational personas:
 
 ```mermaid
 flowchart TD
-    subgraph Farmer["1. Farmer / FPO Desk"]
-        F1["Parcel Registry (7/12 Land Record)"]
-        F2["TFLite Residue Scanner"]
-        F3["Voice Audio Logging"]
+    subgraph FarmerDesk["1. Farmer / FPO Producer Desk"]
+        F1["Parcel Registry (7/12 Land Records)"]
+        F2["TFLite Crop Classifier (Sub-200ms)"]
+        F3["Voice Audio Residue Logger"]
         F4["Kisan AI Agronomic Copilot"]
-        F5["APMC Mandi Price Telemetry"]
+        F5["Live APMC Mandi Rates"]
     end
 
-    subgraph Industry["2. Industry Buyer / QA Desk"]
-        B1["Bidding & Procurement Market"]
-        B2["Smart Escrow Vault"]
+    subgraph BuyerDesk["2. Industry Buyer / QA Desk"]
+        B1["B2B Bidding Marketplace & Auctions"]
+        B2["Smart Escrow Deposit Vault"]
         B3["Gate Lab Quality Testing (IS 18134)"]
-        B4["MPCB Form 10 Digital Manifest"]
-        B5["GST Invoice & E-Way Bill Exporter"]
+        B4["MPCB Form 10 Regulatory Manifest"]
+        B5["GST Tax Invoice & E-Way Bill Generator"]
     end
 
-    subgraph Transporter["3. Transporter & Logistics Desk"]
-        T1["Corridor Fleet Radar & Telemetry"]
-        T2["CameraX MLKit QR Handshake"]
-        T3["Dual Weighbridge Gross-Tare Slip"]
-        T4["Moisture Content Penalty Engine"]
+    subgraph LogisticsDesk["3. Transporter & Fleet Logistics Desk"]
+        T1["Driver Dashboard & Route Telemetry"]
+        T2["Corridor Fleet Radar & Simulation"]
+        T3["CameraX MLKit QR Handshake"]
+        T4["Dual Weighbridge Gross-Tare Slip"]
+        T5["Dynamic Moisture Penalty Engine"]
     end
 
-    subgraph Core["4. Enterprise Core Services"]
-        C1["Biometric Authentication"]
-        C2["Room Local Cache Engine"]
-        C3["SHA-256 Digital Signatures"]
+    subgraph CoreServices["4. Enterprise Core Services"]
+        C1["Biometric Hardware Keystore"]
+        C2["Room Local Cache Engine (v17)"]
+        C3["SHA-256 Digital Manifest Signatures"]
     end
 
-    Farmer -->|Residue Lot Listings| B1
+    FarmerDesk -->|Lists Biomass Lot| B1
     B2 -->|Escrow Locked| T1
-    T2 -->|Consignment Handshake| B4
-    T3 -->|Certified Net Weight| B3
+    T3 -->|Pickup Handshake| B4
+    T4 -->|Certified Net Weight| B3
     B3 -->|Quality Clearance| B2
-    B2 -->|Escrow Payout Released| F1
+    B2 -->|Escrow Released to Farmer| F1
 ```
 
 ---
 
-## Role & Contributor Distribution Matrix
+## 🏆 Role & Contributor Distribution Matrix (Team AstraNyx)
 
-AgriStock was designed and delivered by **Team AstraNyx** with strict separation of concerns, domain-driven boundaries, and realistic GitFlow PR workflows:
+AgriStock was built by **Team AstraNyx** adhering to professional engineering practices, clean code conventions, domain-driven package structuring, and GitFlow pull request workflows:
 
-| Team Member | Engineering Role | GitHub Profile | Core Deliverables & Shipped Features |
+| Contributor | Engineering Role | GitHub Profile | Core Shipped Modules & Responsibilities |
 |:---|:---|:---|:---|
-| **Sumit Borase** | Team Lead / System Architect | [`sumitborse63`](https://github.com/sumitborse63) | • App Architecture, Navigation Graph & Theme Design<br>• Biometric Authentication & Session Vault<br>• Farmer Dashboard & Crop Cycle Management<br>• TensorFlow Lite Crop Residue Classifier<br>• Farmland Parcel Registry & 7/12 Survey Tracker<br>• Kisan Conversational AI Assistant & Agronomic Copilot |
-| **Kasturi Shinde** | Industry Buyer & Compliance Lead | [`KasturiShinde03`](https://github.com/KasturiShinde03) | • Buyer/Recycler Industrial Dashboard<br>• Bidding Marketplace & Auction Procurement Desk<br>• Smart Contract Escrow Order Vault<br>• MPCB Hazardous/Bio-waste Form 10 Compliance Engine<br>• GST Biomass Tax Invoice & Gatepass Manifest Exporter<br>• Gate Lab Biomass Quality (IS 18134 GCV) & Moisture Audit |
-| **Harshita Thakur** | Transporter & Fleet Logistics Lead | [`Harsita-thakur`](https://github.com/Harsita-thakur) | • Transporter & Driver Telemetry Dashboard<br>• Real-time Fleet Radar & Corridor Route Simulation<br>• CameraX ML Kit Consignment QR Scanner Handshake<br>• Dual Weighbridge Gross-Tare Slip Generator<br>• Dynamic Moisture Deduction Engine ($>12\%$ threshold) |
-| **Harshal Suryawanshi** | AI, Speech & Onboarding Specialist | [`harshal385`](https://github.com/harshal385) | • Multi-lingual Voice Residue Audio Logger<br>• Enterprise Onboarding Carousel with Custom Agricultural Photography<br>• Kisan AI Voice Query & Regional Dialect Support |
+| **Sumit Borase** | Team Lead / System Architect | [`@sumitborse63`](https://github.com/sumitborse63) | • System Architecture, Material 3 Theme & NavGraph<br>• Biometric Authentication & Session Keystore<br>• Farmer Dashboard & Crop Cycle Management<br>• TensorFlow Lite MobileNet Residue Classifier<br>• Farmland Parcel Registry & 7/12 Survey Tracker<br>• Kisan Conversational AI Assistant & Agronomic Copilot |
+| **Kasturi Shinde** | Industry Buyer & Compliance Lead | [`@KasturiShinde03`](https://github.com/KasturiShinde03) | • Industrial Buyer & Recycler Console<br>• B2B Bidding Marketplace & Auction Procurement Desk<br>• Smart Contract Escrow Order Vault<br>• MPCB Hazardous/Bio-waste Form 10 Compliance Engine<br>• GST Biomass Tax Invoice & Gatepass Manifest Exporter<br>• Gate Lab Biomass Quality (IS 18134 GCV) & Moisture Audit |
+| **Harshita Thakur** | Transporter & Fleet Logistics Lead | [`@Harsita-thakur`](https://github.com/Harsita-thakur) | • Transporter & Driver Telemetry Dashboard<br>• Corridor Fleet Radar & Real-Time Route Simulation<br>• CameraX ML Kit Optical QR Handshake Scanner<br>• Dual Weighbridge Gross-Tare Slip Generator<br>• Moisture Content Deduction Engine ($>12\%$ threshold) |
+| **Harshal Suryawanshi** | AI, Speech & Onboarding Specialist | [`@harshal385`](https://github.com/harshal385) | • Multilingual Voice Residue Audio Logger<br>• Production Onboarding Carousel with Custom Agricultural Photography<br>• Regional Dialect Integration & Illiterate Accessibility |
 
 ---
 
-## End-to-End Escrow & Inspection Lifecycle
+## 🤝 3-Way Handshake Anti-Fraud Dispatch & Weighbridge Verification
+
+To eliminate transit theft, scrap ballast padding, and phantom drop-offs:
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Farmer as Farmer (Sinnar FPO)
-    actor Transporter as Logistics Driver
-    actor Buyer as Industry Buyer (Igatpuri Plant)
+    actor Farmer as Farmer (Source)
+    actor Driver as Logistics Driver
+    actor Buyer as Industry Buyer (Plant Gate)
     participant Escrow as Smart Escrow Vault
-    participant Gate as Factory Weighbridge & Lab
+    participant Weighbridge as Dual Weighbridge & Lab
 
-    Farmer->>Buyer: List 45 MT Cotton Residue (Lot 092)
+    Farmer->>Buyer: List Lot (e.g. 45 MT Cotton Residue)
     Buyer->>Escrow: Lock 100% Consignment Funds (₹1,26,000)
-    Escrow-->>Farmer: Notification: Escrow Secured
-    Transporter->>Farmer: Arrive at Farm & Scan Gatepass QR
-    Farmer->>Transporter: Dispatch Consignment (CameraX Handshake)
-    Transporter->>Gate: Arrive at Factory & Weigh Gross (52,400 kg)
-    Gate->>Gate: Draw Sample: Halogen Moisture & GCV Test
-    alt Moisture <= 12% & GCV >= 3800 kcal/kg
-        Gate->>Buyer: Grade A (Premium) - No Penalty
+    Escrow-->>Farmer: Notification: Escrow Locked & Secure
+    Driver->>Farmer: Arrive at Farm & Present Dispatch Token
+    Farmer->>Driver: Scan Consignment QR (CameraX Handshake)
+    Driver->>Weighbridge: Arrive at Factory Gate & Weigh Gross (52,400 kg)
+    Weighbridge->>Weighbridge: Test Lab Sample: Moisture % & GCV Energy
+    alt Moisture <= 12%
+        Weighbridge->>Buyer: Grade A Premium (0% Deduction)
     else Moisture between 12.1% and 15%
-        Gate->>Buyer: Grade C - 5% Moisture Weight Penalty Deducted
+        Weighbridge->>Buyer: Grade C (5% Moisture Weight Penalty Deducted)
     end
-    Transporter->>Gate: Weigh Empty Vehicle Tare (14,200 kg)
-    Gate->>Escrow: Verify Net Certified Weight & Authorize Clearance
-    Escrow->>Farmer: Instant Direct Bank Payout Released
-    Buyer->>Farmer: MPCB Form 10 Digital Receipt Generated
+    Driver->>Weighbridge: Weigh Empty Truck Tare (14,200 kg)
+    Weighbridge->>Escrow: Certified Net Weight Recorded & Quality Verified
+    Escrow->>Farmer: Automated Payout Disbursed to Farmer Bank
+    Buyer->>Farmer: Digital MPCB Form 10 & Tax Invoice Issued
 ```
 
 ---
 
-## Key Modules & Technical Implementation
+## 🔬 Gate Lab Biomass Quality & Moisture Deduction Engine (IS 18134)
 
-### 1. Farmland Parcel Registry & 7/12 Survey Tracker
-* Integrated cadastral parcel tracking (`FarmlandParcel`, `SurveyNumber`, `GatNumber`).
-* Maharashtra Land Revenue Code compliance: validates agricultural land use, geo-coordinates, and annual stubble non-burning declarations before listing biomass.
+When biomass consignments reach the factory gate, the buyer conducts sample proximate analysis before releasing escrow funds:
 
-### 2. CameraX & Google ML Kit QR Consignment Handshake
-* Zero-latency optical gatepass scanning with fallback entry.
-* Cryptographically matches `ConsignmentManifest` tokens between Farmer pickup and Factory gate arrival.
-
-### 3. Gate Lab Quality & Moisture Deduction Engine (IS 18134)
-* Proximate Analysis calculator for boiler fuel acceptance:
-  * **Gross Calorific Value (GCV):** 3,400 – 4,400 kcal/kg standard.
-  * **Moisture Content Analyzer:** Real-time weight deduction for moisture above the 12.0% threshold.
-  * **Ash & Silica Content:** Boiler slagging prevention audits ($<5\%$).
-* SHA-256 digital certificate generation with verifiable audit hashes.
-
-### 4. MPCB Form 10 Statutory Compliance & GST Invoicing
-* Generates statutory hazardous and agricultural residue consignment manifests in accordance with Maharashtra Pollution Control Board (MPCB) regulations.
-* Automated HSN Code mapping (HSN 1213 cereal chaff, HSN 1404 biomass pellets, HSN 2308 bagasse) with CGST, SGST, IGST, and TCS computation.
-
-### 5. Kisan AI Agronomic Copilot
-* Embedded conversational AI agent answering farmer queries on:
-  * Daily APMC mandi rates across Nashik district.
-  * MPCB & NGT open burning legal penalties.
-  * Moisture reduction field drying techniques.
-  * Pink bollworm pest eradication through post-harvest stalk shredding.
+* **Gross Calorific Value (GCV)**: Bomb-calorimetry energy rating measured in `kcal/kg` (Standard: 3,400 – 4,400 kcal/kg).
+* **Moisture Content Analyzer**: Real-time deduction algorithm:
+  * **$\le 12.0\%$ (Grade A Premium)**: 0% penalty, full payout released.
+  * **$12.1\% \text{ to } 14.0\%$ (Grade B Standard)**: 2% moisture adjustment.
+  * **$14.1\% \text{ to } 16.0\%$ (Grade C Penalty)**: 5% weight deduction applied to escrow payout.
+  * **$> 16.0\%$ or Ash $> 8.0\%$**: Consignment rejected to protect industrial boilers from clinkering.
+* **Digital Audit Stamp**: Every certificate is sealed with a unique SHA-256 cryptographic digest.
 
 ---
 
-## Technology Stack
+## 📜 MPCB Form 10 Statutory Compliance & GST Manifests
+
+* **Maharashtra Pollution Control Board (MPCB) Form 10 Manifest**: Automatically generates legally required transit manifests under the *Hazardous & Other Wastes (Management & Transboundary Movement) Rules*.
+* **HSN Code Tax Mapping**:
+  * **HSN 1213**: Cereal straw and husks, unprepared.
+  * **HSN 1404**: Vegetable materials used primarily as biomass fuel.
+  * **HSN 2308**: Sugarcane bagasse and agro-industrial waste.
+* **Vector PDF Engine**: Renders print-ready A4 regulatory certificates and E-Way bill receipts natively using Android `PdfDocument`.
+
+---
+
+## 🤖 Edge AI Computer Vision & Kisan Conversational Copilot
+
+### 1. Multi-Modal Edge AI Scanner (`CropClassifier.kt`)
+* **Sub-200ms Inference**: Runs completely offline on low-cost Android field hardware using quantized TensorFlow Lite models.
+* **Automated Waste Segregation**: Distinguishes dry fibrous biomass from wet organic spoilage and calculates degradation index and shelf life.
+
+### 2. Kisan AI Agronomic Copilot (`AgentScreen.kt` & `AgentViewModel.kt`)
+* Embedded agronomic intelligence answering farmer questions:
+  * Daily APMC mandi rates across Nashik, Sinnar, and Phaltan markets.
+  * MPCB and NGT open burning legal penalties and alternative subsidies.
+  * Field sun-drying schedules to achieve $\le 12\%$ moisture threshold.
+  * Pink bollworm eradication protocols via post-harvest stalk shredding.
+
+---
+
+## 🗺️ Farmland Parcel Registry & 7/12 Land Records
+
+* **Cadastral Farm Parcel Mapping**: Registers agricultural parcels with Gat Numbers, Survey Numbers, and GPS polygon coordinates.
+* **7/12 Maharashtra Land Record Integration**: Validates land ownership, crop cultivation history, and legal non-burning compliance affidavits.
+
+---
+
+## 🏗️ System Architecture & Clean Data Pipeline
 
 ```
-Presentation Layer:
-├── 100% Jetpack Compose (BOM 2024.02.00)
-├── Material Design 3 (Dynamic Color & High-Contrast Ag-Palette)
-├── Jetpack Compose Navigation
-└── Compose Lifecycle & StateFlow
-
-Domain & Architecture:
-├── Clean Architecture (Presentation -> Domain -> Data)
-├── Repository Pattern with Reactive Kotlin Flow
-├── Unidirectional Data Flow (MVI/MVVM State Pattern)
-└── Dagger Hilt 2.51 (Full Compile-Time Dependency Injection)
-
-Data & Hardware Integration:
-├── Android Room Database 2.6 with SQLite
-├── CameraX 1.3 & Google ML Kit Barcode Scanning
-├── AndroidX Biometrics (Fingerprint & Face Authentication)
-├── Android Keystore Hardware Security
-└── Coroutines & Asynchronous Workflows
+┌─────────────────────────────────────────────────────────────────┐
+│                      Presentation Layer                         │
+│   Jetpack Compose UI • Material 3 Theming • CameraX & Voice     │
+│                            │                                    │
+│                     StateFlow / State                           │
+│                            ▼                                    │
+│                 Architecture ViewModels                         │
+│   (FarmerDashboardVM, RecyclerVM, DriverVM, AgentVM, etc.)      │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+┌────────────────────────────▼────────────────────────────────────┐
+│                        Domain Layer                             │
+│   Domain Models: CropCycle, Farm, Listing, Order, BiomassReport │
+│   Repository Interfaces: IAuthRepo, ICropRepo, IMarketRepo      │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+┌────────────────────────────▼────────────────────────────────────┐
+│                         Data Layer                              │
+│   Room Local SQLite DB (v17) ──► WorkManager Background Sync    │
+│   TFLite Neural Classifier   ──► ML Kit Optical Barcode Scanner │
+│   AndroidX Biometric Keystore──► Native PDF Vector Exporter     │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Verification & Build Instructions
+## 🛠️ Technology Stack & Core Libraries
+
+| Component | Technology | Version | Purpose |
+|:---|:---|:---|:---|
+| **Language** | Kotlin | `2.0.0` | Modern, type-safe Android development |
+| **UI Framework** | Jetpack Compose (BOM) | `2024.02.00` | Declarative UI with Material Design 3 |
+| **Architecture** | Clean + MVI/MVVM | — | Unidirectional data flow with StateFlow |
+| **Dependency Injection** | Dagger Hilt | `2.51` | Compile-time dependency injection |
+| **Local Database** | Room Database | `2.6.1` | Offline-first relational cache |
+| **Edge AI & Vision** | TensorFlow Lite & ML Kit | `2.16.1` / `17.0.9` | On-device crop recognition & QR decoding |
+| **Camera Pipeline** | AndroidX CameraX | `1.3.1` | Hardware-accelerated camera preview |
+| **Biometric Security** | AndroidX Biometric | `1.1.0` | Fingerprint and Face Unlock keystore |
+| **PDF Generation** | Android Native `PdfDocument` | Built-in | Vector A4 GST invoices & MPCB Form 10 |
+
+---
+
+## 🚀 Verification & Build Instructions
 
 ### Prerequisites
-* **Android Studio:** Iguana (2023.2.1) / Jellyfish or higher
-* **JDK:** Version 17 (recommended: Eclipse Temurin or Azul Zulu)
+* **Android Studio:** Iguana (2023.2.1) / Jellyfish or newer
+* **Java Development Kit:** JDK 17
 * **Android SDK:** Compile SDK 34, Min SDK 24, Target SDK 34
 
-### Building from Source
+### Compilation & Installation
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/college-hack24-nov26/hack-astranyx.git
 cd hack-astranyx
 
-# 2. Compile Kotlin codebase and run KSP code generators
+# 2. Verify compilation with Kotlin compiler & KSP
 ./gradlew compileDebugKotlin
 
 # 3. Assemble debug APK
 ./gradlew assembleDebug
 
-# 4. Install on connected physical device or AVD
+# 4. Install on connected Android device or AVD
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
 ---
 
-## Regulatory Alignment
+## 🏅 Hackathon Submission & Acknowledgements
 
-> [!NOTE]
-> AgriStock is mapped against the following statutory guidelines:
-> * **Air (Prevention and Control of Pollution) Act, 1981** & NGT Order 118/2013 on open-field residue combustion.
-> * **Maharashtra Pollution Control Board (MPCB)** Circular on Biomass Utilization for Industrial Energy.
-> * **Ministry of Power & MNRE Mandate** on 5-7% co-firing of agricultural residue pellets in coal thermal power plants.
-> * **SEBI BRSR (Business Responsibility and Sustainability Reporting)** Scope 3 agricultural decarbonization disclosures.
+* **Hackathon:** [**PESCOE · Hackathon 2K26**](https://www.coephaltan.edu.in/hackathon2k26.html)
+* **Organized By:** **Phaltan Education Society's College of Engineering, Phaltan (PESCOE)**
+* **Affiliation:** Dr. Babasaheb Ambedkar Technological University (DBATU), Lonere
+* **Strategic Associations:** Cummins India Foundation & Govind Milk and Milk Products
+* **Team Name:** **Team AstraNyx**
+* **Institution:** K. K. Wagh Institute of Engineering Education & Research, Nashik (Savitribai Phule Pune University)
+* **Target Agricultural Corridors:** Satara-Phaltan Sugar Belt, Nashik-Sinnar Cotton & Onion Cluster, Niphad Bio-Energy Basin
+* **License:** Apache License 2.0
 
 ---
 
-## Hackathon Submission Details
-
-* **Project Name:** AgriStock (WasteTrack)
-* **Team Name:** Team AstraNyx
-* **Event:** Inter-College Engineering Hackathon 2026
-* **Repository:** [`https://github.com/college-hack24-nov26/hack-astranyx`](https://github.com/college-hack24-nov26/hack-astranyx)
-* **License:** Apache License 2.0
+<div align="center">
+  <sub>Built with ❤️ by Team AstraNyx for PESCOE Hackathon 2K26 — Catalyzing circular bio-economy and clean air across Maharashtra.</sub>
+</div>
