@@ -28,6 +28,7 @@ import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
 import com.sktech.wastetrack.ui.screens.transfer.FleetTrackerScreen
 import com.sktech.wastetrack.ui.screens.transfer.QRScanScreen
+import com.sktech.wastetrack.ui.screens.transfer.QRGenerateScreen
 import com.sktech.wastetrack.ui.screens.transfer.WeighbridgeSlipScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
@@ -221,6 +222,9 @@ fun NavGraph(
             TransferScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToQRGenerate = { transferId ->
+                    navController.navigate(Screen.QRGenerate.createRoute(transferId))
                 }
             )
         }
@@ -243,11 +247,26 @@ fun NavGraph(
                 },
                 onNavigateToWeighbridge = {
                     navController.navigate(Screen.WeighbridgeSlips.route)
+                },
+                onNavigateToQRGenerate = { transferId ->
+                    navController.navigate(Screen.QRGenerate.createRoute(transferId))
                 }
             )
         }
         composable(Screen.QRScan.route) {
             QRScanScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(
+            route = Screen.QRGenerate.route,
+            arguments = listOf(navArgument("transferId") { type = NavType.StringType; defaultValue = "tr_001" })
+        ) { backStackEntry ->
+            val transferId = backStackEntry.arguments?.getString("transferId") ?: "tr_001"
+            QRGenerateScreen(
+                transferId = transferId,
                 onNavigateBack = {
                     navController.popBackStack()
                 }
