@@ -1,4 +1,4 @@
-# AgriStock (WasteTrack) - Team AstraNyx
+# AgriStock (Agri WasteTrack) - Team AstraNyx
 
 [![Hackathon](https://img.shields.io/badge/HACKATHON-PESCOE%20Hackathon%202K26-6366F1?style=for-the-badge&logo=codeforces&logoColor=white)](https://www.coephaltan.edu.in/hackathon2k26.html)
 [![Track](https://img.shields.io/badge/Track-Smart%20Agriculture%20%26%20Circular%20Economy-10B981?style=for-the-badge&logo=leaf&logoColor=white)](https://www.coephaltan.edu.in/hackathon2k26.html)
@@ -9,7 +9,7 @@
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20MVI%2FMVVM%20%2B%20Offline--First-059669?style=for-the-badge)](#system-architecture--data-pipeline)
 [![Compliance](https://img.shields.io/badge/Statutory-MPCB%20Form%2010%20%7C%20MNRE-2E7D32?style=for-the-badge)](#mpcb-form-10-compliance--gst-manifests)
 
-> **AgriStock** is an Android platform and digital biomass supply chain network built for **PESCOE Hackathon 2K26** (Phaltan Education Society's College of Engineering, Phaltan). It connects farmers, industrial biomass buyers, logistics transporters, and regulatory bodies across Maharashtra (Satara, Phaltan, Nashik, Sinnar, Niphad) to replace open-field crop residue burning with commercial biomass trade, streamline MPCB Form 10 compliance manifests, enforce dual-weighbridge anti-fraud verification, and automate escrow-secured farmer payments.
+> **AgriStock (Agri WasteTrack)** is an Android platform and digital biomass supply chain network built for **PESCOE Hackathon 2K26** (Phaltan Education Society's College of Engineering, Phaltan). It connects farmers, industrial biomass buyers, logistics transporters, and regulatory bodies across Maharashtra (Satara, Phaltan, Nashik, Sinnar, Niphad) to replace open-field crop residue burning with commercial biomass trade, streamline MPCB Form 10 compliance manifests, enforce dual-weighbridge anti-fraud verification, and automate escrow-secured farmer payments.
 
 ---
 
@@ -504,5 +504,5 @@ adb shell am start -n com.sktech.wastetrack/.MainActivity
 ---
 
 <div align="center">
-  <sub>Team AstraNyx • PESCOE Hackathon 2K26</sub>
+  <sub>Made with ❤️ by Team AstraNyx for PESCOE Hackathon 2K26</sub>
 </div>
