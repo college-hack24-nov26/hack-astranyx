@@ -20,6 +20,8 @@ import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
+import com.sktech.wastetrack.ui.screens.order.OrderListScreen
+import com.sktech.wastetrack.ui.screens.dashboard.RecyclerDashboardScreen
 import com.sktech.wastetrack.ui.screens.settings.SettingsScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
@@ -137,6 +139,32 @@ fun NavGraph(
             BidMarketScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                }
+            )
+        }
+        composable(Screen.Orders.route) {
+            OrderListScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToTracking = { transferId ->
+                    navController.navigate(Screen.ShipmentTracking.createRoute(transferId))
+                }
+            )
+        }
+        composable(Screen.RecyclerDashboard.route) {
+            RecyclerDashboardScreen(
+                onNavigateToMarket = {
+                    navController.navigate(Screen.Market.route)
+                },
+                onNavigateToBids = {
+                    navController.navigate(Screen.Bids.route)
+                },
+                onNavigateToTransfers = {
+                    navController.navigate(Screen.Transfers.route)
+                },
+                onNavigateToOrders = {
+                    navController.navigate(Screen.Orders.route)
                 }
             )
         }
