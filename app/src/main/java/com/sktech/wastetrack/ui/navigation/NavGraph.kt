@@ -37,6 +37,7 @@ import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
 import com.sktech.wastetrack.ui.screens.agent.AgentScreen
 import com.sktech.wastetrack.ui.screens.quality.BiomassQualityScreen
+import com.sktech.wastetrack.ui.screens.agroplan.CustomAgroPlanScreen
 
 @Composable
 fun NavGraph(
@@ -108,6 +109,9 @@ fun NavGraph(
                 },
                 onNavigateToESGDashboard = {
                     navController.navigate(Screen.ESGDashboard.route)
+                },
+                onNavigateToCustomAgroPlan = { farmId ->
+                    navController.navigate(Screen.CustomAgroPlan.createRoute(farmId))
                 }
             )
         }
@@ -363,6 +367,22 @@ fun NavGraph(
                     navController.navigate(Screen.Login.route) {
                         popUpTo(0) { inclusive = true }
                     }
+                }
+            )
+        }
+        composable(
+            route = Screen.CustomAgroPlan.route,
+            arguments = listOf(
+                navArgument("farmId") { type = NavType.StringType; defaultValue = "default_farm" },
+                navArgument("crop") { type = NavType.StringType; defaultValue = "Wheat" }
+            )
+        ) {
+            CustomAgroPlanScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToListingCreation = {
+                    navController.navigate(Screen.CreateListing.route)
                 }
             )
         }
