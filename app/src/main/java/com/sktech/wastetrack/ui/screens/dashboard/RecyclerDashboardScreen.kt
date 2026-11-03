@@ -33,6 +33,7 @@ fun RecyclerDashboardScreen(
     onNavigateToTransfers: () -> Unit = {},
     onNavigateToOrders: () -> Unit = {},
     onNavigateToInvoices: () -> Unit = {},
+    onNavigateToQuality: () -> Unit = {},
     viewModel: RecyclerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -124,6 +125,83 @@ fun RecyclerDashboardScreen(
         }
 
         item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onNavigateToQuality() },
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = DarkHarvestGreenContainer),
+                border = BorderStroke(1.dp, HarvestGreenSoft.copy(alpha = 0.35f))
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Surface(
+                            shape = CircleShape,
+                            color = HarvestGreenSoft.copy(alpha = 0.2f),
+                            modifier = Modifier.size(42.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Filled.Biotech,
+                                    contentDescription = "Gate Lab Quality",
+                                    tint = HarvestGreenSoft,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+                        Column {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Text(
+                                    text = "Gate Lab Quality & Moisture Audit",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp,
+                                    color = HarvestGreenSoft
+                                )
+                                Surface(
+                                    shape = RoundedCornerShape(4.dp),
+                                    color = HarvestGreen
+                                ) {
+                                    Text(
+                                        text = "IS 18134",
+                                        color = Color.White,
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "Calorific bomb test (GCV) & moisture penalty clearance",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = DarkTextSecondary
+                            )
+                        }
+                    }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        tint = HarvestGreenSoft,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+        }
+
+        item {
             Text(
                 text = "Procurement & Dispatch Metrics",
                 style = MaterialTheme.typography.titleMedium,
@@ -167,7 +245,7 @@ fun RecyclerDashboardScreen(
                     subtitle = "Awaiting farmer acceptance",
                     icon = Icons.Filled.Gavel,
                     color = SkyBlueLight,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f).clickable { onNavigateToBids() }
                 )
                 ProcurementCard(
                     title = "In Transit",
@@ -175,7 +253,7 @@ fun RecyclerDashboardScreen(
                     subtitle = "GPS live on corridor",
                     icon = Icons.Filled.LocalShipping,
                     color = HarvestGreenLight,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f).clickable { onNavigateToTransfers() }
                 )
             }
         }
@@ -194,9 +272,8 @@ fun RecyclerDashboardScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(categories) { cat ->
-                    val isSelected = state.selectedCategory == cat
                     FilterChip(
-                        selected = isSelected,
+                        selected = state.selectedCategory == cat,
                         onClick = { viewModel.selectCategory(cat) },
                         label = { Text(cat) },
                         colors = FilterChipDefaults.filterChipColors(
