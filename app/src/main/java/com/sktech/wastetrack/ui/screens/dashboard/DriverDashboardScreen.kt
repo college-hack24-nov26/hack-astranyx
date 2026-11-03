@@ -54,6 +54,7 @@ fun DriverDashboardScreen(
     onNavigateToTracking: (String) -> Unit = {},
     onNavigateToFleet: () -> Unit = {},
     onNavigateToQRScan: () -> Unit = {},
+    onNavigateToWeighbridge: () -> Unit = {},
     viewModel: DriverDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -75,6 +76,9 @@ fun DriverDashboardScreen(
                 actions = {
                     IconButton(onClick = onNavigateToQRScan) {
                         Icon(imageVector = Icons.Filled.QrCodeScanner, contentDescription = "Scan Gatepass", tint = HarvestGreen)
+                    }
+                    IconButton(onClick = onNavigateToWeighbridge) {
+                        Icon(imageVector = Icons.Filled.Scale, contentDescription = "Weighbridge Slips", tint = HarvestGreen)
                     }
                     IconButton(onClick = onNavigateToFleet) {
                         Icon(imageVector = Icons.Filled.LocalShipping, contentDescription = "Fleet Operations", tint = HarvestGreen)
@@ -164,26 +168,39 @@ fun DriverDashboardScreen(
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Button(
                         onClick = onNavigateToQRScan,
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen),
-                        shape = RoundedCornerShape(10.dp)
+                        shape = RoundedCornerShape(10.dp),
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.QrCodeScanner, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Scan Gatepass QR", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                        Icon(imageVector = Icons.Filled.QrCodeScanner, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Scan QR", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                    }
+                    Button(
+                        onClick = onNavigateToWeighbridge,
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = HarvestGreenDark),
+                        shape = RoundedCornerShape(10.dp),
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp)
+                    ) {
+                        Icon(imageVector = Icons.Filled.Scale, contentDescription = null, modifier = Modifier.size(16.dp), tint = GoldenWheatLight)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Scale Slips", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Color.White)
                     }
                     OutlinedButton(
                         onClick = onNavigateToFleet,
                         modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(10.dp)
+                        shape = RoundedCornerShape(10.dp),
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.LocalShipping, contentDescription = null, modifier = Modifier.size(18.dp), tint = HarvestGreen)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Fleet Radar", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                        Icon(imageVector = Icons.Filled.LocalShipping, contentDescription = null, modifier = Modifier.size(16.dp), tint = HarvestGreen)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Fleet", fontWeight = FontWeight.Bold, fontSize = 12.sp)
                     }
                 }
             }
