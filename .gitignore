@@ -12,7 +12,8 @@ google-services.json
 /.idea/
 .idea/
 .DS_Store
-/build
+build/
+**/build/
 /captures
 .externalNativeBuild
 .cxx
