@@ -1,17 +1,21 @@
 package com.sktech.wastetrack
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sktech.wastetrack.ui.navigation.BottomNavBar
 import com.sktech.wastetrack.ui.navigation.NavGraph
 import com.sktech.wastetrack.ui.navigation.Screen
 import com.sktech.wastetrack.ui.theme.WastetrackTheme
+import com.sktech.wastetrack.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,9 +25,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WastetrackTheme {
+                val context = LocalContext.current
+                val startDestination = remember {
+                    val prefs = context.getSharedPreferences("agristock_prefs", Context.MODE_PRIVATE)
+                    val onboardingCompleted = prefs.getBoolean("onboarding_completed", false)
+                    if (!onboardingCompleted) {
+                        Screen.Onboarding.route
+                    } else {
+                        val authPrefs = context.getSharedPreferences("wastetrack_prefs", Context.MODE_PRIVATE)
+                        val isLoggedIn = authPrefs.getBoolean(Constants.KEY_IS_LOGGED_IN, false)
+                        if (isLoggedIn) Screen.Dashboard.route else Screen.Login.route
+                    }
+                }
+
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route ?: Screen.Dashboard.route
+                val currentRoute = navBackStackEntry?.destination?.route ?: startDestination
                 val showBottomBar = currentRoute in listOf(
                     Screen.Dashboard.route,
                     Screen.RecyclerDashboard.route,
@@ -63,7 +80,7 @@ class MainActivity : ComponentActivity() {
                     NavGraph(
                         navController = navController,
                         innerPadding = innerPadding,
-                        startDestination = Screen.Dashboard.route
+                        startDestination = startDestination
                     )
                 }
             }
