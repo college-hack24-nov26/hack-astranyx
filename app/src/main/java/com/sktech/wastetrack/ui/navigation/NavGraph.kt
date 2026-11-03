@@ -5,11 +5,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.sktech.wastetrack.ui.screens.auth.LoginScreen
 import com.sktech.wastetrack.ui.screens.auth.SignUpScreen
 import com.sktech.wastetrack.ui.screens.crop.CropClassifyScreen
+import com.sktech.wastetrack.ui.screens.crop.CropCycleDetailScreen
+import com.sktech.wastetrack.ui.screens.crop.CropCycleListScreen
 import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
@@ -58,12 +62,43 @@ fun NavGraph(
         composable(Screen.Dashboard.route) {
             FarmerDashboardScreen(
                 onNavigateToCrops = {
-                    navController.navigate(Screen.CropClassify.route)
+                    navController.navigate(Screen.Crops.route)
                 },
                 onNavigateToMarket = {
                     navController.navigate(Screen.Market.route)
                 },
                 onNavigateToWeather = {}
+            )
+        }
+        composable(Screen.Crops.route) {
+            CropCycleListScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToCropDetail = { cycleId ->
+                    navController.navigate(Screen.CropDetail.createRoute(cycleId))
+                },
+                onNavigateToScanner = {
+                    navController.navigate(Screen.CropClassify.route)
+                }
+            )
+        }
+        composable(
+            route = Screen.CropDetail.route,
+            arguments = listOf(navArgument("cycleId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val cycleId = backStackEntry.arguments?.getString("cycleId") ?: ""
+            CropCycleDetailScreen(
+                cycleId = cycleId,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToScanner = {
+                    navController.navigate(Screen.CropClassify.route)
+                },
+                onNavigateToMarket = {
+                    navController.navigate(Screen.Market.route)
+                }
             )
         }
         composable(Screen.CropClassify.route) {
