@@ -10,6 +10,7 @@ sealed class Screen(val route: String) {
     data object CropDetail : Screen("crop_detail/{cycleId}") {
         fun createRoute(cycleId: String) = "crop_detail/$cycleId"
     }
+    data object CreateListing : Screen("create_listing")
     data object Market : Screen("market")
     data object Weather : Screen("weather")
     data object Settings : Screen("settings")
