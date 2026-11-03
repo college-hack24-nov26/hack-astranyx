@@ -8,6 +8,7 @@ sealed class Screen(val route: String) {
     data object RecyclerDashboard : Screen("recycler_dashboard")
     data object CropClassify : Screen("crop_classify")
     data object Crops : Screen("crops")
+    data object Farms : Screen("farms")
     data object CropDetail : Screen("crop_detail/{cycleId}") {
         fun createRoute(cycleId: String) = "crop_detail/$cycleId"
     }

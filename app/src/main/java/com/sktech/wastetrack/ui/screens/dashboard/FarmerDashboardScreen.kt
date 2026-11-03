@@ -34,6 +34,7 @@ fun FarmerDashboardScreen(
     onNavigateToWeather: () -> Unit = {},
     onNavigateToTransfers: () -> Unit = {},
     onNavigateToAnalytics: () -> Unit = {},
+    onNavigateToFarms: () -> Unit = {},
     viewModel: FarmerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -175,7 +176,7 @@ fun FarmerDashboardScreen(
                     icon = Icons.Filled.Terrain,
                     containerColor = SkyBlueContainer,
                     iconTint = SkyBlue,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f).clickable { onNavigateToFarms() }
                 )
             }
         }
