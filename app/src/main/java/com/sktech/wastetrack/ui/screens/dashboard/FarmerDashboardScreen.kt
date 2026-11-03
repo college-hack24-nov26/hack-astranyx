@@ -33,6 +33,7 @@ fun FarmerDashboardScreen(
     onNavigateToMarket: () -> Unit = {},
     onNavigateToWeather: () -> Unit = {},
     onNavigateToTransfers: () -> Unit = {},
+    onNavigateToAnalytics: () -> Unit = {},
     viewModel: FarmerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -237,6 +238,45 @@ fun FarmerDashboardScreen(
                     onClick = onNavigateToTransfers,
                     modifier = Modifier.weight(1f)
                 )
+            }
+        }
+
+        item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onNavigateToAnalytics() },
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.3f))
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Surface(
+                            shape = CircleShape,
+                            color = HarvestGreenLight.copy(alpha = 0.3f),
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(imageVector = Icons.Filled.Eco, contentDescription = null, tint = HarvestGreenDark, modifier = Modifier.size(22.dp))
+                            }
+                        }
+                        Column {
+                            Text("Carbon Offset & Revenue Ledger", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Text("142.8 MT CO?e avoided ? Mandi price trends", style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
+                        }
+                    }
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, tint = HarvestGreen, modifier = Modifier.size(18.dp))
+                }
             }
         }
 
