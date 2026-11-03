@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.sktech.wastetrack.ui.screens.auth.LoginScreen
 import com.sktech.wastetrack.ui.screens.auth.SignUpScreen
+import com.sktech.wastetrack.ui.screens.crop.CropClassifyScreen
 import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
 
@@ -55,9 +56,21 @@ fun NavGraph(
         }
         composable(Screen.Dashboard.route) {
             FarmerDashboardScreen(
-                onNavigateToCrops = {},
+                onNavigateToCrops = {
+                    navController.navigate(Screen.CropClassify.route)
+                },
                 onNavigateToMarket = {},
                 onNavigateToWeather = {}
+            )
+        }
+        composable(Screen.CropClassify.route) {
+            CropClassifyScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToMarket = {
+                    navController.popBackStack()
+                }
             )
         }
     }
