@@ -35,6 +35,7 @@ fun FarmerDashboardScreen(
     onNavigateToTransfers: () -> Unit = {},
     onNavigateToAnalytics: () -> Unit = {},
     onNavigateToFarms: () -> Unit = {},
+    onNavigateToAgent: () -> Unit = {},
     viewModel: FarmerDashboardViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -142,6 +143,85 @@ fun FarmerDashboardScreen(
                     TextButton(onClick = onNavigateToWeather) {
                         Text("Details", fontWeight = FontWeight.SemiBold, color = HarvestGreen)
                     }
+                }
+            }
+        }
+
+        item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onNavigateToAgent() },
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = HarvestGreenContainer
+                ),
+                border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.35f))
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Surface(
+                            shape = CircleShape,
+                            color = HarvestGreenDark,
+                            modifier = Modifier.size(42.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Filled.Psychology,
+                                    contentDescription = "Kisan AI Copilot",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+                        Column {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Text(
+                                    text = "Ask Kisan AI Assistant",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp,
+                                    color = HarvestGreenDark
+                                )
+                                Surface(
+                                    shape = RoundedCornerShape(4.dp),
+                                    color = HarvestGreenDark
+                                ) {
+                                    Text(
+                                        text = "AI COPILOT",
+                                        color = Color.White,
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp)
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "Mandi price rates, stubble guidelines & voice queries",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = DarkTextSecondary
+                            )
+                        }
+                    }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        tint = HarvestGreenDark,
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
             }
         }
@@ -273,7 +353,7 @@ fun FarmerDashboardScreen(
                         }
                         Column {
                             Text("Carbon Offset & Revenue Ledger", fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                            Text("142.8 MT CO?e avoided ? Mandi price trends", style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
+                            Text("142.8 MT CO₂e avoided • Mandi price trends", style = MaterialTheme.typography.bodySmall, color = DarkTextSecondary)
                         }
                     }
                     Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, tint = HarvestGreen, modifier = Modifier.size(18.dp))
