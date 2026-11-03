@@ -11,16 +11,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.sktech.wastetrack.ui.screens.auth.LoginScreen
 import com.sktech.wastetrack.ui.screens.auth.SignUpScreen
+import com.sktech.wastetrack.ui.screens.bid.BidMarketScreen
 import com.sktech.wastetrack.ui.screens.crop.CropClassifyScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleDetailScreen
 import com.sktech.wastetrack.ui.screens.crop.CropCycleListScreen
-import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.dashboard.DriverDashboardScreen
+import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
 import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
-import com.sktech.wastetrack.ui.screens.bid.BidMarketScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
 import com.sktech.wastetrack.ui.screens.onboarding.OnboardingScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
+import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 
 @Composable
 fun NavGraph(
@@ -71,7 +72,9 @@ fun NavGraph(
                 onNavigateToMarket = {
                     navController.navigate(Screen.Market.route)
                 },
-                onNavigateToWeather = {},
+                onNavigateToWeather = {
+                    navController.navigate(Screen.Weather.route)
+                },
                 onNavigateToTransfers = {
                     navController.navigate(Screen.Transfers.route)
                 }
@@ -156,6 +159,13 @@ fun NavGraph(
                 },
                 onNavigateToTransfers = {
                     navController.navigate(Screen.Transfers.route)
+                }
+            )
+        }
+        composable(Screen.Weather.route) {
+            WeatherDashboardScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
