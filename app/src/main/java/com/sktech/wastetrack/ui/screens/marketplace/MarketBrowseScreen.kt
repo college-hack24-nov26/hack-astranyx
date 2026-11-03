@@ -31,6 +31,7 @@ import com.sktech.wastetrack.ui.theme.*
 @Composable
 fun MarketBrowseScreen(
     onNavigateBack: () -> Unit = {},
+    onNavigateToDetail: (String) -> Unit = {},
     viewModel: MarketBrowseViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -105,7 +106,8 @@ fun MarketBrowseScreen(
                 items(filteredLots, key = { it.id }) { lot ->
                     MarketLotCard(
                         lot = lot,
-                        onBidClick = { viewModel.openBidSheet(lot) }
+                        onBidClick = { viewModel.openBidSheet(lot) },
+                        onDetailClick = { onNavigateToDetail(lot.id) }
                     )
                 }
             }
@@ -191,10 +193,11 @@ fun MarketBrowseScreen(
 @Composable
 private fun MarketLotCard(
     lot: ResidueMarketLot,
-    onBidClick: () -> Unit
+    onBidClick: () -> Unit,
+    onDetailClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onDetailClick() },
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
