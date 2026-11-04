@@ -33,6 +33,7 @@ import com.sktech.wastetrack.ui.screens.invoice.InvoiceHistoryScreen
 import com.sktech.wastetrack.ui.screens.settings.SettingsScreen
 import com.sktech.wastetrack.ui.screens.notifications.NotificationsScreen
 import com.sktech.wastetrack.ui.screens.payment.PaymentHistoryScreen
+import com.sktech.wastetrack.ui.screens.dealer.FindDealerScreen
 import com.sktech.wastetrack.ui.screens.transfer.TransferScreen
 import com.sktech.wastetrack.ui.screens.transfer.ShipmentTrackingScreen
 import com.sktech.wastetrack.ui.screens.transfer.FleetTrackerScreen
@@ -602,6 +603,14 @@ fun NavGraph(
                 },
                 onNavigateToInvoice = {
                     navController.navigate(Screen.Invoices.route)
+                }
+            )
+        }
+
+        composable(Screen.FindDealer.route) {
+            FindDealerScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
