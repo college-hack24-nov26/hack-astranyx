@@ -39,6 +39,7 @@ import java.util.Locale
 @Composable
 fun WeighbridgeSlipScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToScanner: () -> Unit = {},
     viewModel: WeighbridgeViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -81,6 +82,15 @@ fun WeighbridgeSlipScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onNavigateToScanner) {
+                        Icon(
+                            imageVector = Icons.Filled.DocumentScanner,
+                            contentDescription = "Scan Physical Slip",
+                            tint = HarvestGreen
                         )
                     }
                 },
