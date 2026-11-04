@@ -44,6 +44,8 @@ import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 import com.sktech.wastetrack.ui.screens.compliance.CertificateViewScreen
+import com.sktech.wastetrack.ui.screens.agroplan.CropRecommendationScreen
+import com.sktech.wastetrack.ui.screens.agroplan.CropPerformanceAssessmentScreen
 import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmDetailScreen
@@ -627,6 +629,60 @@ fun NavGraph(
                 certificateId = certId,
                 onNavigateBack = {
                     navController.popBackStack()
+                }
+            )
+        }
+
+        composable(
+            route = Screen.CropRecommendation.route,
+            arguments = listOf(
+                navArgument("farmId") {
+                    type = NavType.StringType
+                    defaultValue = "default_farm"
+                }
+            )
+        ) { backStackEntry ->
+            val farmId = backStackEntry.arguments?.getString("farmId") ?: "default_farm"
+            CropRecommendationScreen(
+                farmId = farmId,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToCropAssessment = { cropName ->
+                    navController.navigate(Screen.CropPerformance.createRoute(farmId = farmId, crop = cropName))
+                },
+                onNavigateToDirectSearch = {
+                    navController.navigate(Screen.CropPerformance.createRoute(farmId = farmId, crop = "Wheat"))
+                }
+            )
+        }
+
+        composable(
+            route = Screen.CropPerformance.route,
+            arguments = listOf(
+                navArgument("farmId") {
+                    type = NavType.StringType
+                    defaultValue = "default_farm"
+                },
+                navArgument("crop") {
+                    type = NavType.StringType
+                    defaultValue = "Wheat"
+                }
+            )
+        ) { backStackEntry ->
+            val farmId = backStackEntry.arguments?.getString("farmId") ?: "default_farm"
+            val crop = backStackEntry.arguments?.getString("crop") ?: "Wheat"
+            CropPerformanceAssessmentScreen(
+                farmId = farmId,
+                cropName = crop,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToAgroPlan = { selectedCrop ->
+                    navController.navigate(Screen.CustomAgroPlan.createRoute(farmId = farmId, crop = selectedCrop))
+                },
+                onNavigateToMarketTrends = {
+                    navController.navigate(Screen.Analytics.route)
                 }
             )
         }

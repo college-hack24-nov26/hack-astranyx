@@ -101,6 +101,7 @@ import java.util.Locale
 fun CustomAgroPlanScreen(
     onNavigateBack: () -> Unit = {},
     onNavigateToListingCreation: (String) -> Unit = {},
+    onNavigateToRecommendations: () -> Unit = {},
     viewModel: CustomAgroPlanViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -176,6 +177,13 @@ fun CustomAgroPlanScreen(
                         }
                     }
 
+                    IconButton(onClick = onNavigateToRecommendations) {
+                        Icon(
+                            imageVector = Icons.Filled.Eco,
+                            contentDescription = "Crop Recommendations",
+                            tint = HarvestGreen
+                        )
+                    }
                     IconButton(onClick = { viewModel.toggleReviseDialog(true) }) {
                         Icon(
                             Icons.Filled.EditNote,
