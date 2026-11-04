@@ -61,4 +61,7 @@ sealed class Screen(val route: String) {
     data object AddCropCycle : Screen("add_crop_cycle?farmId={farmId}") {
         fun createRoute(farmId: String = "") = "add_crop_cycle?farmId=$farmId"
     }
+    data object StubbleValorization : Screen("stubble_valorization?farmId={farmId}&crop={crop}") {
+        fun createRoute(farmId: String = "plot_1", crop: String = "Cotton") = "stubble_valorization?farmId=$farmId&crop=$crop"
+    }
 }
