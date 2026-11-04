@@ -66,4 +66,7 @@ sealed class Screen(val route: String) {
     }
     data object PaymentHistory : Screen("payment_history")
     data object FindDealer : Screen("find_dealer")
+    data object CertificateDetail : Screen("certificate_detail/{certId}") {
+        fun createRoute(certId: String = "cert_001") = "certificate_detail/$certId"
+    }
 }
