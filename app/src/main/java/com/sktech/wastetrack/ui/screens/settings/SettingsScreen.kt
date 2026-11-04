@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sktech.wastetrack.ui.theme.*
+import com.sktech.wastetrack.ui.biometric.BiometricStatusCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -159,6 +160,12 @@ fun SettingsScreen(
                     }
                 }
             }
+
+            BiometricStatusCard(
+                isEnabled = state.isBiometricEnabled,
+                isHardwareSupported = true,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
 
             Text("Preferences & Localization", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
 

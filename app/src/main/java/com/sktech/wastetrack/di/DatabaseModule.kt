@@ -3,6 +3,7 @@ package com.sktech.wastetrack.di
 import android.content.Context
 import androidx.room.Room
 import com.sktech.wastetrack.data.local.db.WasteTrackDatabase
+import com.sktech.wastetrack.data.local.db.dao.SyncQueueDao
 import com.sktech.wastetrack.data.local.db.dao.UserDao
 import dagger.Module
 import dagger.Provides
@@ -26,4 +27,7 @@ object DatabaseModule {
 
     @Provides
     fun provideUserDao(db: WasteTrackDatabase): UserDao = db.userDao()
+
+    @Provides
+    fun provideSyncQueueDao(db: WasteTrackDatabase): SyncQueueDao = db.syncQueueDao()
 }
