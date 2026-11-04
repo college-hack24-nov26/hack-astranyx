@@ -46,6 +46,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -80,6 +81,9 @@ import com.sktech.wastetrack.ui.theme.SkyBlueDark
 import com.sktech.wastetrack.ui.theme.WastetrackTheme
 import com.sktech.wastetrack.util.LocaleHelper
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
+
+private val onboardingBitmapCache = ConcurrentHashMap<String, ImageBitmap>()
 
 private data class OnboardingPageData(
     val title: String,
@@ -148,27 +152,49 @@ fun OnboardingScreen(
         onFinish()
     }
 
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
+            pages.forEach { page ->
+                if (!onboardingBitmapCache.containsKey(page.imageAsset)) {
+                    runCatching {
+                        context.assets.open("onboarding/${page.imageAsset}").use { stream ->
+                            BitmapFactory.decodeStream(stream)?.asImageBitmap()?.let { bmp ->
+                                onboardingBitmapCache[page.imageAsset] = bmp
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { pageIndex ->
             val page = pages[pageIndex]
-            val bitmap by produceState<ImageBitmap?>(initialValue = null, page.imageAsset) {
-                value = withContext(Dispatchers.IO) {
-                    runCatching {
-                        context.assets.open("onboarding/${page.imageAsset}").use { stream ->
-                            val options = BitmapFactory.Options().apply {
-                                inSampleSize = 2
-                            }
-                            BitmapFactory.decodeStream(stream, null, options)?.asImageBitmap()
+            val initialBmp = remember(page.imageAsset) { onboardingBitmapCache[page.imageAsset] }
+            val bitmap by produceState<ImageBitmap?>(initialValue = initialBmp, key1 = page.imageAsset) {
+                if (value == null) {
+                    value = withContext(Dispatchers.IO) {
+                        onboardingBitmapCache.getOrPut(page.imageAsset) {
+                            runCatching {
+                                context.assets.open("onboarding/${page.imageAsset}").use { stream ->
+                                    val options = BitmapFactory.Options().apply {
+                                        inSampleSize = 2
+                                    }
+                                    BitmapFactory.decodeStream(stream, null, options)?.asImageBitmap()
+                                }
+                            }.getOrNull() ?: return@withContext null
                         }
-                    }.getOrNull()
+                    }
                 }
             }
 
+            val currentBitmap = bitmap
             Box(modifier = Modifier.fillMaxSize()) {
-                val currentBitmap = bitmap
+
                 if (currentBitmap != null) {
                     Image(
                         bitmap = currentBitmap,
