@@ -42,6 +42,7 @@ import com.sktech.wastetrack.ui.screens.transfer.WeighbridgeSlipScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
+import com.sktech.wastetrack.ui.screens.compliance.CertificateViewScreen
 import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmDetailScreen
@@ -360,12 +361,12 @@ fun NavGraph(
             )
         }
         composable(Screen.Compliance.route) {
-            ESGDashboardScreen(
+            ComplianceScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 },
-                onNavigateToInvoices = {
-                    navController.navigate(Screen.Invoices.route)
+                onNavigateToCertificateDetail = { certId ->
+                    navController.navigate(Screen.CertificateDetail.createRoute(certId))
                 }
             )
         }
@@ -602,6 +603,22 @@ fun NavGraph(
                 },
                 onNavigateToInvoice = {
                     navController.navigate(Screen.Invoices.route)
+                }
+            )
+        }
+
+        composable(
+            route = Screen.CertificateDetail.route,
+            arguments = listOf(navArgument("certId") {
+                type = NavType.StringType
+                defaultValue = "cert_001"
+            })
+        ) { backStackEntry ->
+            val certId = backStackEntry.arguments?.getString("certId") ?: "cert_001"
+            CertificateViewScreen(
+                certificateId = certId,
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
