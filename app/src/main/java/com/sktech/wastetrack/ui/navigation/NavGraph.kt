@@ -42,6 +42,8 @@ import com.sktech.wastetrack.ui.screens.transfer.QRGenerateScreen
 import com.sktech.wastetrack.ui.screens.transfer.WeighbridgeSlipScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
+import com.sktech.wastetrack.ui.screens.analytics.CropPriceTrendScreen
+import com.sktech.wastetrack.ui.screens.analytics.FarmProfitLossScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 import com.sktech.wastetrack.ui.screens.compliance.CertificateViewScreen
 import com.sktech.wastetrack.ui.screens.agroplan.CropRecommendationScreen
@@ -364,6 +366,9 @@ fun NavGraph(
             AnalyticsScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToPriceTrends = {
+                    navController.navigate(Screen.CropPriceTrend.route)
                 }
             )
         }
@@ -695,6 +700,28 @@ fun NavGraph(
             LedgerScanScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                }
+            )
+        }
+
+        composable(Screen.CropPriceTrend.route) {
+            CropPriceTrendScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToPnL = {
+                    navController.navigate(Screen.FarmProfitLoss.route)
+                }
+            )
+        }
+
+        composable(Screen.FarmProfitLoss.route) {
+            FarmProfitLossScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToMandiTrends = {
+                    navController.navigate(Screen.CropPriceTrend.route)
                 }
             )
         }

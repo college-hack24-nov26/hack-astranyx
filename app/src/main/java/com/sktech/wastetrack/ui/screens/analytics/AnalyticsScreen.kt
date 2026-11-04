@@ -38,6 +38,7 @@ import java.util.Locale
 @Composable
 fun AnalyticsScreen(
     onNavigateBack: () -> Unit = {},
+    onNavigateToPriceTrends: () -> Unit = {},
     viewModel: AnalyticsViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -94,7 +95,7 @@ fun AnalyticsScreen(
             }
 
             item {
-                MandiPriceBenchmarkCard(benchmarks = state.mandiBenchmarks)
+                MandiPriceBenchmarkCard(benchmarks = state.mandiBenchmarks, onClick = onNavigateToPriceTrends)
             }
         }
     }
@@ -379,9 +380,12 @@ private fun CategoryBreakdownCard(shares: Map<String, Float>) {
 }
 
 @Composable
-private fun MandiPriceBenchmarkCard(benchmarks: List<com.sktech.wastetrack.ui.screens.analytics.MandiPriceBenchmark>) {
+private fun MandiPriceBenchmarkCard(
+    benchmarks: List<com.sktech.wastetrack.ui.screens.analytics.MandiPriceBenchmark>,
+    onClick: () -> Unit = {}
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
