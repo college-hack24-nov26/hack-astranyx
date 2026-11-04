@@ -3,43 +3,113 @@ package com.sktech.wastetrack.ui.screens.weather
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Grass
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Science
+import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sktech.wastetrack.domain.weather.model.CropSuitabilityEvaluation
-import com.sktech.wastetrack.ui.theme.*
+import com.sktech.wastetrack.domain.agro.CropSuitabilityItem
+import com.sktech.wastetrack.domain.agro.DynamicCropAdvisoryEngine
+import com.sktech.wastetrack.domain.model.Farm
+import com.sktech.wastetrack.domain.model.SoilProfile
+import com.sktech.wastetrack.domain.model.SoilType
+import com.sktech.wastetrack.domain.model.WaterSource
+import com.sktech.wastetrack.ui.theme.AgriDeepForest
+import com.sktech.wastetrack.ui.theme.GoldenWheatLight
+import com.sktech.wastetrack.ui.theme.HarvestGreen
+import com.sktech.wastetrack.ui.theme.HarvestGreenDark
+import com.sktech.wastetrack.ui.theme.WarningOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CropSuitabilityScreen(
+    farmId: String = "default_farm",
     onNavigateBack: () -> Unit,
-    onNavigateToValorization: (String) -> Unit = {},
-    onNavigateToAddCropCycle: () -> Unit = {},
-    viewModel: CropSuitabilityViewModel = hiltViewModel()
+    onSelectCropForCycle: (String) -> Unit = {},
+    viewModel: WeatherViewModel = hiltViewModel()
 ) {
-    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsState()
 
-    BackHandler(onBack = onNavigateBack)
+    BackHandler {
+        onNavigateBack()
+    }
+
+    val defaultFarm = remember(farmId) {
+        Farm(
+            id = farmId,
+            name = "Sinnar Agro Parcel 01",
+            surveyNumber = "SN-248/1A",
+            plotAreaAcres = 4.5,
+            soilType = SoilType.BLACK_COTTON,
+            waterSource = WaterSource.DRIP_IRRIGATION,
+            village = "Sinnar",
+            taluka = "Sinnar",
+            district = "Nashik",
+            latitude = 19.8512,
+            longitude = 73.9214
+        )
+    }
+
+    val defaultSoil = remember {
+        SoilProfile(
+            ph = 7.4,
+            nitrogen = 220.0,
+            phosphorus = 18.0,
+            potassium = 150.0,
+            organicCarbon = 0.65
+        )
+    }
+
+    val suitableCrops = remember(state.currentWeather) {
+        DynamicCropAdvisoryEngine.evaluateCropSuitability(
+            farm = defaultFarm,
+            soilProfile = defaultSoil,
+            weather = state.currentWeather
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -47,231 +117,100 @@ fun CropSuitabilityScreen(
                 title = {
                     Column {
                         Text(
-                            text = "Agro-Climatic Suitability Matrix",
-                            style = MaterialTheme.typography.titleMedium,
+                            text = "Crop Suitability Matrix",
+                            style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Machine Learning Soil N-P-K & Phenology Desk",
-                            style = MaterialTheme.typography.labelSmall,
+                            text = "Agro-Climatic Suitability & Nutrient Retention Desk",
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
+                actions = {
+                    IconButton(
+                        onClick = { viewModel.refreshWeather() },
+                        enabled = !state.isRefreshing
+                    ) {
+                        if (state.isRefreshing) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                color = HarvestGreen,
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Filled.Refresh,
+                                contentDescription = "Refresh",
+                                tint = HarvestGreen
+                            )
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             )
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { padding ->
+        }
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
+                .padding(innerPadding)
+                .background(MaterialTheme.colorScheme.background),
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
                 Surface(
-                    shape = RoundedCornerShape(18.dp),
-                    color = adaptiveHarvestContainer(),
-                    border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.35f)),
+                    shape = RoundedCornerShape(16.dp),
+                    color = HarvestGreen.copy(alpha = 0.12f),
+                    border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.4f)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                Icon(Icons.Filled.Grass, contentDescription = null, tint = HarvestGreenDark, modifier = Modifier.size(20.dp))
-                                Text(
-                                    text = "Agro-Climatic Baseline Telemetry",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = HarvestGreenDark
-                                )
-                            }
-                            Surface(
-                                shape = RoundedCornerShape(8.dp),
-                                color = HarvestGreen
-                            ) {
-                                Text(
-                                    text = "LIVE SENSORS",
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontSize = 10.sp,
-                                    color = Color.White,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-
-                        val hubs = listOf(
-                            "Sinnar Agro Hub",
-                            "Niphad Bio-Energy Corridor",
-                            "Igatpuri Agro-Climatic Belt",
-                            "Dindori Horticultural Zone"
-                        )
-
-                        LazyRow(
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            items(hubs) { hub ->
-                                val isSelected = state.selectedHub == hub
-                                Surface(
-                                    shape = RoundedCornerShape(10.dp),
-                                    color = if (isSelected) HarvestGreen else MaterialTheme.colorScheme.surface,
-                                    border = BorderStroke(1.dp, if (isSelected) HarvestGreen else MaterialTheme.colorScheme.outlineVariant),
-                                    modifier = Modifier.clickable { viewModel.selectHub(hub) }
-                                ) {
-                                    Text(
-                                        text = hub,
-                                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                                        style = MaterialTheme.typography.labelSmall,
-                                        fontWeight = FontWeight.Bold,
-                                        color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface,
-                                        fontSize = 11.sp
-                                    )
-                                }
-                            }
-                        }
-
-                        HorizontalDivider(color = HarvestGreen.copy(alpha = 0.2f))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Column {
-                                Text("Soil Classification", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
-                                Text(state.baseline.soilType, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
-                            }
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text("Soil pH", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
-                                Text("%.1f".format(state.baseline.soilPh), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = HarvestGreenDark)
-                            }
-                            Column(horizontalAlignment = Alignment.End) {
-                                Text("Organic Carbon", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
-                                Text("%.2f%%".format(state.baseline.organicCarbonPercent), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
-                            }
-                        }
-
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            color = MaterialTheme.colorScheme.surface,
-                            border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.25f)),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(10.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                Icon(Icons.Filled.WbSunny, contentDescription = null, tint = GoldenWheat, modifier = Modifier.size(18.dp))
-                                Column {
-                                    Text(
-                                        text = "Dew Radar & Optimal Baling Window",
-                                        style = MaterialTheme.typography.labelSmall,
-                                        fontWeight = FontWeight.Bold,
-                                        color = HarvestGreenDark
-                                    )
-                                    Text(
-                                        text = state.baseline.optimalBalingWindow,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        fontSize = 11.sp,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    val isNpkMode = state.showNpkRetentionMode
-                    Surface(
-                        shape = RoundedCornerShape(12.dp),
-                        color = if (!isNpkMode) HarvestGreen else MaterialTheme.colorScheme.surfaceVariant,
-                        border = BorderStroke(1.dp, if (!isNpkMode) HarvestGreen else MaterialTheme.colorScheme.outlineVariant),
-                        modifier = Modifier
-                            .weight(1f)
-                            .clickable { if (isNpkMode) viewModel.toggleNpkRetentionMode() }
-                    ) {
-                        Text(
-                            text = "Commercial Valorization",
-                            modifier = Modifier.padding(vertical = 10.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = if (!isNpkMode) Color.White else MaterialTheme.colorScheme.onSurface,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    Surface(
-                        shape = RoundedCornerShape(12.dp),
-                        color = if (isNpkMode) Teal else MaterialTheme.colorScheme.surfaceVariant,
-                        border = BorderStroke(1.dp, if (isNpkMode) Teal else MaterialTheme.colorScheme.outlineVariant),
-                        modifier = Modifier
-                            .weight(1f)
-                            .clickable { if (!isNpkMode) viewModel.toggleNpkRetentionMode() }
-                    ) {
-                        Text(
-                            text = "Soil N-P-K Retention",
-                            modifier = Modifier.padding(vertical = 10.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = if (isNpkMode) Color.White else MaterialTheme.colorScheme.onSurface,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-            }
-
-            item {
-                val seasons = listOf("ALL" to "All Seasons", "Kharif" to "Kharif Crops", "Rabi" to "Rabi Crops", "Annual" to "Annual Cash Crops")
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(seasons) { (key, label) ->
-                        val isSelected = state.selectedSeason == key
-                        FilterChip(
-                            selected = isSelected,
-                            onClick = { viewModel.selectSeason(key) },
-                            label = { Text(label, fontSize = 12.sp) },
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = HarvestGreen,
-                                selectedLabelColor = Color.White
+                            Icon(
+                                imageVector = Icons.Filled.Grass,
+                                contentDescription = null,
+                                tint = HarvestGreenDark
                             )
+                            Text(
+                                text = "Soil & Climate Agro-Met Baseline",
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = HarvestGreenDark
+                            )
+                        }
+                        Text(
+                            text = "Sinnar Agro Hub (Lat: 19.85N, Long: 73.92E). Medium Black Vertisol (pH 7.4). Organic Carbon 0.65%. Localized temperature: %.1f C, humidity: %d%%."
+                                .format(state.currentWeather.temperatureCelsius, state.currentWeather.humidityPercent),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
             }
 
-            items(state.filteredEvaluations, key = { it.cropName }) { evaluation ->
-                CropSuitabilityCard(
-                    evaluation = evaluation,
-                    showNpkMode = state.showNpkRetentionMode,
-                    onNavigateToValorization = { onNavigateToValorization(evaluation.cropName) },
-                    onNavigateToAddCropCycle = onNavigateToAddCropCycle
+            items(suitableCrops, key = { it.cropName }) { crop ->
+                SuitabilityCard(
+                    crop = crop,
+                    onStartCycle = { onSelectCropForCycle(crop.cropName) }
                 )
             }
         }
@@ -279,17 +218,16 @@ fun CropSuitabilityScreen(
 }
 
 @Composable
-private fun CropSuitabilityCard(
-    evaluation: CropSuitabilityEvaluation,
-    showNpkMode: Boolean,
-    onNavigateToValorization: () -> Unit,
-    onNavigateToAddCropCycle: () -> Unit
+private fun SuitabilityCard(
+    crop: CropSuitabilityItem,
+    onStartCycle: () -> Unit
 ) {
     Surface(
-        shape = RoundedCornerShape(18.dp),
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        modifier = Modifier.fillMaxWidth()
+        shadowElevation = 2.dp
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -298,158 +236,159 @@ private fun CropSuitabilityCard(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = evaluation.cropName,
+                        text = crop.cropName,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "${evaluation.categoryName}  |  Season: ${evaluation.season}",
+                        text = crop.categoryName + " (" + crop.season + " Season)",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
                 Surface(
-                    shape = RoundedCornerShape(10.dp),
-                    color = adaptiveHarvestContainer(),
-                    border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.35f))
+                    shape = RoundedCornerShape(8.dp),
+                    color = if (crop.suitabilityScore >= 90) HarvestGreen else GoldenWheatLight
                 ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Icon(Icons.Filled.Verified, contentDescription = null, tint = HarvestGreen, modifier = Modifier.size(16.dp))
-                        Text(
-                            text = "${evaluation.suitabilityScore}% SUITABLE",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = HarvestGreenDark,
-                            fontSize = 11.sp
-                        )
-                    }
+                    Text(
+                        text = "${crop.suitabilityScore}% Match",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = if (crop.suitabilityScore >= 90) Color.White else HarvestGreenDark,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
                 }
             }
 
-            if (!showNpkMode) {
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column {
-                            Text("Residue Volume", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
-                            Text("%.1f MT / Acre".format(evaluation.estimatedResidueMtPerAcre), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-                        }
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Est. Residue Revenue", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
-                            Text("₹%,.0f / Acre".format(evaluation.estimatedResidueRevenueInr), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.ExtraBold, color = HarvestGreenDark)
-                        }
-                        Column(horizontalAlignment = Alignment.End) {
-                            Text("Drying Sunlight", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
-                            Text(evaluation.dryingWindowHours, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold, fontSize = 10.sp)
-                        }
-                    }
+            Text(
+                text = crop.rationale,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                lineHeight = 18.sp
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text("Yield Potential", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(crop.expectedYield, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                 }
-            } else {
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = adaptiveTealContainer(),
-                    border = BorderStroke(1.dp, Teal.copy(alpha = 0.3f)),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(
-                        modifier = Modifier.padding(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        Text(
-                            text = "Soil Mineral Recovery via Mulching / Biochar Pyrolysis:",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = TealDark
-                        )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Column {
-                                Text("Nitrogen (N)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
-                                Text("%.1f kg / Acre".format(evaluation.soilNitrogenRetentionKg), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = HarvestGreenDark)
-                            }
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text("Phosphorus (P)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
-                                Text("%.1f kg / Acre".format(evaluation.soilPhosphorusRetentionKg), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = WarningOrange)
-                            }
-                            Column(horizontalAlignment = Alignment.End) {
-                                Text("Potassium (K)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
-                                Text("%.1f kg / Acre".format(evaluation.soilPotassiumRetentionKg), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = SkyBlueDark)
-                            }
-                        }
-                    }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text("Residue Value", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(crop.residueValue, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = HarvestGreenDark)
                 }
             }
 
             Surface(
                 shape = RoundedCornerShape(10.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
+                color = HarvestGreen.copy(alpha = 0.08f),
+                border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.25f)),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Row(
+                Column(
                     modifier = Modifier.padding(10.dp),
-                    verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Icon(Icons.Filled.Psychology, contentDescription = null, tint = HarvestGreenDark, modifier = Modifier.size(16.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Science,
+                            contentDescription = null,
+                            tint = HarvestGreenDark,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = "Soil N-P-K Retention & Biochar Balance",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = HarvestGreenDark
+                        )
+                    }
                     Text(
-                        text = evaluation.rationale,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 11.sp,
-                        lineHeight = 15.sp
+                        text = "Nitrogen (N): ${crop.nitrogenRetentionKg} kg/Acre | Phosphorus (P): ${crop.phosphorusRetentionKg} kg/Acre | Potassium (K): ${crop.potassiumRetentionKg} kg/Acre",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = "Biochar carbon abatement: ${crop.biocharCarbonRetainedMt} MT CO2e avoided from open stubble burn.",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = HarvestGreenDark
                     )
                 }
             }
 
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Surface(
+                shape = RoundedCornerShape(10.dp),
+                color = GoldenWheatLight.copy(alpha = 0.2f),
+                border = BorderStroke(1.dp, GoldenWheatLight.copy(alpha = 0.5f)),
+                modifier = Modifier.fillMaxWidth()
             ) {
-                OutlinedButton(
-                    onClick = onNavigateToValorization,
-                    modifier = Modifier.weight(1f).height(40.dp),
-                    shape = RoundedCornerShape(10.dp)
+                Row(
+                    modifier = Modifier.padding(10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(Icons.Filled.AccountBalanceWallet, contentDescription = null, modifier = Modifier.size(15.dp))
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Valorization Desk", fontSize = 11.sp)
+                    Icon(
+                        imageVector = Icons.Filled.WbSunny,
+                        contentDescription = null,
+                        tint = AgriDeepForest,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = "Solar Drying Window: " + crop.dryingWindowHours + " (Target < 14% baling moisture)",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AgriDeepForest,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
+            }
 
-                Button(
-                    onClick = onNavigateToAddCropCycle,
-                    modifier = Modifier.weight(1f).height(40.dp),
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen)
+            crop.caveat?.let { cav ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(15.dp))
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Plant Crop Cycle", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Icon(
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = null,
+                        tint = WarningOrange,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Text(
+                        text = cav,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
+            }
+
+            Button(
+                onClick = onStartCycle,
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = HarvestGreenDark),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text("Start Crop Cycle with this Variety", fontWeight = FontWeight.Bold)
             }
         }
     }
 }
-

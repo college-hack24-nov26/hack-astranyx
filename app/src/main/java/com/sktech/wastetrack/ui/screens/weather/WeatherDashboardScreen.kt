@@ -53,7 +53,7 @@ fun WeatherDashboardScreen(
                 },
                 actions = {
                     IconButton(onClick = onNavigateToCropSuitability) {
-                        Icon(imageVector = Icons.Filled.Eco, contentDescription = "Agro Suitability", tint = HarvestGreen)
+                        Icon(imageVector = Icons.Filled.Agriculture, contentDescription = "Agro Suitability", tint = HarvestGreen)
                     }
                     IconButton(onClick = { viewModel.refreshWeather() }) {
                         Icon(imageVector = Icons.Filled.Refresh, contentDescription = "Refresh", tint = HarvestGreen)

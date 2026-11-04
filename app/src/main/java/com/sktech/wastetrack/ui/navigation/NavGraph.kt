@@ -694,20 +694,21 @@ fun NavGraph(
 
         composable(
             route = Screen.CropSuitability.route,
-            arguments = listOf(navArgument("hub") {
-                type = NavType.StringType
-                defaultValue = "Sinnar Agro Hub"
-            })
-        ) {
+            arguments = listOf(
+                navArgument("farmId") {
+                    type = NavType.StringType
+                    defaultValue = "default_farm"
+                }
+            )
+        ) { backStackEntry ->
+            val farmId = backStackEntry.arguments?.getString("farmId") ?: "default_farm"
             CropSuitabilityScreen(
+                farmId = farmId,
                 onNavigateBack = {
                     navController.popBackStack()
                 },
-                onNavigateToValorization = { crop ->
-                    navController.navigate(Screen.StubbleValorization.createRoute(crop = crop))
-                },
-                onNavigateToAddCropCycle = {
-                    navController.navigate(Screen.AddCropCycle.createRoute())
+                onSelectCropForCycle = { cropName ->
+                    navController.navigate(Screen.AddCropCycle.createRoute(farmId))
                 }
             )
         }
