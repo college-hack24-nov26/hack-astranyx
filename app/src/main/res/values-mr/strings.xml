@@ -2424,4 +2424,53 @@
     <string name="onb4_badge">डिस्पॅच आणि ऑडिट सत्यापन</string>
     <string name="onb4_title">स्मार्ट लॉजिस्टिक्स आणि गेटपास QR</string>
     <string name="onb4_desc">प्रमाणित चालक पाठवा आणि वेब्रिज क्लिअरन्ससाठी QR गेटपास तयार करा.</string>
+
+    <!-- Farmer Onboarding Tutorial & Spotlight Walkthrough -->
+    <string name="farmer_welcome_title">नमस्कार, %1$s!</string>
+    <string name="farmer_welcome_subtitle">तुमचा स्मार्ट डिजिटल कृषी सहाय्यक</string>
+    <string name="farmer_welcome_desc">पिकांच्या अवशेषांचे योग्य मूल्य मिळवा, पेरणीपासून कापणीपर्यंत देखरेख ठेवा आणि थेट प्रमाणित खरेदीदारांशी व्यवहार करा.</string>
+    <string name="farmer_welcome_feat_1">AI पीक अवशेष मूल्यांकन</string>
+    <string name="farmer_welcome_feat_1_desc">कॅमेऱ्याने अवशेषांचा फोटो काढून प्रत, ओलावा आणि बाजारभाव त्वरित जाणून घ्या.</string>
+    <string name="farmer_welcome_feat_2">थेट मंडी भाव आणि सुरक्षित लिलाव</string>
+    <string name="farmer_welcome_feat_2_desc">कोणत्याही मध्यस्थाशिवाय थेट खरेदीदारांकडून बोली आणि सुरक्षित बँक पेमेंट मिळवा.</string>
+    <string name="farmer_welcome_feat_3">हवामान अंदाज आणि अचूक कृषी सल्ला</string>
+    <string name="farmer_welcome_feat_3_desc">पावसाचे अंदाज, फवारणी सूचना आणि मातीनुसार खतांचे योग्य वेळापत्रक मिळवा.</string>
+    <string name="start_farmer_tour">१-मिनिट मार्गदर्शन पहा</string>
+    <string name="skip_tour">थेट ॲप वापरा</string>
+    <string name="farmer_welcome_tts">नमस्कार! AgriStock मध्ये आपले स्वागत आहे. ॲप कसे वापरावे हे पाहण्यासाठी मार्गदर्शन बटण दाबा.</string>
+
+    <string name="tutorial_step_counter">पायरी %1$d / %2$d</string>
+    <string name="tutorial_listen">ऐका</string>
+    <string name="tutorial_stop_audio">थांबवा</string>
+    <string name="tutorial_next">पुढे</string>
+    <string name="tutorial_finish">समजले</string>
+    <string name="tutorial_previous">मागे</string>
+    <string name="tutorial_skip">मार्गदर्शन वगळा</string>
+    <string name="tutorial_replay">ॲप मार्गदर्शन</string>
+    <string name="cd_tutorial_replay">ॲपचे मार्गदर्शन पुन्हा पहा</string>
+
+    <!-- Step 1: Weather & AgroPlan -->
+    <string name="tutorial_step1_title">हवामान अंदाज आणि कृषी सल्ला</string>
+    <string name="tutorial_step1_desc">स्थानिक पावसाचा अंदाज, तापमान आणि तुमच्या मातीसाठी तयार केलेले खतांचे वेळापत्रक तपासा.</string>
+    <string name="tutorial_step1_audio">पायरी १: तुमच्या भागातील हवामानाचा अचूक अंदाज आणि खतांचे नियोजन येथे तपासा.</string>
+
+    <!-- Step 2: AI Scanner -->
+    <string name="tutorial_step2_title">AI पीक अवशेष स्कॅनर</string>
+    <string name="tutorial_step2_desc">पिकांच्या अवशेषांचा फोटो काढून गुणवत्ता, ओलावा आणि अंदाजे विक्री मूल्य त्वरित जाणून घ्या.</string>
+    <string name="tutorial_step2_audio">पायरी २: कॅमेऱ्याने तुमच्या शेतातील पिकांच्या अवशेषांचा फोटो काढा आणि योग्य किंमत मिळवा.</string>
+
+    <!-- Step 3: Crops & Plots -->
+    <string name="tutorial_step3_title">पिके आणि शेत नोंदणी</string>
+    <string name="tutorial_step3_desc">तुमचे शेत आणि पिके जोडा. पेरणीपासून ते कापणीपर्यंत वाढीची अवस्था व खतांचे नियोजन सांभाळा.</string>
+    <string name="tutorial_step3_audio">पायरी ३: तुमची नवीन पिके आणि शेताची माहिती येथे जोडून पिकांची देखरेख ठेवा.</string>
+
+    <!-- Step 4: Mandi Rates & Bids -->
+    <string name="tutorial_step4_title">मंडी भाव आणि थेट लिलाव</string>
+    <string name="tutorial_step4_desc">ताजे बाजार भाव पहा आणि बायोफ्युएल कंपन्या व खरेदीदारांकडून थेट बोली मिळवा.</string>
+    <string name="tutorial_step4_audio">पायरी ४: आजचे थेट बाजार भाव पहा आणि तुमच्या मालाची सर्वोत्तम किमतीत विक्री करा.</string>
+
+    <!-- Step 5: AgriVoice Assistant -->
+    <string name="tutorial_step5_title">कृषी मित्र - व्हॉइस सहाय्यक</string>
+    <string name="tutorial_step5_desc">मराठी, हिंदी किंवा इंग्रजीमध्ये बोलून प्रश्न विचारण्यासाठी या बटणावर कोणत्याही वेळी दाबा.</string>
+    <string name="tutorial_step5_audio">पायरी ५: कोणत्याही मदतीसाठी येथे बोला, आमचा कृषी मित्र २४ तास तुमच्या सेवेत आहे.</string>
 </resources>

@@ -2424,4 +2424,53 @@
     <string name="onb4_badge">डिस्पैच और ऑडिट सत्यापन</string>
     <string name="onb4_title">स्मार्ट लॉजिस्टिक्स और गेटपास QR</string>
     <string name="onb4_desc">प्रमाणित ड्राइवर भेजें और तुरंत वेब्रिज क्लियरेंस के लिए QR गेटपास बनाएं।</string>
+
+    <!-- Farmer Onboarding Tutorial & Spotlight Walkthrough -->
+    <string name="farmer_welcome_title">नमस्ते, %1$s!</string>
+    <string name="farmer_welcome_subtitle">आपका स्मार्ट डिजिटल कृषि साथी</string>
+    <string name="farmer_welcome_desc">फसल अवशेषों का सही मूल्य पाएं, बुवाई से कटाई तक निगरानी रखें और सत्यापित खरीदारों से सीधे जुड़ें।</string>
+    <string name="farmer_welcome_feat_1">AI फसल अवशेष मूल्यांकन</string>
+    <string name="farmer_welcome_feat_1_desc">कैमरे से फोटो खींचकर गुणवत्ता, नमी और अनुमानित बाजार भाव तुरंत जानें।</string>
+    <string name="farmer_welcome_feat_2">मंडी भाव और सीधी खुली बोली</string>
+    <string name="farmer_welcome_feat_2_desc">बिना किसी बिचौलिए के सीधे खरीदारों से बोलियां और सुरक्षित बैंक भुगतान प्राप्त करें।</string>
+    <string name="farmer_welcome_feat_3">मौसम पूर्वानुमान और कृषि सलाह</string>
+    <string name="farmer_welcome_feat_3_desc">बारिश के अलर्ट, छिड़काव की सलाह और मिट्टी अनुसार पोषण योजना प्राप्त करें।</string>
+    <string name="start_farmer_tour">1-मिनट मार्गदर्शन देखें</string>
+    <string name="skip_tour">सीधे ऐप देखें</string>
+    <string name="farmer_welcome_tts">नमस्ते! AgriStock में आपका स्वागत है। ऐप का उपयोग कैसे करें यह जानने के लिए मार्गदर्शन बटन दबाएं।</string>
+
+    <string name="tutorial_step_counter">चरण %1$d / %2$d</string>
+    <string name="tutorial_listen">सुनें</string>
+    <string name="tutorial_stop_audio">रोकें</string>
+    <string name="tutorial_next">आगे</string>
+    <string name="tutorial_finish">समझ गया</string>
+    <string name="tutorial_previous">पीछे</string>
+    <string name="tutorial_skip">छोड़ें</string>
+    <string name="tutorial_replay">ऐप मार्गदर्शन</string>
+    <string name="cd_tutorial_replay">ऐप मार्गदर्शन फिर से देखें</string>
+
+    <!-- Step 1: Weather & AgroPlan -->
+    <string name="tutorial_step1_title">मौसम और कृषि सलाह</string>
+    <string name="tutorial_step1_desc">स्थानीय वर्षा चेतावनी, तापमान और आपकी मिट्टी के लिए तैयार की गई खाद योजना देखें।</string>
+    <string name="tutorial_step1_audio">चरण १: अपने क्षेत्र का मौसम पूर्वानुमान और फसल सुरक्षा सलाह यहां देखें।</string>
+
+    <!-- Step 2: AI Scanner -->
+    <string name="tutorial_step2_title">AI फसल अवशेष स्कैनर</string>
+    <string name="tutorial_step2_desc">फसल अवशेषों की फोटो खींचकर गुणवत्ता, नमी और अनुमानित बिक्री मूल्य तुरंत प्राप्त करें।</string>
+    <string name="tutorial_step2_audio">चरण २: कैमरे से अपने खेत के फसल अवशेषों का फोटो खींचकर उचित मूल्य जानें।</string>
+
+    <!-- Step 3: Crops & Plots -->
+    <string name="tutorial_step3_title">फसल और खेत प्रबंधन</string>
+    <string name="tutorial_step3_desc">अपने खेत और फसलें जोड़ें। बुवाई से कटाई तक वृद्धि के चरणों और खाद की समयसारणी ट्रैक करें।</string>
+    <string name="tutorial_step3_audio">चरण ३: अपनी नई फसलें और खेत की जानकारी यहां जोड़ें और आसानी से निगरानी करें।</string>
+
+    <!-- Step 4: Mandi Rates & Bids -->
+    <string name="tutorial_step4_title">मंडी भाव और खुली बोली</string>
+    <string name="tutorial_step4_desc">रोजाना ताजा मंडी भाव देखें और प्रमाणित खरीदारों से सीधे अपनी उपज पर बोलियां प्राप्त करें।</string>
+    <string name="tutorial_step4_audio">चरण ४: आज के मंडी भाव देखें और अपनी उपज सर्वोत्तम दाम पर बेचें।</string>
+
+    <!-- Step 5: AgriVoice Assistant -->
+    <string name="tutorial_step5_title">कृषि मित्र - वॉइस सहायक</string>
+    <string name="tutorial_step5_desc">मराठी, हिंदी या अंग्रेजी में सवाल पूछने या ऐप चलाने के लिए इस बटन को दबाकर बोलें।</string>
+    <string name="tutorial_step5_audio">चरण ५: किसी भी सहायता के लिए यहां बोलें, कृषि मित्र हमेशा आपकी सेवा में तैयार है।</string>
 </resources>
