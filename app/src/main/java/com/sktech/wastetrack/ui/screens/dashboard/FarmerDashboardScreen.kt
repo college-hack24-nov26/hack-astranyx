@@ -53,6 +53,7 @@ fun FarmerDashboardScreen(
     onNavigateToAgent: () -> Unit = {},
     onNavigateToESGDashboard: () -> Unit = {},
     onNavigateToCustomAgroPlan: (String) -> Unit = {},
+    onNavigateToDiseaseDetection: () -> Unit = {},
     onNavigateToNotifications: () -> Unit = {},
     viewModel: FarmerDashboardViewModel = hiltViewModel()
 ) {
@@ -137,7 +138,7 @@ fun FarmerDashboardScreen(
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "AgriStock Producer Desk • Nashik",
+                                text = "Kisan Producer Hub • Nashik",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = Color.White.copy(alpha = 0.85f)
                             )
@@ -478,6 +479,12 @@ fun FarmerDashboardScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                ActionChip(
+                    label = "Disease Radar",
+                    icon = Icons.Filled.Biotech,
+                    onClick = onNavigateToDiseaseDetection,
+                    modifier = Modifier.weight(1f)
+                )
                 ActionChip(
                     label = "Log Crop",
                     icon = Icons.Filled.Add,

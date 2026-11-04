@@ -2,8 +2,26 @@ package com.sktech.wastetrack.domain.agro
 
 import com.sktech.wastetrack.domain.agro.model.CropSuitabilitySummary
 import com.sktech.wastetrack.domain.model.Farm
+import com.sktech.wastetrack.domain.model.SoilProfile
 import com.sktech.wastetrack.domain.model.WeatherData
 import java.util.Calendar
+
+data class CropSuitabilityItem(
+    val cropName: String,
+    val categoryName: String,
+    val suitabilityScore: Int,
+    val season: String,
+    val waterNeed: String,
+    val expectedYield: String,
+    val residueValue: String,
+    val rationale: String,
+    val caveat: String? = null,
+    val nitrogenRetentionKg: Int = 18,
+    val phosphorusRetentionKg: Int = 5,
+    val potassiumRetentionKg: Int = 24,
+    val dryingWindowHours: String = "7 to 9 Sunshine Hours",
+    val biocharCarbonRetainedMt: Double = 1.4
+)
 
 enum class AdvisoryPriceTrend {
     RISING, STABLE, VOLATILE, FALLING
@@ -425,5 +443,37 @@ object DynamicCropAdvisoryEngine {
             waterNeed = spec.waterNeed,
             expectedYieldRange = spec.expectedYield
         )
+    }
+    fun evaluateCropSuitability(
+        farm: Farm? = null,
+        soilProfile: SoilProfile? = null,
+        weather: WeatherData? = null
+    ): List<CropSuitabilityItem> {
+        val summaries = evaluateCompositeSuitability(farm, soilProfile, weather)
+        return summaries.map { s ->
+            val spec = findSpecification(s.cropName)
+            val residueValuation = "INR %,d/Acre (%.1f T %s @ INR %,d/T)".format(
+                (spec.residueBiomassPerAcreTons * spec.residueMarketPricePerTon).toInt(),
+                spec.residueBiomassPerAcreTons,
+                spec.residueName,
+                spec.residueMarketPricePerTon
+            )
+            CropSuitabilityItem(
+                cropName = s.cropName,
+                categoryName = s.categoryName,
+                suitabilityScore = s.compositeScore,
+                season = spec.season.displayName,
+                waterNeed = s.waterNeed,
+                expectedYield = s.expectedYieldRange,
+                residueValue = residueValuation,
+                rationale = s.primaryRecommendationRationale,
+                caveat = s.riskCaveats.firstOrNull(),
+                nitrogenRetentionKg = (spec.residueBiomassPerAcreTons * 12.5).toInt(),
+                phosphorusRetentionKg = (spec.residueBiomassPerAcreTons * 3.2).toInt(),
+                potassiumRetentionKg = (spec.residueBiomassPerAcreTons * 18.0).toInt(),
+                dryingWindowHours = if (spec.cropName.contains("Soybean") || spec.cropName.contains("Chickpea")) "6 to 8 Sunshine Hours" else "8 to 10 Sunshine Hours",
+                biocharCarbonRetainedMt = (spec.residueBiomassPerAcreTons * 0.48 * 10.0).toInt() / 10.0
+            )
+        }
     }
 }

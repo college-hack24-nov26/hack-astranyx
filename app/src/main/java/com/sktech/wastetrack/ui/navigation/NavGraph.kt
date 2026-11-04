@@ -20,6 +20,7 @@ import com.sktech.wastetrack.ui.screens.crop.AddCropCycleScreen
 import com.sktech.wastetrack.ui.screens.dashboard.DriverDashboardScreen
 import com.sktech.wastetrack.ui.screens.transporter.TransporterCommandHubScreen
 import com.sktech.wastetrack.ui.screens.dashboard.FarmerDashboardScreen
+import com.sktech.wastetrack.ui.screens.disease.DiseaseDetectionScreen
 import com.sktech.wastetrack.ui.screens.marketplace.CreateListingScreen
 import com.sktech.wastetrack.ui.screens.marketplace.MarketBrowseScreen
 import com.sktech.wastetrack.ui.screens.marketplace.ListingDetailScreen
@@ -41,6 +42,7 @@ import com.sktech.wastetrack.ui.screens.transfer.QRScanScreen
 import com.sktech.wastetrack.ui.screens.transfer.QRGenerateScreen
 import com.sktech.wastetrack.ui.screens.transfer.WeighbridgeSlipScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
+import com.sktech.wastetrack.ui.screens.weather.CropSuitabilityScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.analytics.CropPriceTrendScreen
 import com.sktech.wastetrack.ui.screens.analytics.FarmProfitLossScreen
@@ -136,6 +138,9 @@ fun NavGraph(
                 },
                 onNavigateToCustomAgroPlan = { farmId ->
                     navController.navigate(Screen.CustomAgroPlan.createRoute(farmId))
+                },
+                onNavigateToDiseaseDetection = {
+                    navController.navigate(Screen.DiseaseDetection.route)
                 },
                 onNavigateToNotifications = {
                     navController.navigate(Screen.Notifications.route)
@@ -359,6 +364,9 @@ fun NavGraph(
             WeatherDashboardScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToCropSuitability = {
+                    navController.navigate(Screen.CropSuitability.createRoute())
                 }
             )
         }
@@ -696,6 +704,14 @@ fun NavGraph(
             )
         }
 
+                composable(Screen.DiseaseDetection.route) {
+            DiseaseDetectionScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
         composable(Screen.LedgerScan.route) {
             LedgerScanScreen(
                 onNavigateBack = {
@@ -725,5 +741,27 @@ fun NavGraph(
                 }
             )
         }
+
+        composable(
+            route = Screen.CropSuitability.route,
+            arguments = listOf(
+                navArgument("farmId") {
+                    type = NavType.StringType
+                    defaultValue = "default_farm"
+                }
+            )
+        ) { backStackEntry ->
+            val farmId = backStackEntry.arguments?.getString("farmId") ?: "default_farm"
+            CropSuitabilityScreen(
+                farmId = farmId,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onSelectCropForCycle = { cropName ->
+                    navController.navigate(Screen.AddCropCycle.createRoute(farmId))
+                }
+            )
+        }
+
     }
 }

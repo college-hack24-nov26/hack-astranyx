@@ -29,6 +29,7 @@ import com.sktech.wastetrack.ui.theme.*
 @Composable
 fun WeatherDashboardScreen(
     onNavigateBack: () -> Unit = {},
+    onNavigateToCropSuitability: () -> Unit = {},
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -49,6 +50,9 @@ fun WeatherDashboardScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = onNavigateToCropSuitability) {
+                        Icon(imageVector = Icons.Filled.Agriculture, contentDescription = "Agro Suitability", tint = HarvestGreen)
+                    }
                     IconButton(onClick = { viewModel.refreshWeather() }) {
                         Icon(imageVector = Icons.Filled.Refresh, contentDescription = "Refresh", tint = HarvestGreen)
                     }
@@ -65,6 +69,41 @@ fun WeatherDashboardScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onNavigateToCropSuitability() },
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Agriculture,
+                            contentDescription = null,
+                            tint = HarvestGreen,
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Agro-Climatic Micro-Suitability",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "ML suitability scoring and N-P-K nutrient retention balancer",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+            }
+
             item {
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(clusters) { cluster ->

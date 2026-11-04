@@ -78,4 +78,8 @@ sealed class Screen(val route: String) {
     data object LedgerScan : Screen("ledger_scan")
     data object CropPriceTrend : Screen("crop_price_trend")
     data object FarmProfitLoss : Screen("farm_profit_loss")
+    data object CropSuitability : Screen("crop_suitability?farmId={farmId}") {
+        fun createRoute(farmId: String = "default_farm") = "crop_suitability?farmId=$farmId"
+    }
+    data object DiseaseDetection : Screen("disease_detection")
 }
