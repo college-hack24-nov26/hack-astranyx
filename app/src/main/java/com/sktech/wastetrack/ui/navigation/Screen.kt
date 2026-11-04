@@ -69,4 +69,10 @@ sealed class Screen(val route: String) {
     data object CertificateDetail : Screen("certificate_detail/{certId}") {
         fun createRoute(certId: String = "cert_001") = "certificate_detail/$certId"
     }
+    data object CropRecommendation : Screen("crop_recommendation?farmId={farmId}") {
+        fun createRoute(farmId: String = "default_farm") = "crop_recommendation?farmId=$farmId"
+    }
+    data object CropPerformance : Screen("crop_performance?farmId={farmId}&crop={crop}") {
+        fun createRoute(farmId: String = "default_farm", crop: String = "Wheat") = "crop_performance?farmId=$farmId&crop=$crop"
+    }
 }
