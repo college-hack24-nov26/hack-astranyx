@@ -106,10 +106,27 @@ fun QRScanScreen(
         hasCameraPermission = granted
     }
 
+    val scanner = remember { BarcodeScanning.getClient() }
     val analysisExecutor = remember { Executors.newSingleThreadExecutor() }
     DisposableEffect(Unit) {
         onDispose {
             analysisExecutor.shutdown()
+            scanner.close()
+            try {
+                ProcessCameraProvider.getInstance(context).get().unbindAll()
+            } catch (_: Exception) {
+            }
+        }
+    }
+
+    DisposableEffect(scannedResult) {
+        if (scannedResult != null) {
+            try {
+                ProcessCameraProvider.getInstance(context).get().unbindAll()
+            } catch (_: Exception) {
+            }
+        }
+        onDispose {
         }
     }
 
@@ -206,7 +223,6 @@ fun QRScanScreen(
                         factory = { ctx ->
                             val previewView = PreviewView(ctx)
                             val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
-                            val scanner = BarcodeScanning.getClient()
 
                             cameraProviderFuture.addListener({
                                 val cameraProvider = cameraProviderFuture.get()

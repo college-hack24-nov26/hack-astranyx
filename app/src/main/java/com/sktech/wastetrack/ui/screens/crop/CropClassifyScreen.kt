@@ -42,6 +42,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sktech.wastetrack.ui.theme.*
 import java.io.InputStream
 import java.util.concurrent.Executors
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun CropClassifyScreen(
@@ -65,17 +67,35 @@ fun CropClassifyScreen(
         hasCameraPermission = isGranted
     }
 
+    val scope = rememberCoroutineScope()
+    val captureExecutor = remember { Executors.newSingleThreadExecutor() }
+    DisposableEffect(Unit) {
+        onDispose {
+            captureExecutor.shutdown()
+            try {
+                ProcessCameraProvider.getInstance(context).get().unbindAll()
+            } catch (_: Exception) {
+            }
+        }
+    }
+
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let {
-            try {
-                val inputStream: InputStream? = context.contentResolver.openInputStream(it)
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                if (bitmap != null) {
-                    viewModel.onImageCaptured(bitmap)
+            scope.launch(Dispatchers.IO) {
+                try {
+                    val bitmap = context.contentResolver.openInputStream(it)?.use { stream ->
+                        val options = BitmapFactory.Options().apply {
+                            inSampleSize = 2
+                        }
+                        BitmapFactory.decodeStream(stream, null, options)
+                    }
+                    if (bitmap != null) {
+                        viewModel.onImageCaptured(bitmap)
+                    }
+                } catch (_: Exception) {
                 }
-            } catch (e: Exception) {
             }
         }
     }
@@ -240,18 +260,22 @@ fun CropClassifyScreen(
                         .size(72.dp)
                         .clickable {
                             val cap = imageCapture ?: return@clickable
-                            val executor = Executors.newSingleThreadExecutor()
                             cap.takePicture(
-                                executor,
+                                captureExecutor,
                                 object : ImageCapture.OnImageCapturedCallback() {
                                     override fun onCaptureSuccess(imageProxy: ImageProxy) {
                                         val buffer = imageProxy.planes[0].buffer
                                         val bytes = ByteArray(buffer.remaining())
                                         buffer.get(bytes)
-                                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                                         imageProxy.close()
-                                        if (bitmap != null) {
-                                            viewModel.onImageCaptured(bitmap)
+                                        scope.launch(Dispatchers.Default) {
+                                            val options = BitmapFactory.Options().apply {
+                                                inSampleSize = 2
+                                            }
+                                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+                                            if (bitmap != null) {
+                                                viewModel.onImageCaptured(bitmap)
+                                            }
                                         }
                                     }
                                     override fun onError(exception: ImageCaptureException) {

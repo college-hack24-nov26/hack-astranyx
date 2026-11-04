@@ -61,11 +61,11 @@ class BiometricAuthManager @Inject constructor(
         config: BiometricPromptConfig,
         cryptoObject: BiometricPrompt.CryptoObject? = null,
         onResult: (BiometricAuthResult) -> Unit
-    ) {
+    ): BiometricPrompt? {
         val availability = checkBiometricAvailability(config.allowDeviceCredential)
         if (!availability.isAvailable) {
             onResult(BiometricAuthResult.Unavailable(availability))
-            return
+            return null
         }
 
         val executor = ContextCompat.getMainExecutor(activity)
@@ -114,6 +114,7 @@ class BiometricAuthManager @Inject constructor(
         } else {
             biometricPrompt.authenticate(promptInfo)
         }
+        return biometricPrompt
     }
 
     suspend fun authenticateSuspend(
@@ -121,10 +122,13 @@ class BiometricAuthManager @Inject constructor(
         config: BiometricPromptConfig,
         cryptoObject: BiometricPrompt.CryptoObject? = null
     ): BiometricAuthResult = suspendCancellableCoroutine { continuation ->
-        authenticate(activity, config, cryptoObject) { result ->
+        val prompt = authenticate(activity, config, cryptoObject) { result ->
             if (continuation.isActive) {
                 continuation.resume(result)
             }
+        }
+        continuation.invokeOnCancellation {
+            prompt?.cancelAuthentication()
         }
     }
 
