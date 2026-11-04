@@ -118,19 +118,30 @@ data class CropResiduePlan(
 
 data class WeatherAdaptationNotice(
     val noticeId: String,
-    val urgencyLevel: String,
-    val title: String,
-    val headline: String,
-    val recommendedFarmerAction: String
-)
+    val urgencyLevel: String = "HIGH",
+    val title: String = "Weather Adaptation Notice",
+    val headline: String = "",
+    val recommendedFarmerAction: String = "",
+    val triggerCondition: String = headline,
+    val suggestedAction: String = recommendedFarmerAction,
+    val agronomicRationale: String = headline,
+    val reviewTime: String = "Review in 48 hours",
+    val detectedAt: Long = System.currentTimeMillis()
+) {
+    val id: String get() = noticeId
+}
 
 data class AgroPlanRevisionRecord(
     val revisionId: String,
-    val planVersion: Int,
-    val revisionTrigger: String,
-    val changeSummary: String,
-    val timestamp: Long
-)
+    val planVersion: Int = 1,
+    val revisionTrigger: String = "MANUAL_ADJUSTMENT",
+    val changeSummary: String = "",
+    val timestamp: Long = System.currentTimeMillis(),
+    val agroplanId: String = ""
+) {
+    val versionNumber: Int get() = planVersion
+    val createdAt: Long get() = timestamp
+}
 
 data class DailyRainForecastItem(
     val dayLabel: String,

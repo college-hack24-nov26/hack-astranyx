@@ -1,5 +1,8 @@
 package com.sktech.wastetrack.ui.screens.agroplan
 
+import com.sktech.wastetrack.ui.screens.agroplan.components.PlanRevisionHistorySheet
+import com.sktech.wastetrack.ui.screens.agroplan.components.WeatherAdaptationBanner
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -222,7 +225,7 @@ fun CustomAgroPlanScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        items(cropOptions) { crop ->
+                        items(cropOptions, key = { it }) { crop ->
                             val isSelected = state.cropName.equals(crop, ignoreCase = true)
                             FilterChip(
                                 selected = isSelected,
@@ -234,6 +237,16 @@ fun CustomAgroPlanScreen(
                                 )
                             )
                         }
+                    }
+                }
+
+                if (!state.isWeatherNoticeDismissed && plan.activeAdaptationAlerts.isNotEmpty()) {
+                    items(plan.activeAdaptationAlerts, key = { it.noticeId }) { alert ->
+                        WeatherAdaptationBanner(
+                            notice = alert,
+                            onReviewClick = { viewModel.showRevisionSheet(true) },
+                            onDismiss = { viewModel.dismissWeatherNotice() }
+                        )
                     }
                 }
 
@@ -371,55 +384,16 @@ fun CustomAgroPlanScreen(
     }
 
     if (state.isRevisionSheetOpen) {
-        Dialog(onDismissRequest = { viewModel.showRevisionSheet(false) }) {
-            Surface(
-                shape = RoundedCornerShape(18.dp),
-                color = MaterialTheme.colorScheme.surface,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Plan Revision History",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                        IconButton(onClick = { viewModel.showRevisionSheet(false) }) {
-                            Icon(Icons.Filled.Close, contentDescription = "Close")
-                        }
-                    }
-
-                    val dateFormat = remember { SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.US) }
-                    state.revisions.forEach { rev ->
-                        Card(
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(10.dp),
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
-                        ) {
-                            Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Text("Version ${rev.planVersion}", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = HarvestGreenDark)
-                                    Text(dateFormat.format(Date(rev.timestamp)), fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                }
-                                Text(rev.changeSummary, style = MaterialTheme.typography.bodySmall)
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        PlanRevisionHistorySheet(
+            revisions = state.revisions,
+            currentVersion = state.plan?.planVersion ?: 1,
+            onDismiss = { viewModel.showRevisionSheet(false) }
+        )
     }
+
 }
+
+
 
 @Composable
 private fun HeroSuitabilityCard(
