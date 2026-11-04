@@ -36,6 +36,7 @@ fun OrderListScreen(
     onNavigateBack: () -> Unit = {},
     onNavigateToTracking: (String) -> Unit = {},
     onNavigateToDetail: (String) -> Unit = {},
+    onNavigateToPayments: () -> Unit = {},
     viewModel: OrderListViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -63,6 +64,11 @@ fun OrderListScreen(
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onNavigateToPayments) {
+                        Icon(imageVector = Icons.Filled.AccountBalanceWallet, contentDescription = "Payment Ledger", tint = HarvestGreen)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
