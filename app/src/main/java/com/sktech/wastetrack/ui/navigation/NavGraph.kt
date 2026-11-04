@@ -46,6 +46,7 @@ import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 import com.sktech.wastetrack.ui.screens.compliance.CertificateViewScreen
 import com.sktech.wastetrack.ui.screens.agroplan.CropRecommendationScreen
 import com.sktech.wastetrack.ui.screens.agroplan.CropPerformanceAssessmentScreen
+import com.sktech.wastetrack.ui.screens.dashboard.LedgerScanScreen
 import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmListScreen
 import com.sktech.wastetrack.ui.screens.farm.FarmDetailScreen
@@ -326,6 +327,9 @@ fun NavGraph(
             WeighbridgeSlipScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToScanner = {
+                    navController.navigate(Screen.LedgerScan.route)
                 }
             )
         }
@@ -683,6 +687,14 @@ fun NavGraph(
                 },
                 onNavigateToMarketTrends = {
                     navController.navigate(Screen.Analytics.route)
+                }
+            )
+        }
+
+        composable(Screen.LedgerScan.route) {
+            LedgerScanScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
