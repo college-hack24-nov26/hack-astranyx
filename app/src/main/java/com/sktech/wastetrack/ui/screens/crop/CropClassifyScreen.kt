@@ -70,10 +70,11 @@ fun CropClassifyScreen(
     ) { uri: Uri? ->
         uri?.let {
             try {
-                val inputStream: InputStream? = context.contentResolver.openInputStream(it)
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                if (bitmap != null) {
-                    viewModel.onImageCaptured(bitmap)
+                context.contentResolver.openInputStream(it)?.use { inputStream ->
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    if (bitmap != null) {
+                        viewModel.onImageCaptured(bitmap)
+                    }
                 }
             } catch (e: Exception) {
             }
@@ -245,16 +246,21 @@ fun CropClassifyScreen(
                                 executor,
                                 object : ImageCapture.OnImageCapturedCallback() {
                                     override fun onCaptureSuccess(imageProxy: ImageProxy) {
-                                        val buffer = imageProxy.planes[0].buffer
-                                        val bytes = ByteArray(buffer.remaining())
-                                        buffer.get(bytes)
-                                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                        imageProxy.close()
-                                        if (bitmap != null) {
-                                            viewModel.onImageCaptured(bitmap)
+                                        try {
+                                            val buffer = imageProxy.planes[0].buffer
+                                            val bytes = ByteArray(buffer.remaining())
+                                            buffer.get(bytes)
+                                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                            if (bitmap != null) {
+                                                viewModel.onImageCaptured(bitmap)
+                                            }
+                                        } finally {
+                                            imageProxy.close()
+                                            executor.shutdown()
                                         }
                                     }
                                     override fun onError(exception: ImageCaptureException) {
+                                        executor.shutdown()
                                     }
                                 }
                             )

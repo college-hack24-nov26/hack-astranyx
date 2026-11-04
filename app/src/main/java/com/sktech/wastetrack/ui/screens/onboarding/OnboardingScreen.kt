@@ -46,8 +46,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -56,6 +58,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -75,7 +78,12 @@ import com.sktech.wastetrack.ui.theme.SkyBlue
 import com.sktech.wastetrack.ui.theme.SkyBlueDark
 import com.sktech.wastetrack.ui.theme.WastetrackTheme
 import com.sktech.wastetrack.util.LocaleHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.concurrent.ConcurrentHashMap
+
+private val onboardingBitmapCache = ConcurrentHashMap<String, ImageBitmap>()
 
 private data class OnboardingPageData(
     val title: String,
@@ -144,24 +152,48 @@ fun OnboardingScreen(
         onFinish()
     }
 
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
+            pages.forEach { page ->
+                if (!onboardingBitmapCache.containsKey(page.imageAsset)) {
+                    runCatching {
+                        context.assets.open("onboarding/${page.imageAsset}").use { stream ->
+                            BitmapFactory.decodeStream(stream)?.asImageBitmap()?.let { bmp ->
+                                onboardingBitmapCache[page.imageAsset] = bmp
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { pageIndex ->
             val page = pages[pageIndex]
-            val bitmap = remember(page.imageAsset) {
-                runCatching {
-                    context.assets.open("onboarding/${page.imageAsset}").use {
-                        BitmapFactory.decodeStream(it)?.asImageBitmap()
+            val initialBmp = remember(page.imageAsset) { onboardingBitmapCache[page.imageAsset] }
+            val bitmap by produceState<ImageBitmap?>(initialValue = initialBmp, key1 = page.imageAsset) {
+                if (value == null) {
+                    value = withContext(Dispatchers.IO) {
+                        onboardingBitmapCache.getOrPut(page.imageAsset) {
+                            runCatching {
+                                context.assets.open("onboarding/${page.imageAsset}").use {
+                                    BitmapFactory.decodeStream(it)?.asImageBitmap()
+                                }
+                            }.getOrNull() ?: return@withContext null
+                        }
                     }
-                }.getOrNull()
+                }
             }
 
+            val currentBitmap = bitmap
             Box(modifier = Modifier.fillMaxSize()) {
-                if (bitmap != null) {
+                if (currentBitmap != null) {
                     Image(
-                        bitmap = bitmap,
+                        bitmap = currentBitmap,
                         contentDescription = page.title,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
