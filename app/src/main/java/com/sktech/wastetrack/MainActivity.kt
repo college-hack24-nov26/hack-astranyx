@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.sktech.wastetrack.ui.navigation.BottomNavBar
 import com.sktech.wastetrack.ui.navigation.NavGraph
@@ -57,7 +58,7 @@ class MainActivity : ComponentActivity() {
                                 role = activeRole,
                                 onNavigate = { route ->
                                     navController.navigate(route) {
-                                        popUpTo(Screen.Dashboard.route) { saveState = true }
+                                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                                         launchSingleTop = true
                                         restoreState = true
                                     }

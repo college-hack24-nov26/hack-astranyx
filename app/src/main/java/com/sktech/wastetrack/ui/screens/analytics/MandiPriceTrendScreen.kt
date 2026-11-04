@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.TrendingDown
+import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -126,7 +127,7 @@ fun MandiPriceTrendScreen(
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Icon(
-                                        imageVector = Icons.Filled.ShowChart,
+                                        imageVector = Icons.AutoMirrored.Filled.ShowChart,
                                         contentDescription = null,
                                         tint = GoldenWheatLight,
                                         modifier = Modifier.size(24.dp)
@@ -288,7 +289,7 @@ fun MandiPriceTrendScreen(
                 )
             }
 
-            items(state.filteredRates) { item ->
+            items(state.filteredRates, key = { "${it.cropName}_${it.marketName}" }) { item ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(14.dp),

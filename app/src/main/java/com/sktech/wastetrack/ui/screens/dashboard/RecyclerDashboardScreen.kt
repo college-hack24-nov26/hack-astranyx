@@ -459,7 +459,7 @@ fun RecyclerDashboardScreen(
             }
         }
 
-        items(state.activeLots) { lot ->
+        items(state.activeLots, key = { it.id }) { lot ->
             BiomassLotCard(lot, onBidClick = onNavigateToBids)
         }
     }

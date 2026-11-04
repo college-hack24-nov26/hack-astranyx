@@ -210,7 +210,7 @@ fun InvoiceHistoryScreen(
                 }
             }
 
-            items(filteredList) { inv ->
+            items(filteredList, key = { it.id }) { inv ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
