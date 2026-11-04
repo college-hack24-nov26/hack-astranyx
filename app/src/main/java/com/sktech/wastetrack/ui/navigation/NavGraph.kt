@@ -53,6 +53,7 @@ import com.sktech.wastetrack.ui.screens.admin.UserVerificationScreen
 import com.sktech.wastetrack.ui.screens.admin.DisputeManagementScreen
 import com.sktech.wastetrack.ui.screens.admin.AuditLogScreen
 import com.sktech.wastetrack.ui.screens.agroplan.CustomAgroPlanScreen
+import com.sktech.wastetrack.ui.screens.agroplan.StubbleValorizationDeskScreen
 
 @Composable
 fun NavGraph(
@@ -560,6 +561,32 @@ fun NavGraph(
                 },
                 onSaveSuccess = {
                     navController.popBackStack()
+                }
+            )
+        }
+
+        composable(
+            route = Screen.StubbleValorization.route,
+            arguments = listOf(
+                navArgument("farmId") {
+                    type = NavType.StringType
+                    defaultValue = "plot_1"
+                },
+                navArgument("crop") {
+                    type = NavType.StringType
+                    defaultValue = "Cotton"
+                }
+            )
+        ) {
+            StubbleValorizationDeskScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToAgroPlan = { farmId, crop ->
+                    navController.navigate(Screen.CustomAgroPlan.createRoute(farmId, crop))
+                },
+                onNavigateToCreateListing = {
+                    navController.navigate(Screen.CreateListing.route)
                 }
             )
         }
