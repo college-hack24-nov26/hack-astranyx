@@ -48,7 +48,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.ImageBitmap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -150,18 +154,24 @@ fun OnboardingScreen(
             modifier = Modifier.fillMaxSize()
         ) { pageIndex ->
             val page = pages[pageIndex]
-            val bitmap = remember(page.imageAsset) {
-                runCatching {
-                    context.assets.open("onboarding/${page.imageAsset}").use {
-                        BitmapFactory.decodeStream(it)?.asImageBitmap()
-                    }
-                }.getOrNull()
+            val bitmap by produceState<ImageBitmap?>(initialValue = null, page.imageAsset) {
+                value = withContext(Dispatchers.IO) {
+                    runCatching {
+                        context.assets.open("onboarding/${page.imageAsset}").use { stream ->
+                            val options = BitmapFactory.Options().apply {
+                                inSampleSize = 2
+                            }
+                            BitmapFactory.decodeStream(stream, null, options)?.asImageBitmap()
+                        }
+                    }.getOrNull()
+                }
             }
 
             Box(modifier = Modifier.fillMaxSize()) {
-                if (bitmap != null) {
+                val currentBitmap = bitmap
+                if (currentBitmap != null) {
                     Image(
-                        bitmap = bitmap,
+                        bitmap = currentBitmap,
                         contentDescription = page.title,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop

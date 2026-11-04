@@ -106,7 +106,7 @@ fun CustomAgroPlanScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val plan = state.plan
     val snackbarHostState = remember { SnackbarHostState() }
-    val currencyFormat = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
+    val currencyFormat = remember { NumberFormat.getCurrencyInstance(Locale("en", "IN")) }
     BackHandler(onBack = onNavigateBack)
 
     var revisionNotesText by remember { mutableStateOf("") }
@@ -388,7 +388,7 @@ fun CustomAgroPlanScreen(
                         }
                     }
 
-                    val dateFormat = SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.US)
+                    val dateFormat = remember { SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.US) }
                     state.revisions.forEach { rev ->
                         Card(
                             modifier = Modifier.fillMaxWidth(),

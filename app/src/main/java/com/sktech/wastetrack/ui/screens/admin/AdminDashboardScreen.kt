@@ -60,6 +60,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,8 +96,8 @@ fun AdminDashboardScreen(
     viewModel: AdminViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val currencyFormat = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
-    val dateFormat = SimpleDateFormat("dd MMM, hh:mm a", Locale.US)
+    val currencyFormat = remember { NumberFormat.getCurrencyInstance(Locale("en", "IN")) }
+    val dateFormat = remember { SimpleDateFormat("dd MMM, hh:mm a", Locale.US) }
 
     val plantScopes = listOf("All Hubs", "Nashik Unit", "Pune Unit", "Kopargaon Hub")
     val periods = listOf("Current Month", "Q3 Oct-Dec", "FY 25-26")

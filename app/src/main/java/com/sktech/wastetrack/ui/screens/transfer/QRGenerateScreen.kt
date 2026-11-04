@@ -63,6 +63,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
@@ -293,8 +294,10 @@ fun QRGenerateScreen(
                     ) {
                         Surface(
                             shape = CircleShape,
-                            color = activeColor.copy(alpha = pulseAlpha * 0.2f),
-                            modifier = Modifier.size(44.dp)
+                            color = activeColor.copy(alpha = 0.2f),
+                            modifier = Modifier
+                                .size(44.dp)
+                                .graphicsLayer { alpha = pulseAlpha }
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Icon(
