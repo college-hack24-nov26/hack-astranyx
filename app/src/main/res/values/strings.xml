@@ -2424,4 +2424,54 @@
     <string name="onb4_badge">DISPATCH &amp; AUDIT VERIFICATION</string>
     <string name="onb4_title">Smart Logistics &amp; Gatepass QR</string>
     <string name="onb4_desc">Dispatch certified drivers and generate QR gatepasses for instant weighbridge clearance.</string>
+
+    <!-- Farmer Onboarding Tutorial & Spotlight Walkthrough -->
+    <string name="farmer_welcome_title">Welcome, %1$s!</string>
+    <string name="farmer_welcome_subtitle">Your AI-Powered Smart Farming Partner</string>
+    <string name="farmer_welcome_desc">Turn harvest waste into income, monitor crops from seed to harvest, and receive fair market bids directly from verified buyers.</string>
+    <string name="farmer_welcome_feat_1">AI Crop Residue Appraisal</string>
+    <string name="farmer_welcome_feat_1_desc">Point your camera to evaluate moisture, quality &amp; market price.</string>
+    <string name="farmer_welcome_feat_2">Live Mandi Rates &amp; Escrow Bids</string>
+    <string name="farmer_welcome_feat_2_desc">Sell directly to certified recyclers with secured advance payments.</string>
+    <string name="farmer_welcome_feat_3">Localized AgroPlan &amp; Weather</string>
+    <string name="farmer_welcome_feat_3_desc">Receive soil-based spray schedules and real-time rain alerts.</string>
+    <string name="start_farmer_tour">Explore 1-Min Tour</string>
+    <string name="skip_tour">Explore Later</string>
+    <string name="farmer_welcome_tts">Welcome to AgriStock! Tap explore tour to see how to scan crop waste, view live mandi rates, and manage your farm plots.</string>
+
+    <string name="tutorial_step_counter">Step %1$d of %2$d</string>
+    <string name="tutorial_step_format">Step %1$d of %2$d</string>
+    <string name="tutorial_listen">Listen</string>
+    <string name="tutorial_stop_audio">Stop</string>
+    <string name="tutorial_next">Next</string>
+    <string name="tutorial_finish">Got It</string>
+    <string name="tutorial_previous">Back</string>
+    <string name="tutorial_skip">Skip Tour</string>
+    <string name="tutorial_replay">App Tour</string>
+    <string name="cd_tutorial_replay">Take App Tour</string>
+
+    <!-- Step 1: Weather & AgroPlan -->
+    <string name="tutorial_step1_title">Weather &amp; AgroPlan</string>
+    <string name="tutorial_step1_desc">Hyper-local rainfall warnings, temperature radar, and customized farming schedules tailored for your soil.</string>
+    <string name="tutorial_step1_audio">Step 1: Check your local weather forecast and personalized crop protection advice tailored for your soil.</string>
+
+    <!-- Step 2: AI Scanner -->
+    <string name="tutorial_step2_title">AI Crop Residue Scan</string>
+    <string name="tutorial_step2_desc">Snap crop waste or stubble to instantly evaluate quality grade, moisture, and get estimated selling value.</string>
+    <string name="tutorial_step2_audio">Step 2: Point your camera at crop residue to calculate quality grade and market value instantly.</string>
+
+    <!-- Step 3: Crops & Plots -->
+    <string name="tutorial_step3_title">Track Crops &amp; Plots</string>
+    <string name="tutorial_step3_desc">Log your farm plots from sowing to harvest. Keep track of growth cycles, fertilizers, and expected harvest yield.</string>
+    <string name="tutorial_step3_audio">Step 3: Add your farm plots and monitor crop lifecycles easily from sowing to harvest.</string>
+
+    <!-- Step 4: Mandi Rates & Bids -->
+    <string name="tutorial_step4_title">Mandi Prices &amp; Bids</string>
+    <string name="tutorial_step4_desc">View live APMC mandi prices and receive direct bids from certified biofuel refiners and composters with escrow protection.</string>
+    <string name="tutorial_step4_audio">Step 4: Check live market prices and sell directly to verified buyers with zero middlemen.</string>
+
+    <!-- Step 5: AgriVoice Assistant -->
+    <string name="tutorial_step5_title">AgriVoice AI Assistant</string>
+    <string name="tutorial_step5_desc">Tap this floating orb anytime to speak in Marathi, Hindi, or English. Ask questions about crops, prices, or disease control.</string>
+    <string name="tutorial_step5_audio">Step 5: Tap to speak anytime in Marathi, Hindi, or English. Your voice AI assistant is ready to help 24/7.</string>
 </resources>

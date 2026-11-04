@@ -26,6 +26,21 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sktech.wastetrack.ui.theme.*
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.res.stringResource
+import com.sktech.wastetrack.R
+import com.sktech.wastetrack.ui.components.tutorial.FarmerWelcomeDialog
+import com.sktech.wastetrack.ui.components.tutorial.TutorialCoachMarkOverlay
+import com.sktech.wastetrack.ui.components.tutorial.TutorialEventBus
+import com.sktech.wastetrack.ui.components.tutorial.TutorialTargetKey
+import com.sktech.wastetrack.ui.components.tutorial.rememberTutorialState
+import com.sktech.wastetrack.ui.components.tutorial.tutorialTarget
+
 
 @Composable
 fun FarmerDashboardScreen(
@@ -44,7 +59,53 @@ fun FarmerDashboardScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val farmerName = state.user?.name ?: "Kisan Producer"
 
-    LazyColumn(
+    val tutorialState = rememberTutorialState(
+        onComplete = { viewModel.setTutorialCompleted(true) }
+    )
+
+    var hasShownWelcomeThisSession by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(state.isTutorialCompleted) {
+        if (!state.isTutorialCompleted && !hasShownWelcomeThisSession) {
+            hasShownWelcomeThisSession = true
+            tutorialState.showWelcome()
+        }
+    }
+
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(Unit) {
+        TutorialEventBus.events.collect { cmd ->
+            when (cmd.lowercase()) {
+                "start" -> tutorialState.startTour()
+                "next" -> tutorialState.nextStep()
+                "prev" -> tutorialState.prevStep()
+                "finish", "skip", "dismiss" -> tutorialState.finishTour()
+                "welcome" -> tutorialState.showWelcome()
+                "weather", "step0" -> tutorialState.goToStep(0)
+                "scan", "step1" -> tutorialState.goToStep(1)
+                "crops", "step2" -> tutorialState.goToStep(2)
+                "mandi", "step3" -> tutorialState.goToStep(3)
+                "agent", "step4" -> tutorialState.goToStep(4)
+            }
+        }
+    }
+
+    LaunchedEffect(tutorialState.currentStepIndex, tutorialState.isOverlayVisible) {
+        if (tutorialState.isOverlayVisible) {
+            when (tutorialState.currentStep?.key) {
+                TutorialTargetKey.WEATHER -> listState.animateScrollToItem(1)
+                TutorialTargetKey.SCAN -> listState.animateScrollToItem(2)
+                TutorialTargetKey.CROPS -> listState.animateScrollToItem(4)
+                TutorialTargetKey.MANDI -> listState.animateScrollToItem(5)
+                TutorialTargetKey.AGENT -> listState.animateScrollToItem(2)
+            }
+        }
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            state = listState,
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
@@ -85,6 +146,19 @@ fun FarmerDashboardScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
+                            IconButton(
+                                onClick = {
+                                    viewModel.restartTutorial()
+                                    tutorialState.showWelcome()
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.HelpOutline,
+                                    contentDescription = stringResource(R.string.cd_tutorial_replay),
+                                    tint = GoldenWheatLight,
+                                    modifier = Modifier.size(26.dp)
+                                )
+                            }
                             IconButton(onClick = onNavigateToNotifications) {
                                 Icon(
                                     imageVector = Icons.Filled.Notifications,
@@ -115,7 +189,9 @@ fun FarmerDashboardScreen(
 
         item {
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .tutorialTarget(TutorialTargetKey.WEATHER, tutorialState),
                 shape = RoundedCornerShape(14.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = GoldenWheatContainer
@@ -167,6 +243,7 @@ fun FarmerDashboardScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .tutorialTarget(TutorialTargetKey.AGENT, tutorialState)
                     .clickable { onNavigateToAgent() },
                 shape = RoundedCornerShape(14.dp),
                 colors = CardDefaults.cardColors(
@@ -246,6 +323,7 @@ fun FarmerDashboardScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .tutorialTarget(TutorialTargetKey.SCAN, tutorialState)
                     .clickable { onNavigateToCustomAgroPlan("default_farm") },
                 shape = RoundedCornerShape(14.dp),
                 colors = CardDefaults.cardColors(
@@ -342,7 +420,9 @@ fun FarmerDashboardScreen(
                     icon = Icons.Filled.Agriculture,
                     containerColor = HarvestGreenContainer,
                     iconTint = HarvestGreen,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
+                        .tutorialTarget(TutorialTargetKey.CROPS, tutorialState)
                 )
                 MetricCard(
                     title = "Total Land",
@@ -368,7 +448,9 @@ fun FarmerDashboardScreen(
                     icon = Icons.Filled.Recycling,
                     containerColor = GoldenWheatContainer,
                     iconTint = GoldenWheatDark,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
+                        .tutorialTarget(TutorialTargetKey.MANDI, tutorialState)
                 )
                 MetricCard(
                     title = "Dealer Bids",
@@ -478,6 +560,25 @@ fun FarmerDashboardScreen(
             ResidueBatchCard(item)
         }
     }
+
+    TutorialCoachMarkOverlay(
+        tutorialState = tutorialState,
+        speechManager = viewModel.speechManager,
+        listState = listState
+    )
+
+    if (tutorialState.isWelcomeDialogVisible) {
+        FarmerWelcomeDialog(
+            farmerName = farmerName,
+            onStartTour = { tutorialState.startTour() },
+            onDismiss = {
+                viewModel.setTutorialCompleted(true)
+                tutorialState.skipTour()
+            },
+            speechManager = viewModel.speechManager
+        )
+    }
+}
 }
 
 @Composable
