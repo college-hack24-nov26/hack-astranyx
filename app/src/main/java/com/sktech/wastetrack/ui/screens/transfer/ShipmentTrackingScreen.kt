@@ -1,6 +1,8 @@
 package com.sktech.wastetrack.ui.screens.transfer
 
 import com.sktech.wastetrack.ui.components.IndustrialFleetMap
+import com.sktech.wastetrack.ui.components.GatePassQRDialog
+import com.sktech.wastetrack.ui.components.GatePassData
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -151,52 +153,19 @@ fun ShipmentTrackingScreen(
     }
 
     if (state.showQrDialog) {
-        val qrBitmap = remember(state.qrPayload) { generateTrackingQRBitmap(state.qrPayload) }
-        AlertDialog(
-            onDismissRequest = { viewModel.dismissQrDialog() },
-            title = {
-                Text(
-                    text = "Waybill Digital Handshake",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            },
-            text = {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        bitmap = qrBitmap.asImageBitmap(),
-                        contentDescription = "GatePass QR",
-                        modifier = Modifier
-                            .size(240.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = state.gatePassNumber,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = HarvestGreen
-                    )
-                    Text(
-                        text = "Hash: ${state.hashFingerprint}",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = DarkTextSecondary
-                    )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = { viewModel.dismissQrDialog() },
-                    colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen)
-                ) {
-                    Text("Close Pass")
-                }
-            }
+        GatePassQRDialog(
+            gatePass = GatePassData(
+                id = state.gatePassNumber,
+                scrapEntryId = state.cargoTitle,
+                fromFactoryId = state.sourceLocation,
+                weightAtSource = (state.quantityMt * 1000).toFloat(),
+                vehicleNumber = state.vehicleNumber,
+                contentHash = state.qrPayload,
+                initiatedAt = System.currentTimeMillis()
+            ),
+            activeTransferId = state.gatePassNumber,
+            onDismiss = { viewModel.dismissQrDialog() },
+            onOpenFullScreen = { viewModel.dismissQrDialog() }
         )
     }
 

@@ -41,6 +41,7 @@ import com.sktech.wastetrack.domain.payment.model.PaymentMethod
 import com.sktech.wastetrack.domain.payment.model.PaymentRecord
 import com.sktech.wastetrack.domain.payment.model.PaymentStatus
 import com.sktech.wastetrack.ui.theme.*
+import com.sktech.wastetrack.ui.biometric.BiometricSecurityDialog
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -58,6 +59,7 @@ fun PaymentHistoryScreen(
 
     var selectedPaymentForReceipt by remember { mutableStateOf<PaymentRecord?>(null) }
     var showCheckoutSimulator by remember { mutableStateOf(false) }
+    var pendingBiometricReleasePaymentId by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(state.feedbackMessage) {
         state.feedbackMessage?.let { msg ->
@@ -84,6 +86,19 @@ fun PaymentHistoryScreen(
             }
         )
     }
+
+    BiometricSecurityDialog(
+        isOpen = pendingBiometricReleasePaymentId != null,
+        title = "Authorize Escrow Release",
+        subtitle = "Scan biometric fingerprint to authorize clearance of biomass funds into farmer account",
+        onConfirmBiometric = {
+            pendingBiometricReleasePaymentId?.let { id ->
+                viewModel.releaseEscrow(id)
+            }
+            pendingBiometricReleasePaymentId = null
+        },
+        onDismiss = { pendingBiometricReleasePaymentId = null }
+    )
 
     if (showCheckoutSimulator) {
         PaymentCheckoutDialog(
@@ -310,7 +325,7 @@ fun PaymentHistoryScreen(
                             snackbarHostState.currentSnackbarData?.dismiss()
                         },
                         onReleaseEscrow = {
-                            viewModel.releaseEscrow(payment.id)
+                            pendingBiometricReleasePaymentId = payment.id
                         },
                         onViewReceipt = {
                             selectedPaymentForReceipt = payment
