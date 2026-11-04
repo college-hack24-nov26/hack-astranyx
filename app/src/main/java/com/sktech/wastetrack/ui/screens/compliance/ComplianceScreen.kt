@@ -31,6 +31,7 @@ import java.util.Locale
 @Composable
 fun ComplianceScreen(
     onNavigateBack: () -> Unit = {},
+    onNavigateToCertificateDetail: (String) -> Unit = {},
     viewModel: ComplianceViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -105,7 +106,7 @@ fun ComplianceScreen(
             items(state.certificates, key = { it.id }) { cert ->
                 CertificateCard(
                     cert = cert,
-                    onClick = { viewModel.selectCertificate(cert) }
+                    onClick = { onNavigateToCertificateDetail(cert.id) }
                 )
             }
         }
@@ -156,11 +157,22 @@ fun ComplianceScreen(
                 }
             },
             confirmButton = {
-                Button(
-                    onClick = { viewModel.dismissCertificateDialog() },
-                    colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen)
-                ) {
-                    Text("Close Pass")
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(
+                        onClick = { viewModel.dismissCertificateDialog() }
+                    ) {
+                        Text("Close")
+                    }
+                    Button(
+                        onClick = {
+                            val id = cert.id
+                            viewModel.dismissCertificateDialog()
+                            onNavigateToCertificateDetail(id)
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = HarvestGreen)
+                    ) {
+                        Text("View Form 13")
+                    }
                 }
             }
         )
