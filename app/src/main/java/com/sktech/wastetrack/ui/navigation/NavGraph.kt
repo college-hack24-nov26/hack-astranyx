@@ -39,6 +39,7 @@ import com.sktech.wastetrack.ui.screens.transfer.QRScanScreen
 import com.sktech.wastetrack.ui.screens.transfer.QRGenerateScreen
 import com.sktech.wastetrack.ui.screens.transfer.WeighbridgeSlipScreen
 import com.sktech.wastetrack.ui.screens.weather.WeatherDashboardScreen
+import com.sktech.wastetrack.ui.screens.weather.CropSuitabilityScreen
 import com.sktech.wastetrack.ui.screens.analytics.AnalyticsScreen
 import com.sktech.wastetrack.ui.screens.compliance.ComplianceScreen
 import com.sktech.wastetrack.ui.screens.compliance.ESGDashboardScreen
@@ -345,6 +346,9 @@ fun NavGraph(
             WeatherDashboardScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                onNavigateToCropSuitability = {
+                    navController.navigate(Screen.CropSuitability.createRoute())
                 }
             )
         }
@@ -587,6 +591,26 @@ fun NavGraph(
                 },
                 onNavigateToCreateListing = {
                     navController.navigate(Screen.CreateListing.route)
+                }
+            )
+        }
+
+        composable(
+            route = Screen.CropSuitability.route,
+            arguments = listOf(navArgument("hub") {
+                type = NavType.StringType
+                defaultValue = "Sinnar Agro Hub"
+            })
+        ) {
+            CropSuitabilityScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToValorization = { crop ->
+                    navController.navigate(Screen.StubbleValorization.createRoute(crop = crop))
+                },
+                onNavigateToAddCropCycle = {
+                    navController.navigate(Screen.AddCropCycle.createRoute())
                 }
             )
         }

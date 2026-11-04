@@ -1,5 +1,6 @@
 package com.sktech.wastetrack.ui.screens.weather
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -29,6 +31,7 @@ import com.sktech.wastetrack.ui.theme.*
 @Composable
 fun WeatherDashboardScreen(
     onNavigateBack: () -> Unit = {},
+    onNavigateToCropSuitability: () -> Unit = {},
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -49,6 +52,9 @@ fun WeatherDashboardScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = onNavigateToCropSuitability) {
+                        Icon(imageVector = Icons.Filled.Eco, contentDescription = "Agro Suitability", tint = HarvestGreen)
+                    }
                     IconButton(onClick = { viewModel.refreshWeather() }) {
                         Icon(imageVector = Icons.Filled.Refresh, contentDescription = "Refresh", tint = HarvestGreen)
                     }
@@ -206,6 +212,57 @@ fun WeatherDashboardScreen(
                         SuitabilityRow("Crop Residue Baling", state.advisory.residueBalingFeasibility, Icons.Filled.Recycling, HarvestGreen)
                         SuitabilityRow("Foliar / Pesticide Spray", state.advisory.pesticideSprayWindow, Icons.Filled.BugReport, HarvestGreen)
                         SuitabilityRow("Harvest & Transit", state.advisory.harvestReadinessWindow, Icons.Filled.Agriculture, HarvestGreen)
+                    }
+                }
+            }
+
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onNavigateToCropSuitability() },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = HarvestGreen.copy(alpha = 0.12f)),
+                    border = BorderStroke(1.dp, HarvestGreen.copy(alpha = 0.35f))
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(42.dp)
+                                .clip(CircleShape)
+                                .background(HarvestGreen),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Spa,
+                                contentDescription = "Suitability Matrix",
+                                tint = Color.White
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Agro-Climatic Suitability & N-P-K Desk",
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = "ML crop suitability radar, drying window & soil mineral retention",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = DarkTextSecondary
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = "Navigate",
+                            tint = HarvestGreen
+                        )
                     }
                 }
             }

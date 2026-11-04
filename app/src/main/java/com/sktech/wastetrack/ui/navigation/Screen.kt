@@ -64,4 +64,7 @@ sealed class Screen(val route: String) {
     data object StubbleValorization : Screen("stubble_valorization?farmId={farmId}&crop={crop}") {
         fun createRoute(farmId: String = "plot_1", crop: String = "Cotton") = "stubble_valorization?farmId=$farmId&crop=$crop"
     }
+    data object CropSuitability : Screen("crop_suitability?hub={hub}") {
+        fun createRoute(hub: String = "Sinnar Agro Hub") = "crop_suitability?hub=$hub"
+    }
 }
